@@ -1,0 +1,15 @@
+.btn {
+  width: 80px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  color: #fff;
+  background-color: #00ffff;
+}
+.btn:hover {
+  cursor: pointer;
+  background-color: #ff00ff;
+}
+.btn:active {
+  background-color: #ffff00;
+}
