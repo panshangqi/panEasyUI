@@ -10,7 +10,7 @@ $.fn.extend({
     panScrollBar:function(data){
         var defaults = {
             'width':400,
-            'height':200,
+            'height':350,
             'barWidth':5
         };
 
@@ -30,14 +30,13 @@ $.fn.extend({
             'height':settings.height + 'px',
             'overflow':'hidden'
         });
-
         $content.css({
 
         });
         $bar.css({
             'height':settings.height + 'px',
             'width':settings.barWidth + 'px',
-            'left':(settings.width-settings.barWidth-100)+'px'
+            'left':(settings.width-settings.barWidth)+'px'
         });
         var thumb_start_y = 0;
         var thumb_cur_y = 0;
@@ -50,9 +49,11 @@ $.fn.extend({
             console.log(thumb_cur_y - thumb_start_y);
         })
 
-        $(this).scroll(function(){
-            console.log('scroll');
-        })
+        if($content.height() <= settings.height)
+        {
+            $bar.css('display','none');
+            return;
+        }
 
         function addEvent(obj,evt,fn){
             if(obj.attachEvent){
@@ -64,16 +65,57 @@ $.fn.extend({
         var this_div = document.getElementById($(this).attr('id'));
         addEvent(this_div,'mousewheel',onMouseWheel); //chrome and ie
         addEvent(this_div,'DOMMouseScroll',onMouseWheel);//firefox
-        var ls = 0;
+        var contentTop = 0;
+        var contentDiff = 80;
+        var contentDis = $(this).height() - $content.height();
+        var rate = settings.height*1.0/$content.height();
+        var thumbHeight = parseInt(rate*settings.height);
+        var thumbTop = 0;
+        var thumbDis = settings.height - thumbHeight;
+        var thumbDiff = parseInt(thumbDis*1.0*contentDiff/contentDis);
+        console.log(thumbDis);
+        $thumb.css({
+            'height':thumbHeight + 'px'
+        })
+
         function onMouseWheel(e) {
-            ls += 1;
-            console.log(e);
+
+            if (typeof e.preventDefault === 'function')
+                e.preventDefault();
+            console.log(e.detail + 'x' + e.wheelDelta);
+            var wheelVal = (typeof e.wheelDelta === 'undefined') ? (-parseInt(e.detail)) : e.wheelDelta;
+            if (wheelVal > 0) {
+                if (contentTop + contentDiff > 0) {
+                    contentTop = 0;
+                    thumbTop = 0;
+                }
+                else {
+                    contentTop += contentDiff;
+                    thumbTop += thumbDiff;
+                }
+
+            }
+            else {
+                if (contentTop - contentDiff < contentDis) {
+                    contentTop = contentDis;
+                    thumbTop = thumbDis;
+                }
+                else {
+                    contentTop -= contentDiff;
+                    thumbTop -= thumbDiff;
+                }
+
+            }
+
+
+            $content.css({'margin-top':contentTop + 'px'});
+            $thumb.css({'margin-top':thumbTop + 'px'},300);
+            //$content.filter(':not(:animated)').animate({'margin-top': contentTop + 'px'},120);
         }
+
     }
 });
-$('#test_scroll').panScrollBar({
-
-});
+$('#test_scroll').panScrollBar({});
 $.fn.extend({
     selectorInit:function(data,fn){
         var html = '';
