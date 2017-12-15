@@ -1,7 +1,22 @@
 
 @theme_color: #80bc71;
 @theme_hover_color: #d8fad0;
-
+.pan-scroll-box{
+    position: relative;
+    .scroll-bar{
+        position: absolute;
+        left:0;
+        top:0;
+        width:5px;
+        height:100px;
+        background-color: #ddd;
+        .scrollbar-thumb{
+            width:100%;
+            height:30px;
+            background-color: #999;
+        }
+    }
+}
 .pan-selector{
     position: relative;
     width:156px;
@@ -103,16 +118,30 @@
     &:hover{
         cursor: pointer;
     }
+    .date-show{
+        display: inline-block;
+        width:100%;
+        height: 26px;
+        line-height: 26px;
+        color: #666;
+        text-align: center;
+        &:hover{
+            cursor: pointer;
+        }
+    }
     .picker-box{
         position: absolute;
         width:250px;
-        height:200px;
+        height:auto;
+        padding-bottom: 8px;
         top:27px;
         left: -1px;
         border: 1px solid #ccc;
         z-index: 1001;
+        display: none;
     }
     .picker-header{
+        position: relative;
         width:100%;
         height:30px;
         border-bottom: 1px solid #ccc;
@@ -138,10 +167,7 @@
             line-height:30px;
             color:#666;
         }
-        .down-btn{
-            position: absolute;
-            vertical-align: top;
-            margin-top: 12px;
+        .arrow-down{
             width:0;
             height:0;
             border-width:6px;
@@ -151,23 +177,45 @@
                 border-color:fadeout(@theme_color, 30%) transparent transparent transparent;
             }
         }
-        .year-text{
-            .common-text;
-            left:50px;
+        .year-selector{
+            position: absolute;
+            margin-top: 4px;
+            left: 70px;
+            a{
+                vertical-align: top;
+                color:#666;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+            span{
+                .arrow-down;
+                display: inline-block;
+                vertical-align: top;
+                margin-top: 9px;
+                margin-left: 7px;
+            }
         }
-        .year-btn{
-            .down-btn;
-            left:100px;
+        .month-selector{
+            position: absolute;
+            margin-top: 4px;
+            left: 150px;
+            a{
+                vertical-align: top;
+                color:#666;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+            span{
+                .arrow-down;
+                display: inline-block;
+                vertical-align: top;
+                margin-top: 9px;
+                margin-left: 7px;
+            }
         }
-        .month-text{
-            .common-text;
-            width:30px;
-            left:140px;
-        }
-        .month-btn{
-            .down-btn;
-            left:170px;
-        }
+
         .right-btn{
             position: absolute;
             left:200px;
@@ -182,21 +230,95 @@
                 border-color:transparent transparent transparent fadeout(@theme_color, 30%);
             }
         }
+        ul{
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            width:60px;
+            height:180px;
+            overflow-y:auto;
+            border: 1px solid @theme_color;
+            background-color: #fff;
+            display: none;
+        }
+        ul li{
+            width:100%;
+            height:20px;
+            line-height: 20px;
+            text-align: center;
+            list-style: none;
+            font-size: 13px;
+            color: #888;
+            &:hover{
+                background-color: fadeout(@theme_color, 70%);
+            }
+        }
+        ul.year-list{
+            left:-5px;
+            top:20px;
+            z-index: 10001;
+        }
+        ul.month-list{
+            width:45px;
+            left:-5px;
+            top:20px;
+            z-index: 10001;
+        }
+        /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+        ::-webkit-scrollbar
+        {
+            width: 3px;
+            background-color: #F5F5F5;
+        }
+        /*定义滚动条轨道 内阴影+圆角*/
+        ::-webkit-scrollbar-track
+        {
+            border-left: 1px solid #aaa;
+            background-color: #fff;
+        }
+        /*定义滑块 内阴影+圆角*/
+        ::-webkit-scrollbar-thumb
+        {
+            border-radius: 0px;
+            background-color: @theme_color;
+        }
     }
     .picker-week{
         width:100%;
-        height:30px;
+        height:26px;
         span{
             display: inline-block;
-            width:14%;
-            height:26px;
-            line-height: 26px;
+            margin-left: 9px;
+            width:23px;
+            height:23px;
+            line-height: 23px;
             text-align: center;
             color:#aaa;
             font-size:12px;
+            border: 1px solid transparent;
+        }
+    }
+    .picker-days{
+        width:100%;
+        span{
+            display: inline-block;
+            margin-left: 9px;
+            width:23px;
+            height:23px;
+            line-height: 23px;
+            text-align: center;
+            color:#aaa;
+            font-size:12px;
+            border: 1px solid transparent;
+            &:hover{
+                color: @theme_color;
+                border: 1px solid @theme_color;
+            }
         }
     }
 }
+
+
 
 
 

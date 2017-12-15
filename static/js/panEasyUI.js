@@ -1,3 +1,79 @@
+//滚动条美化
+$.fn.extend({
+    /*
+    * html:
+    * <div class="pan-scroll-box" id="test_scroll_bar">
+    *     <div class="pan-scroll-content"></div>
+    *     <div class="pan-scroll-bar"><div>
+    * </div>
+    * */
+    panScrollBar:function(data){
+        var defaults = {
+            'width':400,
+            'height':200,
+            'barWidth':5
+        };
+
+        var settings = $.extend({},defaults,data);
+        var dom = $(this).html();
+        console.log(dom);
+        var html = '<div class="scroll-content"></div>';
+        html += '<div class="scroll-bar"><div class="scrollbar-thumb"></div></div>';
+        $(this).html(html);
+        var $content = $(this).find('.scroll-content');
+        var $bar = $(this).find('.scroll-bar');
+        var $thumb = $bar.find('.scrollbar-thumb');
+        $content.html(dom);
+
+        $(this).css({
+            'width':settings.width + 'px',
+            'height':settings.height + 'px',
+            'overflow':'hidden'
+        });
+
+        $content.css({
+
+        });
+        $bar.css({
+            'height':settings.height + 'px',
+            'width':settings.barWidth + 'px',
+            'left':(settings.width-settings.barWidth-100)+'px'
+        });
+        var thumb_start_y = 0;
+        var thumb_cur_y = 0;
+        $thumb.on('mousedown',function (evt) {
+            thumb_start_y = evt.pageX;
+            console.log(thumb_start_y);
+        })
+        $thumb.on('mousemove',function (evt) {
+            thumb_cur_y = evt.pageY;
+            console.log(thumb_cur_y - thumb_start_y);
+        })
+
+        $(this).scroll(function(){
+            console.log('scroll');
+        })
+
+        function addEvent(obj,evt,fn){
+            if(obj.attachEvent){
+                obj.attachEvent('on'+evt,fn);
+            }else{
+                obj.addEventListener(evt,fn,false);
+            }
+        }
+        var this_div = document.getElementById($(this).attr('id'));
+        addEvent(this_div,'mousewheel',onMouseWheel); //chrome and ie
+        addEvent(this_div,'DOMMouseScroll',onMouseWheel);//firefox
+        var ls = 0;
+        function onMouseWheel(e) {
+            ls += 1;
+            console.log(e);
+        }
+    }
+});
+$('#test_scroll').panScrollBar({
+
+});
 $.fn.extend({
     selectorInit:function(data,fn){
         var html = '';
@@ -206,18 +282,34 @@ $('#test_zoomify1').ZoomInit({
 
 $.fn.extend({
     panDateTimePicker:function(data){
-        var months_arr1 = [31,29,31,30,31,30,31,31,30,31,30,31];
-        var months_arr2 = [31,28,31,30,31,30,31,31,30,31,30,31];
+        var months_arr = [null,31,29,31,30,31,30,31,31,30,31,30,31];
         var week_arr_en = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         var week_arr_ch = ['日','一','二','三','四','五','六'];
-
-        $(this).html('<div class="picker-box"></div>');
+        var defaults = {
+            'start_year':1990,
+            'end_year':2030,
+            'format':'mm/dd/yyyy'
+        };
+        var settings = $.extend({},defaults,data);
+        console.log(JSON.stringify(settings));
+        var now = new Date();
+        var mYear = now.getFullYear();
+        var mMonth = now.getMonth() + 1;
+        var mDay = now.getDate();
+        $(this).html('<label class="date-show"></label>');
+        $(this).append('<div class="picker-box"></div>');
         var html = '<div class="picker-header">';
         html += '<div class="left-btn"></div>';
-        html += '<div class="year-text">2017</div>';
-        html += '<div class="year-btn"></div>';
-        html += '<div class="month-text">09</div>';
-        html += '<div class="month-btn"></div>';
+        html += '<div class="year-selector">';
+        html += '<a class="year-text">2017</a>';
+        html += '<span class="year-btn"></span>';
+        html += '<ul class="year-list"></ul>';
+        html += '</div>';
+        html += '<div class="month-selector">';
+        html += '<a class="month-text">09</a>';
+        html += '<span class="month-btn"></span>';
+        html += '<ul class="month-list"></ul>';
+        html += '</div>'
         html += '<div class="right-btn"></div>';
         html += '</div>';
         html += '<div class="picker-week">';
@@ -225,32 +317,111 @@ $.fn.extend({
             html += '<span>'+week_arr_ch[i]+'</span>';
         }
         html += '</div>';
-        html += '<div class="week_list"></div>';
+        html += '<div class="picker-days"></div>';
         $(this).find('.picker-box').html(html);
+        html = '';
+        for(var i=settings.start_year;i<=settings.end_year;i++){
+            html += '<li>'+i+'</li>';
+        }
+        $(this).find('ul.year-list').html(html);
+        html = '';
+        for(var i=1;i<=12;i++){
+            html += '<li>'+i+'</li>';
+        }
+        $(this).find('ul.month-list').html(html);
+        var $self = $(this);
+        //init days
+        updateMonths(mYear,mMonth);
 
-        updateMonths(2017,12);
+        $(this).find('.year-selector').on('mouseenter',function(){
+            $self.find('.year-list').css('display','block');
+        })
+        $(this).find('.year-selector').on('mouseleave',function () {
+            $self.find('.year-list').css('display','none');
+        })
+        $(this).find('.year-list').on('click','li',function(){
+            var curYear = $(this).html();
+            var curMonth = $self.find('.month-text').html();
+            $self.find('.year-text').html(curYear);
+            $self.find('.year-list').css('display','none');
+            updateMonths(parseInt(curYear),parseInt(curMonth));
+        })
+        $(this).find('.month-selector').on('mouseenter',function(){
+            $self.find('.month-list').css('display','block');
+        })
+
+        $(this).find('.month-selector').on('mouseleave',function () {
+            $self.find('.month-list').css('display','none');
+        })
+        $(this).find('.month-list').on('click','li',function(){
+            var curYear = $self.find('.year-text').html();
+            var curMonth = $(this).html();
+            $self.find('.month-text').html(curMonth);
+            $self.find('.month-list').css('display','none');
+            updateMonths(parseInt(curYear),parseInt(curMonth));
+        })
+        $(this).find('.picker-days').on('click','span',function(){
+            var curYear = $self.find('.year-text').html();
+            var curMonth = $self.find('.month-text').html();
+            var curDay = $(this).html();
+            $self.find('.date-show').html(formatDateTime(curYear,curMonth,curDay));
+            $self.find('.picker-box').css('display','none');
+        })
+        $(this).find('.date-show').on('click',function(){
+            $self.find('.picker-box').css('display','block');
+        })
+
         function updateMonths(year,month){
-            var leap_year = false;//闰年 = true
+            $self.find('.year-text').html(year);
+            $self.find('.month-text').html(month);
             if((year%400 == 0) || (year%4 == 0 && year%100 != 0)){
-                leap_year = true;
+                months_arr[2] = 29;
+            }else{
+                months_arr[2] = 28;
             }
             var week_id = getWeek(year,month,1);
+            var htm= '';
+            var total_days = months_arr[month];
             for(var i=0;i<7;i++){
-
+                if(i < week_id)
+                    htm += '<span style="visibility:hidden">&nbsp;</span>';
             }
-
+            for(var i=1;i<=total_days;i++){
+                htm += '<span>'+i+'</span>';
+            }
+            $self.find('.picker-days').html(htm);
         }
-        getWeek(2010,1,7);
+        //getWeek(2010,1,7);
         function getWeek(year,month,day){
-            var myDate = new Date(year+'-'+month+'-'+day);
+            var myDate = new Date(year+'/'+month+'/'+day);
             var week = myDate.getDay();
-            console.log(week);
             return week;
+        }
+        function formatDateTime(year,month,day){
+            if(typeof month === 'string'){
+                month = parseInt(month);
+            }
+            if(typeof day === 'string'){
+                day = parseInt(day);
+            }
+            month = (month < 10 ? '0'+month:month);
+            day = (day < 10 ? '0'+day:day);
+            var format = '';
+            if(settings.format == 'yyyy-mm-dd'){
+                format = year + '-' + month + '-' +day;
+            }else if(settings.format == 'mm/dd/yyyy'){
+                format = month + '/' + day + '/' +year;
+            }else if(settings.format == 'yyyy/mm/dd'){
+                format = year + '/' + month + '/' +day;
+            }
+            return format;
         }
     }
 });
 $('#test_datetime').panDateTimePicker({
-
+    'start_year':1990,
+    'end_year':2025,
+    'format':'mm/dd/yyyy'
 });
 
 
