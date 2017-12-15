@@ -210,6 +210,10 @@
 }
 .pan-datetime-picker .picker-week span {
   display: inline-block;
-  width: 30px;
-  color: #ff00ff;
+  width: 14%;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
 }
