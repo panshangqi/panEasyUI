@@ -1,12 +1,19 @@
+//鼠标滚轮事件 chrome firefox >=ie8
+$.fn.extend({
+    onMouseWheel:function(fn){
+        $(this).on('mousewheel DOMMouseScroll',function(e){
+            //if (typeof e.preventDefault === 'function')
+               // e.defaultPrevented();
+            var detail = e.originalEvent.detail;
+            var wheelDelta = e.originalEvent.wheelDelta;
+            var direct = (typeof wheelDelta === 'undefined')? -detail:wheelDelta;
+            fn(e,direct);
+        });
+    }
+})
 //滚动条美化
 $.fn.extend({
-    /*
-    * html:
-    * <div class="pan-scroll-box" id="test_scroll_bar">
-    *     <div class="pan-scroll-content"></div>
-    *     <div class="pan-scroll-bar"><div>
-    * </div>
-    * */
+
     panScrollBar:function(data){
         var defaults = {
             'width':400,
@@ -55,16 +62,6 @@ $.fn.extend({
             return;
         }
 
-        function addEvent(obj,evt,fn){
-            if(obj.attachEvent){
-                obj.attachEvent('on'+evt,fn);
-            }else{
-                obj.addEventListener(evt,fn,false);
-            }
-        }
-        var this_div = document.getElementById($(this).attr('id'));
-        addEvent(this_div,'mousewheel',onMouseWheel); //chrome and ie
-        addEvent(this_div,'DOMMouseScroll',onMouseWheel);//firefox
         var contentTop = 0;
         var contentDiff = 80;
         var contentDis = $(this).height() - $content.height();
@@ -73,18 +70,13 @@ $.fn.extend({
         var thumbTop = 0;
         var thumbDis = settings.height - thumbHeight;
         var thumbDiff = parseInt(thumbDis*1.0*contentDiff/contentDis);
-        console.log(thumbDis);
+
         $thumb.css({
             'height':thumbHeight + 'px'
         })
+        $(this).onMouseWheel(function(e,detail){
 
-        function onMouseWheel(e) {
-
-            if (typeof e.preventDefault === 'function')
-                e.preventDefault();
-            console.log(e.detail + 'x' + e.wheelDelta);
-            var wheelVal = (typeof e.wheelDelta === 'undefined') ? (-parseInt(e.detail)) : e.wheelDelta;
-            if (wheelVal > 0) {
+            if (detail > 0) {
                 if (contentTop + contentDiff > 0) {
                     contentTop = 0;
                     thumbTop = 0;
@@ -93,7 +85,6 @@ $.fn.extend({
                     contentTop += contentDiff;
                     thumbTop += thumbDiff;
                 }
-
             }
             else {
                 if (contentTop - contentDiff < contentDis) {
@@ -104,15 +95,10 @@ $.fn.extend({
                     contentTop -= contentDiff;
                     thumbTop -= thumbDiff;
                 }
-
             }
-
-
-            $content.css({'margin-top':contentTop + 'px'});
-            $thumb.css({'margin-top':thumbTop + 'px'},300);
-            //$content.filter(':not(:animated)').animate({'margin-top': contentTop + 'px'},120);
-        }
-
+            $content.stop(false,true).animate({'margin-top': contentTop + 'px'},120,'linear');
+            $thumb.stop(false,true).animate({'margin-top': thumbTop + 'px'},120,'linear');
+        });
     }
 });
 $('#test_scroll').panScrollBar({});
@@ -125,7 +111,8 @@ $.fn.extend({
             html += '</div>';
         }
         html += '<div class="pan-btn"><span></span></div>';
-        html += '<ul>';
+
+        html += '<ul class="pan-scroll-box" id="ll">';
         if(data.options && typeof data.options === 'object'){
             for(var i in data.options){
                 html += '<li tId="'+data.options[i].tId+'">';
@@ -133,7 +120,10 @@ $.fn.extend({
             }
         }
         html += '</ul>';
+
         $(this).html(html);
+
+        $(this).find('#ll').panScrollBar({'width':50,'height':50});
         var self = $(this);
 
         //width and height
