@@ -18,7 +18,7 @@ define("port", default=8899, help="run on the given port", type=int)
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         print 'get'
-        self.render("test.html",data='this is log')
+        self.render("index.html",data='this is log')
 
 class HomeHandler(tornado.web.RequestHandler):
     def get(self):
@@ -33,7 +33,7 @@ class PanEasyUIHandler(tornado.web.RequestHandler):
 if __name__ == '__main__':
     tornado.options.parse_command_line()
     app = tornado.web.Application(
-        handlers=[(r"/test",IndexHandler),
+        handlers=[(r"/index",IndexHandler),
         (r"/home",HomeHandler),
         (r"/panEasyUI",PanEasyUIHandler)],
         template_path = os.path.join(os.path.dirname(__file__),"templates"),

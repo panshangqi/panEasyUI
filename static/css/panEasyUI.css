@@ -131,6 +131,7 @@
   border: 1px solid #ccc;
   z-index: 1001;
   display: none;
+  background-color: #fff;
 }
 .pan-datetime-picker .picker-header {
   width: 100%;
