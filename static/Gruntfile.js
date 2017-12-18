@@ -9,7 +9,8 @@ module.exports = function(grunt){
                 },
                 files: {
                     'css/global.css': 'less/global.less',
-                    'css/panEasyUI.css':'less/panEasyUI.less'
+                    'css/panEasyUI.css':'less/panEasyUI.less',
+                    'css/ui_frame.css':'less/ui_frame.less'
                 }
             }
         },
@@ -24,7 +25,8 @@ module.exports = function(grunt){
                 },
                 files:{
                     'css/global.min.css':'css/global.css',
-                    'css/panEasyUI.min.css':'css/panEasyUI.css'
+                    'css/panEasyUI.min.css':'css/panEasyUI.css',
+                    'css/ui_frame.min.css':'css/ui_frame.css'
                 }
             }
         },
@@ -35,7 +37,8 @@ module.exports = function(grunt){
                 },
                 files:{
                     'js/test.min.js':'js/test.js',
-                    'js/panEasyUI.min.js':'js/panEasyUI.js'
+                    'js/panEasyUI.min.js':'js/panEasyUI.js',
+                    'js/ui_frame.min.js':'js/ui_frame.js'
                 }
             }
         }
