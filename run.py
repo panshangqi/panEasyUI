@@ -1,12 +1,19 @@
+# -×- coding=utf-8 -*-
 import os.path
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
-from tornado.web import RequestHandler
 from tornado.options import define, options
-from jinja2 import Environment,FileSystemLoader, TemplateNotFound
+from tornado.web import RequestHandler
+from jinja2 import Environment, FileSystemLoader, TemplateNotFound,ChoiceLoader
+
 import time
+from apps.components import *
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 settings = {'debug':True,
             "cookie_secret": "bZJc2sWbQLKos6GkHnxVB9oXwQt8S0R0kRvJ5J89E=",
@@ -15,20 +22,7 @@ settings = {'debug':True,
 define('debug',default=True,help="Debug Mode",type=bool)
 define("port", default=8899, help="run on the given port", type=int)
 
-class IndexHandler(tornado.web.RequestHandler):
-    def get(self):
-        print 'get'
-        self.render("index.html",data='this is log')
 
-class HomeHandler(tornado.web.RequestHandler):
-    def get(self):
-        print 'get'
-        self.render("home.html",data='this is log')
-
-class PanEasyUIHandler(tornado.web.RequestHandler):
-    def get(self):
-        print 'get'
-        self.render("panEasyUI.html",data='this is log')
 
 if __name__ == '__main__':
     tornado.options.parse_command_line()
