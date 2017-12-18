@@ -1,4 +1,4 @@
-from jinjaloader import *
+from jinja_tornado import *
 import tornado.escape
 import json
 json_decode = tornado.escape.json_decode
@@ -7,14 +7,18 @@ json_decode = tornado.escape.json_decode
 class IndexHandler(BaseHandler):
     def get(self):
         print 'get'
-        self.render_html("index.html",data='this is log')
+        self.render_html("index.html")
 
 class HomeHandler(BaseHandler):
     def get(self):
         print 'get'
-        self.render_html("home.html",data='this is log')
+        self.render_html("home.html")
 
 class PanEasyUIHandler(BaseHandler):
     def get(self):
         print 'get'
-        self.render_html("panEasyUI.html",data='this is log')
+        self.render_html("panEasyUI.html")
+
+class NotFoundHandler(BaseHandler):
+    def get(self):
+        self.render('error_404.html')

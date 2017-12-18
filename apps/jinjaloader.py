@@ -17,15 +17,14 @@ class TemplateRendering(object):
 		if self.settings.get('template_path', ''):
 			template_dirs.append(self.settings['template_path'])
 
+
 		auto_escape = kwargs.get('auto_escape', guess_autoescape)
+		print auto_escape
 		env = Environment(
 			loader=FileSystemLoader(template_dirs),
 			autoescape=auto_escape,
 			extensions=['jinja2.ext.autoescape'])
 
-		env.filters.update(
-			json_dumps = json_dumps
-		)
 		try:
 			template = env.get_template(template_name)
 		except TemplateNotFound:
@@ -45,8 +44,8 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
 	def render_html(self, template_name, **kwargs):
 		kwargs.update({
 		  'settings': self.settings,
-		  'static_path': '/static/',
-		  'static_url': self.settings.get('static_url_prefix', '/static'),
+		  'static_path': '/static',
+		  'static_url': '/static',
 		  'request': self.request,
 		  'current_user': self.current_user,
 		  'xsrf_token': self.xsrf_token,
