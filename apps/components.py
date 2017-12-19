@@ -6,8 +6,7 @@ json_decode = tornado.escape.json_decode
 
 class IndexHandler(BaseHandler):
     def get(self):
-        print 'get'
-        self.render_html("index.html")
+        self.render_html("index.html",com=['sd','ds'])
 
 class HomeHandler(BaseHandler):
     def get(self):
