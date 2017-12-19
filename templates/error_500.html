@@ -7,15 +7,18 @@
         .tip_content{
             width:600px;
             margin: 100px auto;
-            line-height: 40px;
-            font-size: 14px;
+            line-height: 25px;
+            font-size: 12px;
             border:1px solid #2fb346;
+            padding: 15px;
         }
     </style>
 </head>
-<body style="background-color: #FBFBFB;text-align: center">
-<div class="tip_content"></div>
-{% autoescape None %}
-{{content}}
+<body style="background-color: #FBFBFB">
+<div class="tip_content">
+    {{content}}
+</div>
+
+
 </body>
 </html>
