@@ -7,15 +7,16 @@
 <body>
 <div class="frame_header">
 
-    {% block content %}
-
-    {% endblock %}
 </div>
 <div class="frame_main_nav">
     <div class="nav_cell active">插件库</div>
     <div class="nav_cell">资料库</div>
     <div class="nav_cell">代码库</div>
+</div>
+<div class="frame_content">
+    {% block content %}
 
+    {% endblock %}
 </div>
 <script type="text/javascript" src="{{static_url}}/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="{{static_url}}/js/ui_frame.min.js"></script>

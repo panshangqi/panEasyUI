@@ -63,6 +63,7 @@ $.fn.extend({
         if($content.height() <= settings.height)
         {
             $bar.css('display','none');
+            console.log('------>'+$content.height());
             return;
         }
         //------------------鼠标滑轮------------------
@@ -181,8 +182,6 @@ $.fn.extend({
             'height':settings.optionsULHeight + 'px',
             'display':'none'
         })
-
-
         //Event
         if(settings.expandType == 'click'){
             self.on('click',function(){
@@ -357,7 +356,7 @@ $('#test_zoomify1').ZoomInit({
     'imageHeight':'auto',
     'scale':3.1
 });
-
+//时间日期插件
 $.fn.extend({
     panDateTimePicker:function(data){
         var months_arr = [null,31,29,31,30,31,30,31,31,30,31,30,31];
@@ -378,16 +377,12 @@ $.fn.extend({
         $(this).append('<div class="picker-box"></div>');
         var html = '<div class="picker-header">';
         html += '<div class="left-btn"></div>';
-        html += '<div class="year-selector">';
-        html += '<a class="year-text">2017</a>';
-        html += '<span class="year-btn"></span>';
-        html += '<ul class="year-list"></ul>';
-        html += '</div>';
-        html += '<div class="month-selector">';
-        html += '<a class="month-text">09</a>';
-        html += '<span class="month-btn"></span>';
-        html += '<ul class="month-list"></ul>';
-        html += '</div>'
+        html += '<div class="year-selector"><a class="year-text">2017</a><span class="year-btn"></span>';
+        html += '<div class="pan-scroll-box" id="year-list"></div></div>'; //调用滚动条插件
+
+        html += '<div class="month-selector"><a class="month-text">09</a><span class="month-btn"></span>';
+        html += '<div class="pan-scroll-box" id="month-list"></div></div>';
+
         html += '<div class="right-btn"></div>';
         html += '</div>';
         html += '<div class="picker-week">';
@@ -401,41 +396,77 @@ $.fn.extend({
         for(var i=settings.start_year;i<=settings.end_year;i++){
             html += '<li>'+i+'</li>';
         }
-        $(this).find('ul.year-list').html(html);
+        $(this).find('#year-list').html(html);
         html = '';
         for(var i=1;i<=12;i++){
             html += '<li>'+i+'</li>';
         }
-        $(this).find('ul.month-list').html(html);
+        $(this).find('#month-list').html(html);
         var $self = $(this);
+
+        //设置年份滚动条
+        var $year_list = $(this).find('#year-list');
+
+        $year_list.panScrollBar({
+            'width':60,
+            'height':240
+        });
+        $year_list.css({
+            'position':'absolute',
+            'border':'1px solid #80bc71',
+            'background-color':'#fff',
+            'top':'20px',
+            'left':'-5px',
+            'display':'none'
+        });
+        var $month_list = $(this).find('#month-list');
+
+        $month_list.panScrollBar({
+            'width':45,
+            'height':240
+        });
+        $month_list.css({
+            'position':'absolute',
+            'border':'1px solid #80bc71',
+            'background-color':'#fff',
+            'top':'20px',
+            'left':'-5px',
+            'display':'none'
+        });
+
         //init days
         updateMonths(mYear,mMonth);
 
         $(this).find('.year-selector').on('mouseenter',function(){
-            $self.find('.year-list').css('display','block');
+            $year_list.css('display','block');
         })
         $(this).find('.year-selector').on('mouseleave',function () {
-            $self.find('.year-list').css('display','none');
+            $year_list.css('display','none');
         })
-        $(this).find('.year-list').on('click','li',function(){
+        $year_list.on('click','li',function(){
             var curYear = $(this).html();
             var curMonth = $self.find('.month-text').html();
             $self.find('.year-text').html(curYear);
-            $self.find('.year-list').css('display','none');
+            $year_list.css('display','none');
             updateMonths(parseInt(curYear),parseInt(curMonth));
         })
         $(this).find('.month-selector').on('mouseenter',function(){
-            $self.find('.month-list').css('display','block');
+            $month_list.css('display','block');
         })
 
         $(this).find('.month-selector').on('mouseleave',function () {
-            $self.find('.month-list').css('display','none');
+            $month_list.css('display','none');
         })
-        $(this).find('.month-list').on('click','li',function(){
+
+        $self.find('.picker-box').css({
+            'display':'none'
+        })
+        //Event
+        $month_list.on('click','li',function(){
             var curYear = $self.find('.year-text').html();
             var curMonth = $(this).html();
             $self.find('.month-text').html(curMonth);
-            $self.find('.month-list').css('display','none');
+            $month_list.css('display','none');
             updateMonths(parseInt(curYear),parseInt(curMonth));
         })
         $(this).find('.picker-days').on('click','span',function(){
@@ -503,3 +534,4 @@ $('#test_datetime').panDateTimePicker({
 });
 
 
+$('#test_pansq').panScrollBar({'height':100})
