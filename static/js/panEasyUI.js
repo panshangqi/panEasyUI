@@ -2,23 +2,25 @@
 $.fn.extend({
     onMouseWheel:function(fn){
         $(this).on('mousewheel DOMMouseScroll',function(e){
-            //if (typeof e.preventDefault === 'function')
-               // e.defaultPrevented();
+            if (typeof e.preventDefault === 'function')
+                e.preventDefault();
             var detail = e.originalEvent.detail;
             var wheelDelta = e.originalEvent.wheelDelta;
             var direct = (typeof wheelDelta === 'undefined')? -detail:wheelDelta;
             fn(e,direct);
+            return false;
         });
     }
 })
 //滚动条美化
 $.fn.extend({
-
     panScrollBar:function(data){
         var defaults = {
             'width':400,
             'height':350,
-            'barWidth':5
+            'barWidth':5,
+            'barColor':'#ddd',
+            'thumbColor':'#aaa'
         };
 
         var settings = $.extend({},defaults,data);
@@ -43,8 +45,63 @@ $.fn.extend({
         $bar.css({
             'height':settings.height + 'px',
             'width':settings.barWidth + 'px',
-            'left':(settings.width-settings.barWidth)+'px'
+            'left':(settings.width-settings.barWidth)+'px',
+            'background-color':settings.barColor
         });
+        //滚轮事件以及鼠标事件
+        var contentTop = 0;
+        var contentDis = $(this).height() - $content.height() + 1;
+        var rate = settings.height*1.0/$content.height();
+        var thumbHeight = parseInt(rate*settings.height);
+        var thumbTop = 0;
+        var thumbDis = settings.height - thumbHeight;
+
+        $thumb.css({
+            'height':thumbHeight + 'px',
+            'background-color':settings.thumbColor
+        })
+        if($content.height() <= settings.height)
+        {
+            $bar.css('display','none');
+            return;
+        }
+        //------------------鼠标滑轮------------------
+        var moveThead = null;
+        var speed = 1;
+        var interVal = 2;
+        var contentTopStop = 0;
+        var thumbVal = -(thumbDis*interVal*1.0/contentDis);
+        var thumbValP = thumbVal;
+        //console.log(thumbDis+'/'+contentDis+'='+thumbVal);
+
+        $(this).onMouseWheel(function(e,detail){
+            if(moveThead)
+                clearInterval(moveThead);
+            if(detail > 0){ //上滚
+                interVal = 2;
+                contentTopStop = contentTop + 250;
+                if(contentTop >= -1)
+                    return;
+                if(contentTopStop > -1)
+                    contentTopStop = -1;
+                speed = 1;
+                thumbValP = -thumbVal;
+                moveThead=setInterval(SmoothMoveThread,speed);
+            }
+            else{
+                interVal = -2;
+                contentTopStop = contentTop - 250;
+                if(contentTop <= contentDis)
+                    return;
+                if(contentTopStop < contentDis)
+                    contentTopStop = contentDis;
+                speed = 1;
+                thumbValP = thumbVal;
+                moveThead=setInterval(SmoothMoveThread,speed);
+            }
+        });
+
+        //------------------鼠标拖动滚动条-------------------
         var thumb_start_y = 0;
         var thumb_cur_y = 0;
         $thumb.on('mousedown',function (evt) {
@@ -56,107 +113,94 @@ $.fn.extend({
             console.log(thumb_cur_y - thumb_start_y);
         })
 
-        if($content.height() <= settings.height)
-        {
-            $bar.css('display','none');
-            return;
+        function SmoothMoveThread(){
+            contentTop += interVal;
+            thumbTop += thumbValP;
+            if(interVal > 0 && contentTop > contentTopStop)
+                clearInterval(moveThead);
+            else if(interVal < 0 && contentTop < contentTopStop)
+                clearInterval(moveThead);
+            $content.css({'margin-top': contentTop + 'px'});
+            $thumb.css({'margin-top': thumbTop + 'px'});
         }
 
-        var contentTop = 0;
-        var contentDiff = 80;
-        var contentDis = $(this).height() - $content.height();
-        var rate = settings.height*1.0/$content.height();
-        var thumbHeight = parseInt(rate*settings.height);
-        var thumbTop = 0;
-        var thumbDis = settings.height - thumbHeight;
-        var thumbDiff = parseInt(thumbDis*1.0*contentDiff/contentDis);
-
-        $thumb.css({
-            'height':thumbHeight + 'px'
-        })
-        $(this).onMouseWheel(function(e,detail){
-
-            if (detail > 0) {
-                if (contentTop + contentDiff > 0) {
-                    contentTop = 0;
-                    thumbTop = 0;
-                }
-                else {
-                    contentTop += contentDiff;
-                    thumbTop += thumbDiff;
-                }
-            }
-            else {
-                if (contentTop - contentDiff < contentDis) {
-                    contentTop = contentDis;
-                    thumbTop = thumbDis;
-                }
-                else {
-                    contentTop -= contentDiff;
-                    thumbTop -= thumbDiff;
-                }
-            }
-            $content.stop(false,true).animate({'margin-top': contentTop + 'px'},120,'linear');
-            $thumb.stop(false,true).animate({'margin-top': thumbTop + 'px'},120,'linear');
-        });
     }
 });
-$('#test_scroll').panScrollBar({});
+$('#test_scroll').panScrollBar({'width':600});
+//下拉框选择器
 $.fn.extend({
     selectorInit:function(data,fn){
-        var html = '';
-        if(data.text && typeof data.text === 'object'){
-            html += '<div class="pan-text" tId="'+data.text.tId+'">';
-            html += data.text.tName;
-            html += '</div>';
+        var defaults = {
+            'width':280,
+            'expandType': 'touch',  //下拉框触发模式 'touch' 'click'
+            'optionsULHeight':200,
+            'text':{'tId':'demo','tName':'demo'},
+            'options':[{'tId':'demo','tName':'demo'},
+                {'tId':'demo','tName':'demo'},
+                {'tId':'demo','tName':'demo'},
+                {'tId':'demo','tName':'demo'}]
         }
+        var settings = $.extend({},defaults,data);
+        var html = '';
+        //初始化默认选择项
+        html += '<div class="pan-text" tId="'+settings.text.tId+'">';
+        html += settings.text.tName;
+        html += '</div>';
         html += '<div class="pan-btn"><span></span></div>';
 
-        html += '<ul class="pan-scroll-box" id="ll">';
-        if(data.options && typeof data.options === 'object'){
-            for(var i in data.options){
-                html += '<li tId="'+data.options[i].tId+'">';
-                html += data.options[i].tName + '</li>';
-            }
+        html += '<div class="pan-select-ul">';
+        html += '<div class="pan-scroll-box"><ul>';
+        //加载列表项
+        for(var i in settings.options){
+            html += '<li tId="'+settings.options[i].tId+'">';
+            html += settings.options[i].tName + '</li>';
         }
-        html += '</ul>';
-
+        html += '</ul></div></div>';
         $(this).html(html);
-
-        $(this).find('#ll').panScrollBar({'width':50,'height':50});
         var self = $(this);
-
-        //width and height
-        if(data.width && typeof data.width === 'number'){
-            $(this).css('width',data.width + 'px');
-            self.find('.pan-text').css({
-                'width':(data.width-36) + 'px'
-            });
-            self.find('ul').css({
-                'width':data.width + 'px'
-            });
-        }
-        if(data.height && typeof data.height === 'number'){
-            $(this).css('height',data.height + 'px');
-            self.find('.pan-text').css({
-                'height':data.height + 'px',
-                'line-height':data.height + 'px'
-            });
-            self.find('.pan-btn').css({
-                'height':data.height + 'px',
-            });
-        }
-
-        self.on('mouseenter',function(){
-            $(this).find('ul').css('display','block');
+        //初始化自定义列表框
+        $(this).css('width',settings.width + 'px');
+        self.find('.pan-text').css({
+            'width':(settings.width-36) + 'px'
+        });
+        var $panScrollUl = $(this).find('.pan-select-ul');
+        var $panScrollBox = $(this).find('.pan-scroll-box');
+        $panScrollBox.panScrollBar({
+            'width':settings.width,
+            'height':settings.optionsULHeight
+        });
+        $panScrollBox.find('ul').css({
+            'width':settings.width+'px'
         })
+        var ULHeight = $panScrollBox.find('ul').height();
+        if(ULHeight < settings.optionsULHeight)
+            settings.optionsULHeight = ULHeight;
+        console.log('ul-->' + $panScrollBox.find('ul').height());
+        $panScrollUl.css({
+            'width':settings.width+'px',
+            'height':settings.optionsULHeight + 'px',
+            'display':'none'
+        })
+
+
+        //Event
+        if(settings.expandType == 'click'){
+            self.on('click',function(){
+                $panScrollUl.css('display','block');
+            })
+        }
+        else if(settings.expandType == 'touch') {
+            self.on('mouseenter', function () {
+                $panScrollUl.css('display','block');
+            })
+        }
         self.on('mouseleave',function () {
-            $(this).find('ul').css('display','none');
+            $panScrollUl.css('display','none');
         })
         self.on('click','ul li',function(){
             self.find('.pan-text').html($(this).html());
             self.find('.pan-text').attr('tId',$(this).attr('tId'));
-            self.find('ul').css('display','none');
+            $panScrollUl.css('display','none');
             if(typeof fn  === 'function'){
                 var tid = self.find('.pan-text').attr('tId');
                 var tname = self.find('.pan-text').html();
@@ -173,6 +217,8 @@ $.fn.extend({
 //------------------使用方法---------------------
 $('#test_selector').selectorInit({
     width:280,
+    expandType:'touch',
+    optionsULHeight:360,
     text:{'tId':'上海','tName':'上海'},
    options:[{'tId':'上海','tName':'上海'},
        {'tId':'北京','tName':'北京'},
@@ -209,7 +255,7 @@ $('#test_selector1').selectorInit({
 });
 
 //-------------------------------------------
-
+//图片放大插件
 $.fn.extend({
     ZoomInit:function(data){
         var self = $(this);

@@ -10,12 +10,10 @@ class IndexHandler(BaseHandler):
 
 class HomeHandler(BaseHandler):
     def get(self):
-        print 'get'
         self.render_html("home.html")
 
 class PanEasyUIHandler(BaseHandler):
     def get(self):
-        print 'get'
         self.render_html("panEasyUI.html")
 
 class NotFoundHandler(BaseHandler):
