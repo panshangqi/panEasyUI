@@ -1,4 +1,4 @@
-//鼠标滚轮事件 chrome firefox >=ie8
+//鼠标滚轮事件 chrome、 firefox、 >=ie8
 $.fn.extend({
     onMouseWheel:function(fn){
         $(this).on('mousewheel DOMMouseScroll',function(e){
@@ -18,116 +18,200 @@ $.fn.extend({
         var defaults = {
             'width':400,
             'height':350,
-            'barWidth':5,
-            'barColor':'#ddd',
-            'thumbColor':'#aaa'
+            'scroll_x_width':5,
+            'scroll_x_color':'#ddd',
+            'scroll_x_thumb_color':'#aaa',//滑块颜色
+            'scroll_x_overflow':'auto', //hidden,auto,
+            'scroll_y_width':5,
+            'scroll_y_color':'#ddd',
+            'scroll_y_thumb_color':'#aaa',
+            'scroll_y_overflow':'auto'
         };
-
+        if(typeof data.scroll_y_overflow === 'undefined')
+            return;
         var settings = $.extend({},defaults,data);
+        //把div里面的内容抽出来，然后放到自定义content，使用自定义bar进行滚动和操作
         var dom = $(this).html();
-        console.log(dom);
-        var html = '<div class="scroll-content"></div>';
-        html += '<div class="scroll-bar"><div class="scrollbar-thumb"></div></div>';
+        var html = '<div class="scroll-content"></div><div class="scroll-x-bar"><div class="scrollbar-x-thumb"></div></div>';
+        html += '<div class="scroll-y-bar"><div class="scrollbar-y-thumb"></div></div><div class="scroll-over-layer"></div>';
         $(this).html(html);
+        var self = $(this);
         var $content = $(this).find('.scroll-content');
-        var $bar = $(this).find('.scroll-bar');
-        var $thumb = $bar.find('.scrollbar-thumb');
         $content.html(dom);
+        var $scrollXBar = $(this).find('.scroll-x-bar');
+        var $scrollYBar = $(this).find('.scroll-y-bar');
+        var $thumbX = $scrollXBar.find('.scrollbar-x-thumb');
+        var $thumbY = $scrollYBar.find('.scrollbar-y-thumb');
+        var $overLayer = $(this).find('.scroll-over-layer');
+
+
+        console.log('==');
+        console.log($content.actual('width'));
+        console.log($content.actual('height'));
+        console.log($content.width());
+
 
         $(this).css({
             'width':settings.width + 'px',
             'height':settings.height + 'px',
-            'overflow':'hidden'
+            'overflow-y':visible,
+            'overflow-x':visible,
         });
-        $content.css({
-
-        });
-        $bar.css({
+        $overLayer.css({
+            'width':settings.width + 'px',
+            'height':(settings.height-settings.scroll_y_width) + 'px'
+        })
+        $scrollYBar.css({
             'height':settings.height + 'px',
-            'width':settings.barWidth + 'px',
-            'left':(settings.width-settings.barWidth)+'px',
-            'background-color':settings.barColor
+            'width':settings.scroll_y_width + 'px',
+            'left':(settings.width - settings.scroll_y_width)+'px',
+            'background-color':settings.scroll_y_color
         });
-        //滚轮事件以及鼠标事件
-        var contentTop = 0;
-        var contentDis = $(this).height() - $content.height() + 1;
-        var rate = settings.height*1.0/$content.height();
-        var thumbHeight = parseInt(rate*settings.height);
-        var thumbTop = 0;
-        var thumbDis = settings.height - thumbHeight;
-
-        $thumb.css({
-            'height':thumbHeight + 'px',
-            'background-color':settings.thumbColor
+        $scrollXBar.css({
+            'height':settings.scroll_x_width + 'px',
+            'width':settings.width + 'px',
+            'top':(settings.height - settings.scroll_x_width)+'px',
+            'background-color':settings.scroll_x_color
         })
-        if($content.height() <= settings.height)
+        console.log(settings.scroll_y_overflow);
+        if(settings.scroll_y_overflow == 'auto'){
+            scrollYEvent();
+        }else{
+            $scrollYBar.css('display','none');
+        }
+        if(settings.scroll_x_overflow == 'auto'){
+            mouseMoveEvent();
+        }else{
+            $scrollXBar.css('display','none');
+        }
+
+        function scrollYEvent()
         {
-            $bar.css('display','none');
-            console.log('------>'+$content.height());
-            return;
-        }
-        //------------------鼠标滑轮------------------
-        var moveThead = null;
-        var speed = 1;
-        var interVal = 2;
-        var contentTopStop = 0;
-        var thumbVal = -(thumbDis*interVal*1.0/contentDis);
-        var thumbValP = thumbVal;
-        //console.log(thumbDis+'/'+contentDis+'='+thumbVal);
-
-        $(this).onMouseWheel(function(e,detail){
-            if(moveThead)
-                clearInterval(moveThead);
-            if(detail > 0){ //上滚
-                interVal = 2;
-                contentTopStop = contentTop + 250;
-                if(contentTop >= -1)
-                    return;
-                if(contentTopStop > -1)
-                    contentTopStop = -1;
-                speed = 1;
-                thumbValP = -thumbVal;
-                moveThead=setInterval(SmoothMoveThread,speed);
+            var contentHeight = $content.actual('height');
+            var contentTop = 0;
+            var contentDis = contentHeight - settings.height; //遮挡住的高度
+            //计算滑块高度：公式 盒子高度/实际高度 = 滑块高度/滚动条长度（盒子高度）；
+            var rate = settings.height*1.0/contentHeight;
+            var thumbHeight = parseInt(settings.height*rate);
+            var thumbTop = 0;
+            var thumbDis = settings.height - thumbHeight;
+            $thumbY.css({
+                'height':thumbHeight+'px',
+                'background-color':settings.scroll_y_thumb_color
+            });
+            if(contentHeight <= settings.height)
+            {
+                $scrollYBar.css('display','none');
+                return;
             }
-            else{
-                interVal = -2;
-                contentTopStop = contentTop - 250;
-                if(contentTop <= contentDis)
-                    return;
-                if(contentTopStop < contentDis)
-                    contentTopStop = contentDis;
-                speed = 1;
-                thumbValP = thumbVal;
-                moveThead=setInterval(SmoothMoveThread,speed);
+
+            //鼠标滑轮参数------------------
+            var moveThead = null;
+            var speed = 1;  //移动的速度，函数执行的时间差
+            var conMoveVal = 2;
+            var contentEndTop = 0;  //停止的位置
+            var thumbMoveVal = thumbDis*conMoveVal*1.0/contentDis; //计算滑块每步移动的距离float
+            self.onMouseWheel(function(e,detail){
+                if(moveThead)
+                    clearInterval(moveThead);
+                if(detail > 0){ //上滚
+
+                    conMoveVal = Math.abs(conMoveVal);
+                    contentEndTop = contentTop + 200;
+                    if(contentTop >= 0)
+                        return;
+                    if(contentEndTop > 0)
+                        contentEndTop = 0;
+                    thumbMoveVal = -Math.abs(thumbMoveVal);
+                    moveThead=setInterval(SmoothMoveThread,speed);
+                }
+                else{
+                    conMoveVal = -Math.abs(conMoveVal);;
+                    contentEndTop = contentTop - 200;
+                    if(contentTop <= -contentDis)
+                        return;
+                    if(contentEndTop < -contentDis)
+                        contentEndTop = -contentDis;
+
+                    thumbMoveVal = Math.abs(thumbMoveVal);
+                    moveThead=setInterval(SmoothMoveThread,speed);
+                }
+            });
+            function SmoothMoveThread(){
+                contentTop += conMoveVal;
+                thumbTop += thumbMoveVal;
+                if(conMoveVal > 0 && contentTop >= contentEndTop)
+                {
+                    contentTop = contentEndTop;
+                    clearInterval(moveThead);
+                }
+                else if(conMoveVal < 0 && contentTop <= contentEndTop)
+                {
+                    contentTop = contentEndTop;
+                    clearInterval(moveThead);
+                }
+                $content.css({'margin-top': contentTop + 'px'});
+                $thumbY.css({'margin-top': thumbTop + 'px'});
             }
-        });
-
-        //------------------鼠标拖动滚动条-------------------
-        var thumb_start_y = 0;
-        var thumb_cur_y = 0;
-        $thumb.on('mousedown',function (evt) {
-            thumb_start_y = evt.pageX;
-            console.log(thumb_start_y);
-        })
-        $thumb.on('mousemove',function (evt) {
-            thumb_cur_y = evt.pageY;
-            console.log(thumb_cur_y - thumb_start_y);
-        })
-
-        function SmoothMoveThread(){
-            contentTop += interVal;
-            thumbTop += thumbValP;
-            if(interVal > 0 && contentTop > contentTopStop)
-                clearInterval(moveThead);
-            else if(interVal < 0 && contentTop < contentTopStop)
-                clearInterval(moveThead);
-            $content.css({'margin-top': contentTop + 'px'});
-            $thumb.css({'margin-top': thumbTop + 'px'});
         }
 
+        //针对X滚动
+        function mouseMoveEvent(){
+
+
+            //鼠标拖动参数-------------------------
+            var contentWidth = $content.actual('width');
+            console.log('contentWidth'+contentWidth);
+            var contentLeft = 0;
+            var contentDis = contentWidth - settings.width;
+            //计算滑块高度：公式 盒子高度/实际高度 = 滑块高度/滚动条长度（盒子高度）；
+            var rate = settings.width*1.0/contentWidth;
+            var thumbLong = parseInt(settings.width*rate);
+            var thumbLeft = 0;
+
+            var thumbDis = settings.width - thumbLong;
+
+
+            $thumbX.css({
+                'width':thumbLong+'px',
+                'background-color':settings.scroll_x_thumb_color
+            });
+            if(contentWidth <= settings.width)
+            {
+                //$scrollXBar.css('display','none');
+                return;
+            }
+
+            var contentPreLeft = 0;
+            var start_x = 0;
+            var end_x = 0;
+            var thumbPreLeft = 0;
+            var mouseDown = false;
+            $thumbX.on('mousedown',function (event) {
+                start_x = event.pageX;
+                thumbPreLeft = thumbLeft;
+                contentPreLeft = contentLeft;
+                mouseDown = true;
+                $content.addClass('not-selected');
+            })
+            $(window).on('mousemove',function (event) {
+                if(mouseDown){
+                    end_x = event.pageX;
+                    thumbLeft = thumbPreLeft + end_x - start_x;
+                    contentLeft = contentPreLeft + start_x - end_x;
+                    $thumbX.css({'margin-left': thumbLeft + 'px'});
+                    $content.css({'margin-left': contentLeft + 'px'});
+                }
+            })
+            $(window).on('mouseup',function(){
+                mouseDown = false;
+                $content.removeClass('not-selected');
+            })
+
+        }
     }
 });
-$('#test_scroll').panScrollBar({'width':600});
+$('#test_scroll').panScrollBar({'width':600,'scroll_y_overflow':'auto'});
 //下拉框选择器
 $.fn.extend({
     selectorInit:function(data,fn){
@@ -535,3 +619,4 @@ $('#test_datetime').panDateTimePicker({
 
 
 $('#test_pansq').panScrollBar({'height':100})
+
