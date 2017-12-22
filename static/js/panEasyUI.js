@@ -18,17 +18,20 @@ $.fn.extend({
         var defaults = {
             'width':400,
             'height':350,
-            'scroll_x_width':5,
+            'scroll_x_width':7,
             'scroll_x_color':'#ddd',
+            'scroll_x_radius':7,
             'scroll_x_thumb_color':'#aaa',//滑块颜色
+            'scroll_x_thumb_radius':7,
             'scroll_x_overflow':'auto', //hidden,auto,
-            'scroll_y_width':5,
+            'scroll_y_width':7,
+            'scroll_y_radius':7,
             'scroll_y_color':'#ddd',
             'scroll_y_thumb_color':'#aaa',
-            'scroll_y_overflow':'auto'
+            'scroll_y_thumb_radius':7,
+            'scroll_y_overflow':'auto',
+            'inertia_dis':100  //鼠标滚动一下的惯性移动距离 px
         };
-        if(typeof data.scroll_y_overflow === 'undefined')
-            return;
         var settings = $.extend({},defaults,data);
         //把div里面的内容抽出来，然后放到自定义content，使用自定义bar进行滚动和操作
         var dom = $(this).html();
@@ -44,19 +47,15 @@ $.fn.extend({
         var $thumbY = $scrollYBar.find('.scrollbar-y-thumb');
         var $overLayer = $(this).find('.scroll-over-layer');
 
-
-        console.log('==');
-        console.log($content.actual('width'));
-        console.log($content.actual('height'));
-        console.log($content.width());
-
+        var contentWidth =$content.width();
+        var contentHeight = $content.height();
 
         $(this).css({
             'width':settings.width + 'px',
             'height':settings.height + 'px',
-            'overflow-y':visible,
-            'overflow-x':visible,
+            'overflow':'hidden'
         });
+
         $overLayer.css({
             'width':settings.width + 'px',
             'height':(settings.height-settings.scroll_y_width) + 'px'
@@ -65,30 +64,41 @@ $.fn.extend({
             'height':settings.height + 'px',
             'width':settings.scroll_y_width + 'px',
             'left':(settings.width - settings.scroll_y_width)+'px',
-            'background-color':settings.scroll_y_color
+            'background-color':settings.scroll_y_color,
+            'border-radius':settings.scroll_y_radius + 'px'
         });
         $scrollXBar.css({
             'height':settings.scroll_x_width + 'px',
             'width':settings.width + 'px',
             'top':(settings.height - settings.scroll_x_width)+'px',
-            'background-color':settings.scroll_x_color
+            'background-color':settings.scroll_x_color,
+            'border-radius':settings.scroll_x_radius + 'px'
         })
-        console.log(settings.scroll_y_overflow);
+        var scroll_info = {
+            'scrollY':false,
+            'scrollX':false
+        };
         if(settings.scroll_y_overflow == 'auto'){
             scrollYEvent();
+            scroll_info.scrollY = true;
         }else{
             $scrollYBar.css('display','none');
         }
         if(settings.scroll_x_overflow == 'auto'){
             mouseMoveEvent();
+            scroll_info.scrollX = true;
         }else{
             $scrollXBar.css('display','none');
         }
-
+        //如果两个滚动条都显示:
         function scrollYEvent()
         {
-            var contentHeight = $content.actual('height');
             var contentTop = 0;
+            if(contentHeight <= settings.height)
+            {
+                $scrollYBar.css('display','none');
+                return;
+            }
             var contentDis = contentHeight - settings.height; //遮挡住的高度
             //计算滑块高度：公式 盒子高度/实际高度 = 滑块高度/滚动条长度（盒子高度）；
             var rate = settings.height*1.0/contentHeight;
@@ -97,14 +107,9 @@ $.fn.extend({
             var thumbDis = settings.height - thumbHeight;
             $thumbY.css({
                 'height':thumbHeight+'px',
-                'background-color':settings.scroll_y_thumb_color
+                'background-color':settings.scroll_y_thumb_color,
+                'border-radius':settings.scroll_y_thumb_radius + 'px'
             });
-            if(contentHeight <= settings.height)
-            {
-                $scrollYBar.css('display','none');
-                return;
-            }
-
             //鼠标滑轮参数------------------
             var moveThead = null;
             var speed = 1;  //移动的速度，函数执行的时间差
@@ -117,7 +122,7 @@ $.fn.extend({
                 if(detail > 0){ //上滚
 
                     conMoveVal = Math.abs(conMoveVal);
-                    contentEndTop = contentTop + 200;
+                    contentEndTop = contentTop + settings.inertia_dis;
                     if(contentTop >= 0)
                         return;
                     if(contentEndTop > 0)
@@ -127,7 +132,7 @@ $.fn.extend({
                 }
                 else{
                     conMoveVal = -Math.abs(conMoveVal);;
-                    contentEndTop = contentTop - 200;
+                    contentEndTop = contentTop - settings.inertia_dis;
                     if(contentTop <= -contentDis)
                         return;
                     if(contentEndTop < -contentDis)
@@ -158,11 +163,14 @@ $.fn.extend({
         //针对X滚动
         function mouseMoveEvent(){
 
-
             //鼠标拖动参数-------------------------
-            var contentWidth = $content.actual('width');
-            console.log('contentWidth'+contentWidth);
+            console.log(contentWidth +'===' + settings.width);
             var contentLeft = 0;
+            if(contentWidth <= settings.width)
+            {
+                $scrollXBar.css('display','none');
+                return;
+            }
             var contentDis = contentWidth - settings.width;
             //计算滑块高度：公式 盒子高度/实际高度 = 滑块高度/滚动条长度（盒子高度）；
             var rate = settings.width*1.0/contentWidth;
@@ -170,17 +178,13 @@ $.fn.extend({
             var thumbLeft = 0;
 
             var thumbDis = settings.width - thumbLong;
-
+            var moveRate = thumbDis/contentDis;
 
             $thumbX.css({
                 'width':thumbLong+'px',
-                'background-color':settings.scroll_x_thumb_color
+                'background-color':settings.scroll_x_thumb_color,
+                'border-radius':settings.scroll_x_thumb_radius + 'px'
             });
-            if(contentWidth <= settings.width)
-            {
-                //$scrollXBar.css('display','none');
-                return;
-            }
 
             var contentPreLeft = 0;
             var start_x = 0;
@@ -198,7 +202,14 @@ $.fn.extend({
                 if(mouseDown){
                     end_x = event.pageX;
                     thumbLeft = thumbPreLeft + end_x - start_x;
-                    contentLeft = contentPreLeft + start_x - end_x;
+                    contentLeft = contentPreLeft + (start_x - end_x)/moveRate;
+                    if(thumbLeft >= thumbDis) {
+                        thumbLeft = thumbDis;
+                        contentLeft = -contentDis;
+                    }else if(thumbLeft <= 0){
+                        thumbLeft = 0;
+                        contentLeft = 0;
+                    }
                     $thumbX.css({'margin-left': thumbLeft + 'px'});
                     $content.css({'margin-left': contentLeft + 'px'});
                 }
@@ -218,7 +229,7 @@ $.fn.extend({
         var defaults = {
             'width':280,
             'expandType': 'touch',  //下拉框触发模式 'touch' 'click'
-            'optionsULHeight':200,
+            'optionsHeight':200,
             'text':{'tId':'demo','tName':'demo'},
             'options':[{'tId':'demo','tName':'demo'},
                 {'tId':'demo','tName':'demo'},
@@ -228,19 +239,14 @@ $.fn.extend({
         var settings = $.extend({},defaults,data);
         var html = '';
         //初始化默认选择项
-        html += '<div class="pan-text" tId="'+settings.text.tId+'">';
-        html += settings.text.tName;
-        html += '</div>';
+        html += '<div class="pan-text" tId="'+settings.text.tId+'">' + settings.text.tName +'</div>';
         html += '<div class="pan-btn"><span></span></div>';
-
-        html += '<div class="pan-select-ul">';
-        html += '<div class="pan-scroll-box"><ul>';
+        html += '<div class="pan-scroll-box">';
         //加载列表项
         for(var i in settings.options){
-            html += '<li tId="'+settings.options[i].tId+'">';
-            html += settings.options[i].tName + '</li>';
+            html += '<div class="item-li" tId="'+settings.options[i].tId+'">' + settings.options[i].tName + '</div>';
         }
-        html += '</ul></div></div>';
+        html += '</div>';
         $(this).html(html);
         var self = $(this);
         //初始化自定义列表框
@@ -248,42 +254,41 @@ $.fn.extend({
         self.find('.pan-text').css({
             'width':(settings.width-36) + 'px'
         });
-        var $panScrollUl = $(this).find('.pan-select-ul');
+
         var $panScrollBox = $(this).find('.pan-scroll-box');
+
         $panScrollBox.panScrollBar({
             'width':settings.width,
-            'height':settings.optionsULHeight
+            'height':settings.optionsHeight
         });
-        $panScrollBox.find('ul').css({
-            'width':settings.width+'px'
-        })
-        var ULHeight = $panScrollBox.find('ul').height();
-        if(ULHeight < settings.optionsULHeight)
-            settings.optionsULHeight = ULHeight;
-        console.log('ul-->' + $panScrollBox.find('ul').height());
-        $panScrollUl.css({
-            'width':settings.width+'px',
-            'height':settings.optionsULHeight + 'px',
+        //display = none一定要放到对象初始化后面
+        $panScrollBox.css({
+            'position':'absolute',
+            'left':'-1px',
+            'top':'29px',
+            'background-color':'#fff',
+            'z-index':'10001',
+            'border':'1px solid #80bc71',
             'display':'none'
         })
         //Event
         if(settings.expandType == 'click'){
             self.on('click',function(){
-                $panScrollUl.css('display','block');
+                $panScrollBox.css('display','block');
             })
         }
         else if(settings.expandType == 'touch') {
             self.on('mouseenter', function () {
-                $panScrollUl.css('display','block');
+                $panScrollBox.css('display','block');
             })
         }
         self.on('mouseleave',function () {
-            $panScrollUl.css('display','none');
+            $panScrollBox.css('display','none');
         })
-        self.on('click','ul li',function(){
+        self.on('click','.item-li',function(){
             self.find('.pan-text').html($(this).html());
             self.find('.pan-text').attr('tId',$(this).attr('tId'));
-            $panScrollUl.css('display','none');
+            $panScrollBox.css('display','none');
             if(typeof fn  === 'function'){
                 var tid = self.find('.pan-text').attr('tId');
                 var tname = self.find('.pan-text').html();
@@ -452,7 +457,7 @@ $.fn.extend({
             'format':'mm/dd/yyyy'
         };
         var settings = $.extend({},defaults,data);
-        console.log(JSON.stringify(settings));
+
         var now = new Date();
         var mYear = now.getFullYear();
         var mMonth = now.getMonth() + 1;
@@ -477,23 +482,25 @@ $.fn.extend({
         html += '<div class="picker-days"></div>';
         $(this).find('.picker-box').html(html);
         html = '';
+        var year_count = 0;
         for(var i=settings.start_year;i<=settings.end_year;i++){
-            html += '<li>'+i+'</li>';
+            html += '<div class="item-li" style="width:60px;">'+i+'</div>';
+            year_count++;
         }
         $(this).find('#year-list').html(html);
         html = '';
         for(var i=1;i<=12;i++){
-            html += '<li>'+i+'</li>';
+            html += '<div class="item-li" style="width:45px;">'+i+'</div>';
         }
         $(this).find('#month-list').html(html);
         var $self = $(this);
 
         //设置年份滚动条
         var $year_list = $(this).find('#year-list');
-
+        var yearScrollHeight = 240 < year_count*20 ? 240:year_count*20;
         $year_list.panScrollBar({
             'width':60,
-            'height':240
+            'height':yearScrollHeight
         });
         $year_list.css({
             'position':'absolute',
@@ -501,6 +508,7 @@ $.fn.extend({
             'background-color':'#fff',
             'top':'20px',
             'left':'-5px',
+            'z-index':'20001',
             'display':'none'
         });
         var $month_list = $(this).find('#month-list');
@@ -515,6 +523,7 @@ $.fn.extend({
             'background-color':'#fff',
             'top':'20px',
             'left':'-5px',
+            'z-index':'20001',
             'display':'none'
         });
 
@@ -613,7 +622,7 @@ $.fn.extend({
 });
 $('#test_datetime').panDateTimePicker({
     'start_year':1990,
-    'end_year':2025,
+    'end_year':2030,
     'format':'mm/dd/yyyy'
 });
 

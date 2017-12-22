@@ -25,7 +25,9 @@ class BaseHandler(tornado.web.RequestHandler):
             'static_url_prefix':'/static'})
         template_dirs = [self.settings.get('template_path')]
         env = Environment(loader=FileSystemLoader(template_dirs))
+
         env.globals = ui_methods
+
         template = env.get_template(template_name)
         content = template.render(kwargs)
         self.write(content)

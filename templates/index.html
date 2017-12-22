@@ -20,7 +20,15 @@
         </div>
     </div>
 </div>
-{% endblock %}
-{% block script %}
+{% for p in plugs %}
+{{p}}
+{% endfor %}}
 
+{% endblock %}
+
+{% block script %}
+<script>
+    //var plugs = {{json_encode(plugs)}};
+    //console.log(JSON.stringify(plugs));
+</script>
 {% endblock %}
