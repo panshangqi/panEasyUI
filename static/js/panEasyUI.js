@@ -536,7 +536,7 @@ $.fn.extend({
         $(this).find('.year-selector').on('mouseleave',function () {
             $year_list.css('display','none');
         })
-        $year_list.on('click','li',function(){
+        $year_list.on('click','.item-li',function(){
             var curYear = $(this).html();
             var curMonth = $self.find('.month-text').html();
             $self.find('.year-text').html(curYear);
@@ -555,7 +555,7 @@ $.fn.extend({
             'display':'none'
         })
         //Event
-        $month_list.on('click','li',function(){
+        $month_list.on('click','.item-li',function(){
             var curYear = $self.find('.year-text').html();
             var curMonth = $(this).html();
             $self.find('.month-text').html(curMonth);

@@ -1,13 +1,8 @@
 from jinja_tornado import *
-import tornado.escape
-import json
-json_decode = tornado.escape.json_decode
-from apps.data.plug_data import *
-
+import tornado.web
 class IndexHandler(BaseHandler):
     def get(self):
-        plugs = plug_list
-        self.render_html("index.html",plugs=plugs)
+        self.render_html("index.html")
 
 class HomeHandler(BaseHandler):
     def get(self):
@@ -17,6 +12,6 @@ class PanEasyUIHandler(BaseHandler):
     def get(self):
         self.render_html("panEasyUI.html")
 
-class NotFoundHandler(BaseHandler):
+class NotFoundHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render('error_404.html')
+        raise tornado.web.RequestHandler.write_error(self._status_code)

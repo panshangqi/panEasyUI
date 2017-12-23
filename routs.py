@@ -5,7 +5,6 @@ from apps.components import *
 
 url = [(r"/index",IndexHandler),
         (r"/home",HomeHandler),
-        (r"/panEasyUI",PanEasyUIHandler)
-
+        (r"/panEasyUI",PanEasyUIHandler),
+        (r"/.*",BaseHandler)
       ]
-      #(r"/.*",NotFoundHandler)

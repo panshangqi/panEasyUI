@@ -1,8 +1,14 @@
+# -*- coding=utf-8 -*-
 
-def arr(**settings):
-    print settings
+import sqlite3
+def sqliteTest():
+    conn = sqlite3.connect('test.db')
+    print "Opened database successfully";
+    cursor = conn.cursor()
+    cu.execute("select * from plugs_info")
 
 
-default = {'template':'tenplate','age':225}
+
+
 if __name__ == '__main__':
-    arr(path='static',**default)
+    sqliteTest()

@@ -1,0 +1,177 @@
+==========================================Sqlite3=======================================
+创建表 组件信息表：
+create table plugs_info
+(ID            INT     NOT NULL,
+NAME          CHAR(50)  NOT NULL,
+SUMMARY        TEXT    NOT NULL,
+URL            TEXT    NOT NULL);
+
+plug_list.push(plug_item(null,'jQuery 滚动条美化插件','基于jQuery库，支持横向滚动和纵向滚动，可以自定义滚动条宽度，颜色，透明度'));
+plug_list.push(plug_item(null,'jQuery 日期选择器','基于jQuery库，界面清新简洁，支持自定义皮肤，多种日期格式，自定义年份范围,有中文和英文两种模式'));
+plug_list.push(plug_item(null,'jQuery 图片放大插件','基于jQuery库，支持多种动画模式'));
+insert into plugs_info(ID,NAME,SUMMARY,URL) values(1,'jQuery 滚动条美化插件','基于jQuery库，支持横向滚动和纵向滚动，可以自定义滚动条宽度，颜色，透明度','/plug_scroll');
+insert into plugs_info(ID,NAME,SUMMARY,URL) values();
+insert into plugs_info(ID,NAME,SUMMARY,URL) values();
+insert into plugs_info(ID,NAME,SUMMARY,URL) values();
+
+
+=================================================================================
+终端管理密码 106363
+//创建用户信息
+create table users_info(
+    user_id mediumint(10) NOT NULL AUTO_INCREMENT,
+    username VARCHAR(40) NOT NULL,
+    password VARCHAR(40) NOT NULL,
+    PRIMARY KEY (user_id)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+insert into users_info(username,password) values('admin','admin');
+//赋予远程用户登录权限
+grant all privileges on *.* to 'admin'@'%' identified by 'pan123456' with grant option;
+flush privileges
+//修改root密码：
+# mysqladmin -u root -p password "test123"
+Enter password: 【输入原来的密码】
+
+create table users_info(
+    username VARCHAR(40) NOT NULL,
+    password VARCHAR(40) NOT NULL
+);
+
+//博客信息库
+CREATE TABLE about_blog (
+    blog_id mediumint(10) NOT NULL AUTO_INCREMENT,
+    blog_user_id mediumint(10) NOT NULL,
+    blog_uuid varchar(40) NOT NULL,
+    blog_time int NOT NULL,
+    blog_title varchar(128) NOT NULL,
+    blog_summary Text,
+    blog_article LongText,
+    PRIMARY KEY (blog_id)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+insert into about_blog(blog_user_id,blog_title,blog_article) values(1,'ceshi','zehng')
+====================================================================================================
+centos install mysql:
+yum install -y mysql-dev python-dev libmysqlclient-dev
+yum install mysql-python
+
+====================================================================================================
+mysql数据库使用总结
+本文主要记录一些mysql日常使用的命令，供以后查询。
+1.更改root密码
+mysqladmin -uroot password 'yourpassword'
+2.远程登陆mysql服务器
+mysql -uroot -p -h192.168.137.10 -P3306
+3.查询数据库
+show databases;
+4.进入某个数据库
+use databasename;
+5.列出数据库中的表
+show tables;
+6.查看某个表全部字段
+desc slow_log;
+show create table slow_log\G; （不仅可以显示表信息，还可以显示建表语句）
+7.查看当前用户
+select user();
+8.查看当前所在数据库
+select database();
+9.创建新数据库（可以指定字符集）
+create database db1 charset utf8;
+10.创建新表
+create table t1 (`id` int(4), `name` char(40));
+11.查看数据库版本
+select version();
+12.查看数据库状态
+show status;         当前会话状态
+show global status;  全局数据库状态
+show slave status\G;   查看主从数据库状态信息
+13.查询数据库参数
+show variables;
+14.修改数据库参数
+show variables like 'max_connect%';
+set global max_connect_errors = 1000;（重启数据库会失效，要在配置文件中修改）
+15.查看当前数据库队列
+show processlist;
+16.创建普通用户并授权给某个数据库
+grant all on databasename.* to 'user1'@'localhost' identified by '123456';
+17.查询表数据
+select * from mysql.db;           //查询该表中的所有字段
+select count(*) from mysql.user;  //count(*)表示表中有多少行
+select db,user  from mysql.db;    //查询表中的多个字段
+select * from mysql.db where host like '10.0.%';在查询语句中可以使用万能匹配 “%”
+18.插入一行数据
+insert into db1.t1 values (1, 'abc');
+19.更改表的某一行数据
+update db1.t1 set name='aaa' where id=1;
+20.清空表数据
+truncate table db1.t1;
+21.删除表
+drop table db1.t1;
+22.清空数据库中的所有表（数据库名是eab12）
+mysql -N -s information_schema -e "SELECT CONCAT('TRUNCATE TABLE ',TABLE_NAME,';') FROM TABLES WHERE TABLE_SCHEMA='eab12'" | mysql -f eab12
+23.删除数据库
+drop database db1;
+24.数据库备份
+mysqldump  -uroot -p'yourpassword' mysql >/tmp/mysql.sql
+25.数据库恢复
+mysql -uroot -p'yourpassword' mysql </tmp/mysql.sql
+26.新建普通用户
+CREATE USER name IDENTIFIED BY 'ssapdrow';
+27.更改普通用户密码
+SET PASSWORD FOR name=PASSWORD('fdddfd');
+28.查看name用户权限
+SHOW GRANTS FOR name;
+29.脚本中执行mysql命令
+mysql -uuser -ppasswd -e"show databases"
+echo "show databases"|mysql -uuser -ppassword
+以下是执行大量mysql语句采用的方式
+mysql -uuser -hhostname -ppasswd <<EOF
+mysql语句
+EOF
+
+==============================================修改root密码=====================================================
+
+    1．首先确认服务器出于安全的状态，也就是没有人能够任意地连接MySQL数据库。
+    因为在重新设置MySQL的root密码的期间，MySQL数据库完全出于没有密码保护的
+    状态下，其他的用户也可以任意地登录和修改MySQL的信息。可以采用将MySQL对
+    外的端口封闭，并且停止Apache以及所有的用户进程的方法实现服务器的准安全
+    状态。最安全的状态是到服务器的Console上面操作，并且拔掉网线。
+
+    2．修改MySQL的登录设置：
+    # vim /etc/my.cnf
+    在[mysqld]的段中加上一句：skip-grant-tables
+    例如：
+    [mysqld]
+    datadir=/var/lib/mysql
+    socket=/var/lib/mysql/mysql.sock
+    skip-grant-tables
+    保存并且退出vi。
+
+    3．重新启动mysqld
+    # service mysqld restart
+    Stopping MySQL: [ OK ]
+    Starting MySQL: [ OK ]
+
+    4．登录并修改MySQL的root密码
+    # mysql
+    Welcome to the MySQL monitor. Commands end with ; or \g.
+    Your MySQL connection id is 3 to server version: 3.23.56
+    Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+    mysql> USE mysql ;
+    Database changed
+    mysql> UPDATE user SET Password = password ( 'new-password' ) WHERE User = 'root' ;
+    Query OK, 0 rows affected (0.00 sec)
+    Rows matched: 2 Changed: 0 Warnings: 0
+    mysql> flush privileges ;
+    Query OK, 0 rows affected (0.01 sec)
+    mysql> quit
+
+    5．将MySQL的登录设置修改回来
+    # vim /etc/my.cnf
+    将刚才在[mysqld]的段中加上的skip-grant-tables删除
+    保存并且退出vim
+
+    6．重新启动mysqld
+    # service mysqld restart
+    Stopping MySQL: [ OK ]
+    Starting MySQL: [ OK ]
