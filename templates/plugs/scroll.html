@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}滚动条美化插件{% endblock %}
+{% block style %}
+<link href="{{static_url}}/css/panEasyUI.min.css" rel="stylesheet">
+<style>
+    #scroll_bar_html{
+
+        font-size: 14px;
+    }
+    .article{
+        width:790px;
+        box-sizing: border-box;
+        background-color: #b08b12;
+        padding: 20px;
+    }
+    .article p{
+        margin: 0;
+        font-size: 14px;
+        color:#ddd;
+        font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+    }
+    .article span{
+        margin-left: 30px;
+    }
+    .example_title{
+        width:100%;
+        height:36px;
+        box-sizing: border-box;
+        line-height: 36px;
+        margin-top: 20px;
+        border-radius: 4px;
+        color:#fff;
+        padding-left: 10px;
+        background-color: #8db02e;
+
+    }
+    .code{
+        margin-top: 20px;
+        box-sizing: border-box;
+        border:1px solid #8db02e;
+        padding: 15px;
+        line-height: 20px;
+        background-color: #f5f5f5;
+        font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+    }
+    .indent{
+        margin-left: 30px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div id="scroll_bar_html">
+    <div class="example_title">查看演示</div>
+    <div class="pan-scroll-box" id="test_scroll" style="margin-top: 20px;">
+        <div class="article">
+            <p><span></span>Dogedog had always been very lazy, and now that his father and mother were dead and he had no one to care
+            for him, he lived very poorly. He had little to eat. His house was old and small and so poor that it had not
+            even a floor. Still he would rather sit all day and idle away his time than to work and have more things.</p>
+        　　<p><span></span>One day, however, when the rainy season was near at hand, Dogedog began thinking how cold he would be when
+            the storms came, and he felt so sorry for himself that he decided to make a floor in his house.</p>
+        　　<p><span></span>Wrapping some rice in a banana leaf for his dinner, he took his long knife and went to the forest to cut
+            some bamboo. He hung the bundle of rice in a tree until he should need it; but while he was working a cat
+            came and ate it. When the hungry man came for his dinner, there was none left. Dogedog went back to his
+            miserable little house which looked forlorn to him even, now that he had decided to have a floor.</p>
+        　　<p><span></span>The next day he went again to the forest and hung his rice in the tree as he did before, but again the cat
+            came and ate it. So the man had to go home without any dinner. The third day he took the rice, but this time
+            he fixed a trap in the tree, and when the cat came it was
+            caught. "Now I have you!" cried the man when he found the cat; "and I shall kill you for stealing my rice." Oh,
+            do not kill me," pleaded the cat, "and I will be of some use to you."</p>
+        　　<p><span></span>So Dogedog decided to spare the cat's life, and he took it home and tied it near the door to guard the
+            house. Some time later when he went to look at it, he was very much surprised to find that it had become a
+            cock. "Now I can go to the cock-fight at Magsingal," cried the man. And he was very happy, for he had much
+            rather do that than work. Thinking no more of getting wood for his floor, he started out at once for Magsingal
+            with the cock under his arm. As he was crossing a river he met an alligator which called out to him: "Where
+            are you going, "Dogedog?", "To the cock-fight at Magsingal," replied the man as he fondly stroked the rooster.
+            "Wait, and I will go with you," said the alligator; and he drew himself out of the water.</p>
+            <p><span></span>Dogedog had always been very lazy, and now that his father and mother were dead and he had no one to care
+             for him, he lived very poorly. He had little to eat. His house was old and small and so poor that it had not
+             even a floor. Still he would rather sit all day and idle away his time than to work and have more things.</p>
+             <p><span></span>One day, however, when the rainy season was near at hand, Dogedog began thinking how cold he would be when
+            the storms came, and he felt so sorry for himself that he decided to make a floor in his house.</p>
+             <p><span></span>Wrapping some rice in a banana leaf for his dinner, he took his long knife and went to the forest to cut
+            some bamboo. He hung the bundle of rice in a tree until he should need it; but while he was working a cat
+            came and ate it. When the hungry man came for his dinner, there was none left. Dogedog went back to his
+            miserable little house which looked forlorn to him even, now that he had decided to have a floor.</p>
+        </div>
+    </div>
+    <div class="pan-scroll-box" id="test_scroll_2" style="margin-top: 20px;">
+        <div class="article" style="width:1500px;">
+            <p><span></span>Dogedog had always been very lazy, and now that his father and mother were dead and he had no one to care
+                for him, he lived very poorly. He had little to eat. His house was old and small and so poor that it had not
+                even a floor. Still he would rather sit all day and idle away his time than to work and have more things.</p>
+            　　<p><span></span>One day, however, when the rainy season was near at hand, Dogedog began thinking how cold he would be when
+            the storms came, and he felt so sorry for himself that he decided to make a floor in his house.</p>
+            　　<p><span></span>Wrapping some rice in a banana leaf for his dinner, he took his long knife and went to the forest to cut
+            some bamboo. He hung the bundle of rice in a tree until he should need it; but while he was working a cat
+            came and ate it. When the hungry man came for his dinner, there was none left. Dogedog went back to his
+            miserable little house which looked forlorn to him even, now that he had decided to have a floor.</p>
+            　　<p><span></span>The next day he went again to the forest and hung his rice in the tree as he did before, but again the cat
+            came and ate it. So the man had to go home without any dinner. The third day he took the rice, but this time
+            he fixed a trap in the tree, and when the cat came it was
+            caught. "Now I have you!" cried the man when he found the cat; "and I shall kill you for stealing my rice." Oh,
+            do not kill me," pleaded the cat, "and I will be of some use to you."</p>
+            　　<p><span></span>So Dogedog decided to spare the cat's life, and he took it home and tied it near the door to guard the
+            house. Some time later when he went to look at it, he was very much surprised to find that it had become a
+            cock. "Now I can go to the cock-fight at Magsingal," cried the man. And he was very happy, for he had much
+            rather do that than work. Thinking no more of getting wood for his floor, he started out at once for Magsingal
+            with the cock under his arm. As he was crossing a river he met an alligator which called out to him: "Where
+            are you going, "Dogedog?", "To the cock-fight at Magsingal," replied the man as he fondly stroked the rooster.
+            "Wait, and I will go with you," said the alligator; and he drew himself out of the water.</p>
+            <p><span></span>Dogedog had always been very lazy, and now that his father and mother were dead and he had no one to care
+                for him, he lived very poorly. He had little to eat. His house was old and small and so poor that it had not
+                even a floor. Still he would rather sit all day and idle away his time than to work and have more things.</p>
+            <p><span></span>One day, however, when the rainy season was near at hand, Dogedog began thinking how cold he would be when
+                the storms came, and he felt so sorry for himself that he decided to make a floor in his house.</p>
+            <p><span></span>Wrapping some rice in a banana leaf for his dinner, he took his long knife and went to the forest to cut
+                some bamboo. He hung the bundle of rice in a tree until he should need it; but while he was working a cat
+                came and ate it. When the hungry man came for his dinner, there was none left. Dogedog went back to his
+                miserable little house which looked forlorn to him even, now that he had decided to have a floor.</p>
+        </div>
+    </div>
+
+    <div class="example_title">使用方法</div>
+    <div class="code">
+        var defaults = {<br/>
+        <span class="indent"></span>'width':400,<br/>
+        <span class="indent"></span>'height':350,<br/>
+        <span class="indent"></span>'scroll_x_width':7,<br/>
+        <span class="indent"></span>'scroll_x_color':'#ddd',<br/>
+        <span class="indent"></span>'scroll_x_radius':7,<br/>
+        <span class="indent"></span>'scroll_x_thumb_color':'#aaa',//滑块颜色<br/>
+        <span class="indent"></span>'scroll_x_thumb_radius':7,<br/>
+        <span class="indent"></span>'scroll_x_overflow':'auto', //hidden,auto,<br/>
+        <span class="indent"></span>'scroll_y_width':7,<br/>
+        <span class="indent"></span>'scroll_y_radius':7,<br/>
+        <span class="indent"></span>'scroll_y_color':'#ddd',<br/>
+        <span class="indent"></span>'scroll_y_thumb_color':'#aaa',<br/>
+        <span class="indent"></span>'scroll_y_thumb_radius':7,<br/>
+        <span class="indent"></span>'scroll_y_overflow':'auto',<br/>
+        <span class="indent"></span>'inertia_dis':100  //鼠标滚动一下的惯性移动距离 px<br/>
+        };<br/>
+    </div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script src="{{static_url}}/js/panEasyUI.min.js"></script>
+<script>
+    $('#test_scroll').panScrollBar({'width':800,'height':400});
+    $('#test_scroll_2').panScrollBar({
+        'width':800,
+        'height':300,
+        'scroll_y_width':10,
+        'scroll_x_width':10,
+        'scroll_y_radius':0,
+        'scroll_y_thumb_radius':0,
+        'scroll_x_radius':0,
+        'scroll_x_thumb_radius':0,
+        'scroll_y_color':'#d6c0ae',
+        'scroll_y_thumb_color':'#de741d',
+        'scroll_x_color':'#d6c0ae',
+        'scroll_x_thumb_color':'#de741d'
+    });
+
+
+</script>
+{% endblock %}

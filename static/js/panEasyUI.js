@@ -222,7 +222,7 @@ $.fn.extend({
         }
     }
 });
-$('#test_scroll').panScrollBar({'width':600,'scroll_y_overflow':'auto'});
+//$('#test_scroll').panScrollBar({'width':600,'scroll_y_overflow':'auto'});
 //下拉框选择器
 $.fn.extend({
     selectorInit:function(data,fn){
@@ -435,6 +435,7 @@ $.fn.extend({
     }
 });
 /*使用方法*/
+/*
 $('#test_zoomify').ZoomInit({
     'imageWidth':360,
     'imageHeight':'auto',
@@ -445,6 +446,7 @@ $('#test_zoomify1').ZoomInit({
     'imageHeight':'auto',
     'scale':3.1
 });
+*/
 //时间日期插件
 $.fn.extend({
     panDateTimePicker:function(data){
@@ -620,12 +622,13 @@ $.fn.extend({
         }
     }
 });
+/*
 $('#test_datetime').panDateTimePicker({
     'start_year':1990,
     'end_year':2030,
     'format':'mm/dd/yyyy'
 });
-
-
+*/
+/*
 $('#test_pansq').panScrollBar({'height':100})
-
+*/

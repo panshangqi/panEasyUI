@@ -2,37 +2,38 @@ html,
 body {
   margin: 0;
   padding: 0;
+  background-image: url("../img/background_003.png");
 }
-.frame_header {
+#frame_html .frame_header {
   width: 100%;
   height: 50px;
   background-color: #2a2a2a;
   text-align: right;
   overflow: hidden;
 }
-.frame_header ul {
+#frame_html .frame_header ul {
   margin: 15px 50px;
   list-style: none;
 }
-.frame_header ul li {
+#frame_html .frame_header ul li {
   display: inline;
   margin-left: 15px;
 }
-.frame_header ul li a {
+#frame_html .frame_header ul li a {
   color: #d2d2d2;
   font-size: 12px;
 }
-.frame_header ul li a:hover {
+#frame_html .frame_header ul li a:hover {
   color: #f5f5f5;
 }
-.frame_main_nav {
+#frame_html .frame_main_nav {
   width: 100%;
   height: 45px;
   background-color: #fff;
   box-shadow: 0 0px 5px #ccc;
   text-align: center;
 }
-.frame_main_nav .nav_cell {
+#frame_html .frame_main_nav .nav_cell {
   box-sizing: border-box;
   display: inline-block;
   width: 120px;
@@ -43,26 +44,85 @@ body {
   font-size: 16px;
   border-bottom: 3px solid #ddd;
 }
-.frame_main_nav .nav_cell:hover {
+#frame_html .frame_main_nav .nav_cell:hover {
   cursor: pointer;
   border-bottom: 3px solid #8DB02E;
 }
-.frame_main_nav .active {
+#frame_html .frame_main_nav .active {
   border-bottom: 3px solid #8DB02E;
   background-color: #8DB02E;
   color: #fff;
 }
-.frame_content {
-  width: 1000px;
-  height: 600px;
-  margin: 50px auto;
+#frame_html .frame_content {
+  width: 1140px;
+  min-height: 800px;
+  margin: 40px auto 100px;
+  box-sizing: border-box;
+  padding: 20px 20px 50px 20px;
+  background-color: #fff;
+}
+#frame_login {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+#frame_login .login_box {
+  display: inline-block;
+  width: 340px;
+  height: 300px;
+  margin-top: 200px;
+  border: 1px solid #c9c9c9;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+#frame_login .login_box .close {
+  width: 30px;
+  height: 30px;
+  border-left: 1px solid #c9c9c9;
+  border-bottom: 1px solid #c9c9c9;
+  margin-left: 310px;
+  font-size: 30px;
+  text-align: center;
+  line-height: 25px;
+  color: #ccc;
+}
+#frame_login .login_box .close:hover {
+  color: #aaa;
+  cursor: pointer;
+}
+#frame_login .login_box input {
+  width: 190px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+#frame_login .login_box .username {
+  margin-top: 48px;
+}
+#frame_login .login_box .password {
+  margin-top: 25px;
+}
+#frame_login .login_box .login_btn {
+  display: inline-block;
+  width: 190px;
+  height: 30px;
+  margin-top: 30px;
+  text-align: center;
+  line-height: 30px;
+  color: #fff;
+  font-size: 14px;
+  background-color: #8DB02E;
+}
+#frame_login .login_box .login_btn:hover {
+  cursor: pointer;
+  background-color: rgba(141, 176, 46, 0.9);
 }
 #index_html .plug_box {
   display: inline-block;
   vertical-align: top;
-  width: 200px;
+  width: 197px;
   height: 280px;
-  margin-right: 25px;
+  margin: 25px 10px 0 10px;
   border: 1px solid #ddd;
 }
 #index_html .plug_logo {
@@ -86,6 +146,7 @@ body {
   color: #999;
   font-size: 13px;
   padding: 15px;
+  text-align: left;
 }
 #index_html .plug_support {
   height: 110px;
@@ -108,6 +169,7 @@ body {
   color: #fff;
   font-size: 13px;
   margin-top: 15px;
+  text-decoration: none;
 }
 #index_html .plug_foot .view_btn {
   display: inline-block;
@@ -118,8 +180,8 @@ body {
   color: #fff;
   font-size: 13px;
   margin-top: 15px;
+  text-decoration: none;
   background-color: #a5d16d;
-  box-shadow: 0 0 3px #a5d16d;
 }
 #index_html .plug_foot .view_btn:hover {
   cursor: pointer;
@@ -134,8 +196,8 @@ body {
   color: #fff;
   font-size: 13px;
   margin-top: 15px;
+  text-decoration: none;
   background-color: #93d0ea;
-  box-shadow: 0 0 3px #8fcde7;
   margin-left: 15px;
 }
 #index_html .plug_foot .used_btn:hover {
