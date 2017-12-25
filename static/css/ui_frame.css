@@ -34,6 +34,7 @@ body {
   text-align: center;
 }
 #frame_html .frame_main_nav .nav_cell {
+  text-decoration: none;
   box-sizing: border-box;
   display: inline-block;
   width: 120px;
@@ -54,12 +55,10 @@ body {
   color: #fff;
 }
 #frame_html .frame_content {
-  width: 1140px;
+  width: 1100px;
   min-height: 800px;
   margin: 40px auto 100px;
   box-sizing: border-box;
-  padding: 20px 20px 50px 20px;
-  background-color: #fff;
 }
 #frame_login {
   width: 100%;
@@ -116,6 +115,10 @@ body {
 #frame_login .login_box .login_btn:hover {
   cursor: pointer;
   background-color: rgba(141, 176, 46, 0.9);
+}
+#index_html #plugs_list {
+  background-color: #fff;
+  min-height: 800px;
 }
 #index_html .plug_box {
   display: inline-block;
@@ -203,4 +206,45 @@ body {
 #index_html .plug_foot .used_btn:hover {
   cursor: pointer;
   background-color: #55b5dd;
+}
+#blogs_list_html .left_nav {
+  display: inline-block;
+  width: 220px;
+  height: 1000px;
+  vertical-align: top;
+}
+#blogs_list_html .left_nav .title {
+  width: 100%;
+  height: 28px;
+  box-sizing: border-box;
+  line-height: 28px;
+  color: #fff;
+  font-size: 14px;
+  padding-left: 15px;
+  background-color: #8DB02E;
+}
+#blogs_list_html .left_nav .user_info {
+  width: 100%;
+  height: 270px;
+  background-color: #fff;
+}
+#blogs_list_html .left_nav .user_info .head_img {
+  width: 140px;
+  min-height: 140px;
+  margin: 25px auto;
+  background-image: url(../img/head_001.jpg);
+}
+#blogs_list_html .left_nav .classify {
+  width: 100%;
+  height: 270px;
+  margin-top: 8px;
+  background-color: #fff;
+}
+#blogs_list_html .right_content {
+  display: inline-block;
+  width: 850px;
+  height: 1600px;
+  margin-left: 5px;
+  vertical-align: top;
+  background-color: #fff;
 }

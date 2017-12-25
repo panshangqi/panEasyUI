@@ -11,12 +11,12 @@
             <li><a href="http://www.jq22.com/jquery-info122" target="_blank">jQuery下载</a></li>
             <li><a id="nav_login" href="javascript:void(0)">登录</a></li>
         </ul>
-
     </div>
     <div class="frame_main_nav">
-        <div class="nav_cell active">插件库</div>
-        <div class="nav_cell">资料阁</div>
-        <div class="nav_cell">博客苑</div>
+
+        <a class="nav_cell {{'active' if request.path == '/index'}}" href="/index">插件库</a>
+        <a class="nav_cell">资料阁</a>
+        <a class="nav_cell {{'active' if request.path == '/blogs_list'}}" href="/blogs_list">博客苑</a>
     </div>
     <div class="frame_content">
         {% block content %}

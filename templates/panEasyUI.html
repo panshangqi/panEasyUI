@@ -5,6 +5,7 @@
     <link href="{{static_url}}/less/panEasyUI.less" type="text/css" rel="stylesheet/less">
     <script src="{{static_url}}/lib/less-1.3.3.min.js"></script>
     <!--link href="../static/css/panEasyUI.min.css" type="text/css" rel="stylesheet"-->
+    <link href="{{static_url}}/lib/syntaxhighlighter/styles/shCoreRDark.css" type="text/css" rel="stylesheet">
     <style>
         .select_demo div{
             display: inline-block;
@@ -24,17 +25,37 @@
 
 <div id="show_img">click</div>
 
+<textarea style="width:1000px;height:200px" id="area_id">
+
+</textarea>
+
+    <pre class="brush: js;">
+include "stdio.h"
+#define MAX 123456
+//主函数
+int main(){
+    int a = 0;
+    int b = a + 1;
+    printf("%s\n",b);
+    return 0;
+}
+</pre>
 
 {% endblock %}
 {% block script %}
 <script>
 
 </script>
+<script type="text/javascript" src="{{static_url}}/lib/syntaxhighlighter/scripts/shCore.js"></script>
+<script type="text/javascript" src="{{static_url}}/lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
 <script type="text/javascript" src="{{static_url}}/js/panEasyUI.js"></script>
 <script>
-    $('#show_img').click(function(){
 
-        $('#test_scroll').css('display','block');
+    SyntaxHighlighter.all();
+    $('a').css('display','none');
+    $('#area_id').click(function(){
+
+        console.log($(this).val());
     })
 </script>
 {% endblock %}
