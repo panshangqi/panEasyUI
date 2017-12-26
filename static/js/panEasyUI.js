@@ -632,6 +632,192 @@ $('#test_datetime').panDateTimePicker({
 /*
 $('#test_pansq').panScrollBar({'height':100})
 */
+//颜色选择器
+$.fn.extend({
+    panColorPicker:function(data){
+
+
+        var defaults = {
+
+        };
+        var settings = $.extend(data,defaults,{});
+        var html = '';
+        html += '<div class="cur_color"></div><div class="arrow_btn"></div>';
+        html += '<div class="picker_box">';
+        html += '<div class="color_panel"><span></span></div><div class="rainbow_panel"><span></span></div>';
+        html += '<div class="op_box"><div class="pre_color"></div><div class="now_color"></div>';
+        html += '<div class="rgb_value">255,255,255</div><div class="hex_value">#ff00ff</div>';
+        html += '<div class="cancel_btn">取消</div><div class="ok_btn">确定</div></div>';
+        html += '</div>';
+        $(this).append(html);
+        var $colorPanel = $(this).find('.color_panel');
+        var $colorSpan = $(this).find('.color_panel').find('span');
+        var $rainbowPanel = $(this).find('.rainbow_panel');
+        var $rainbowSpan = $(this).find('.rainbow_panel').find('span');
+
+        //@red : rgb(255,0,0);
+        //@orange : rgb(255,128,0);
+        //@yellow : rgb(255,255,0);
+        //green : rgb(0,255,0);
+        //@blue : rgb(0,255,255);
+        //@indigo : rgb(0,0,255);
+        //@violet : rgb(128,0,255);
+        var color_list = ['#ff0000','#FF8000','#ffff00','#00ff00','#00ffff','#0000ff','#8000ff'];
+        var color_sets = [];
+        var colorNum = 0;
+        for(var idx=1;idx<7;idx++){
+            gradient_list = gradientColor(color_list[idx-1],color_list[idx],30);
+            $.merge(color_sets,gradient_list);
+        }
+        //console.log(color_sets);
+        colorNum = color_sets.length;
+
+
+        var colorPanelWidth = $colorPanel.width();
+        var colorPanelHeight = $colorPanel.height();
+        var rainbowPanelHeight = $rainbowPanel.height();
+        var startY = 0;
+        var startX = 0;
+        var endY = 0;
+        var endX = 0;
+        var mouseStartY = 0;
+        var mouseEndY = 0;
+        var mouseStartX = 0;
+        var mouseEndX = 0;
+        ColorEvent();
+        rainbowEvent();
+        //三色面板滑块
+        function ColorEvent(){
+            $colorSpan.on('mousedown',function(event){
+                startX = $(this).position().left;
+                startY = $(this).position().top;
+                mouseStartX = event.pageX;
+                mouseStartY = event.pageY;
+                document.onmousemove = onColorMouseMove;
+                document.onmouseup = onColorMouseUp;
+                document.onselectstart = function () { return false; }
+                console.log(startX+','+startY);
+            })
+            $colorPanel.on('mousedown',function (event) {
+                //console.log($colorPanel.offset().top);
+                //console.log(event.pageY);
+                endX = event.pageX - $colorPanel.offset().left -4;
+                endY = event.pageY - $colorPanel.offset().top - 4;
+                if(endX < 0) {endX = -1;}
+                if(endY < 0) {endY = -1;}
+
+                if(endX > colorPanelWidth-5){endX = colorPanelWidth - 5;}
+                if(endY > colorPanelHeight-5){endY = colorPanelHeight - 5;}
+                $colorSpan.css({'top':endY+'px', 'left':endX+'px'});
+            })
+            function onColorMouseMove(event) {
+                mouseEndX = event.pageX;
+                mouseEndY = event.pageY;
+                endX = startX + mouseEndX - mouseStartX;
+                endY = startY + mouseEndY - mouseStartY;
+                if(endX < 0) {endX = -1;}
+                if(endY < 0) {endY = -1;}
+
+                if(endX > colorPanelWidth-5){endX = colorPanelWidth - 5;}
+                if(endY > colorPanelHeight-5){endY = colorPanelHeight - 5;}
+                $colorSpan.css({'top':endY+'px', 'left':endX+'px'});
+
+            }
+            function onColorMouseUp(event){
+                document.onmousemove = null;
+                document.onmouseup = null;
+                //开启允许选择标记位
+                document.onselectstart = null;
+            }
+        }
+        //七彩面板滑块
+        function rainbowEvent(){
+            $rainbowSpan.on('mousedown',function(event){
+                startY = $(this).position().top;
+                mouseStartY = event.pageY;
+                //绑定文档的移动事件
+                document.onmousemove = onRainBowMouseMove;
+                //绑定文档的鼠标收起事件
+                document.onmouseup = onRainBowMouseUp;
+                //阻止页面的选择动作，非常重要，当拖拽发生时，如果存在文本选择，会影响拖拽效果
+                document.onselectstart = function () { return false; }
+            })
+            function onRainBowMouseMove(event) {
+
+                mouseEndY = event.pageY;
+                endY = startY + mouseEndY - mouseStartY;
+                if(endY < 0)
+                    endY = -1;
+                if(endY > rainbowPanelHeight-4){
+                    endY = rainbowPanelHeight - 4;
+                }
+                $rainbowSpan.css('top',endY+'px');
+                var colorId = parseInt(endY*1.0/rainbowPanelHeight*colorNum);
+                $colorPanel.css({
+                    'background': '-webkit-linear-gradient(bottom left, #000, '+color_sets[colorId]+',#fff)'
+                })
+            }
+            function onRainBowMouseUp(event){
+                document.onmousemove = null;
+                document.onmouseup = null;
+                //开启允许选择标记位
+                document.onselectstart = null;
+            }
+        }
+        function getMousePos(event) {
+            var e = event || window.event;
+            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+            var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+            var x = e.pageX || e.clientX + scrollX;
+            var y = e.pageY || e.clientY + scrollY;
+            //alert('x: ' + x + '\ny: ' + y);
+            return { 'x': x, 'y': y };
+        }
+        //--------------------------------------
+        function hexToRgb(mColor){
+            //16进制转rgb,#ff00ff to rgb(r,g,b)
+            var rgb = [];
+            rgb.push(parseInt(mColor.substr(1,2),16));
+            rgb.push(parseInt(mColor.substr(3,2),16));
+            rgb.push(parseInt(mColor.substr(5,2),16));
+            return rgb;
+        }
+        function rgbToHex(mColor){
+            var rgb = mColor.split(',');
+            var r = parseInt(rgb[0].split('(')[1]);
+            var g = parseInt(rgb[1]);
+            var b = parseInt(rgb[2].split(')')[0]);
+            var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+            return hex;
+        }
+        function rgbToHex2(mR,mG,mB){
+            var hex = "#" + ((1 << 24) + (mR << 16) + (mG << 8) + mB).toString(16).slice(1);
+            return hex;
+        }
+        function gradientColor(startColor,endColor,step){
+            //'#ffffff' '#000000'
+            var start = hexToRgb(startColor);
+            var end = hexToRgb(endColor);
+            var argR = (end[0] - start[0])*1.0/step;
+            var argG = (end[1] - start[1])*1.0/step;
+            var argB = (end[2] - start[2])*1.0/step;
+            var gradientArr = [];
+            for(i=0;i<step;i++){
+                var resR = parseInt(start[0]+argR*i);
+                var resG = parseInt(start[1]+argG*i);
+                var resB = parseInt(start[2]+argB*i);
+                resR = resR > 255 ? 255 : resR;
+                resG = resG > 255 ? 255 : resG;
+                resB = resB > 255 ? 255 : resB;
+                gradientArr.push(rgbToHex2(resR,resG,resB));
+            }
+            return gradientArr;
+        }
+    }
+})
+$('#test_color_picker').panColorPicker({
+
+})
 //富文本编辑器
 $.fn.extend({
     panEditFrame:function(data){
@@ -732,6 +918,7 @@ $.fn.extend({
         }
     }
 });
+
 $('#test_edit').panEditFrame({
 
 });
