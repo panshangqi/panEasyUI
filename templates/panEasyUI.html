@@ -1,7 +1,7 @@
+
 {% extends "base.html" %}
 {% block title %}滚动条美化插件{% endblock %}
 {% block style %}
-    <title></title>
     <link href="{{static_url}}/less/panEasyUI.less" type="text/css" rel="stylesheet/less">
     <script src="{{static_url}}/lib/less-1.3.3.min.js"></script>
     <!--link href="../static/css/panEasyUI.min.css" type="text/css" rel="stylesheet"-->
@@ -12,51 +12,103 @@
         }
     </style>
 {% endblock %}
-</head>
+
 {% block content %}
-<div class="select_demo">
-    <div class="pan-selector" id="test_selector"></div>
-    <div class="pan-selector" id="test_selector1"></div>
-</div>
+    <div class="select_demo" id="select_demo">
+        <div class="pan-selector" id="test_selector"></div>
+        <div class="pan-selector" id="test_selector1"></div>
+    </div>
 
-<div class="pan-image-zoomify" id="test_zoomify"><img src="../static/img/zoom.jpg"></div>
-<div class="pan-image-zoomify" id="test_zoomify1"><img src="../static/img/zoom1.jpg"></div>
-<div>日期选择器</div><div class="pan-datetime-picker" id="test_datetime"></div>
+    <div class="pan-image-zoomify" id="test_zoomify"><img src="../static/img/zoom.jpg"></div>
+    <div class="pan-image-zoomify" id="test_zoomify1"><img src="../static/img/zoom1.jpg"></div>
+    <div>日期选择器</div><div class="pan-datetime-picker" id="test_datetime"></div>
 
-<div id="show_img">click</div>
+    <div id="show_img">click</div>
 
-<textarea style="width:1000px;height:200px" id="area_id">
+    <textarea style="width:1000px;height:200px" id="area_id">
 
-</textarea>
+    </textarea>
 
     <pre class="brush: js;">
-include "stdio.h"
-#define MAX 123456
-//主函数
-int main(){
-    int a = 0;
-    int b = a + 1;
-    printf("%s\n",b);
-    return 0;
-}
-</pre>
+    include "stdio.h"
+    #define MAX 123456
+    //主函数
+    int main(){
+        int a = 0;
+        int b = a + 1;
+        printf("%s\n",b);
+        return 0;
+    }
+    </pre>
 
+    <div>富文本编辑器</div>
+    <div>
+        源码显示区<br/>
+        <textarea id="txtYuan" style="width: 600px; height: 200px"></textarea>
+        <br/>实时编辑区<br/>
+        <iframe id="editor" width="600px" height="200px" style="border: solid 1px;"></iframe>
+
+        <input type="button" id="insert_img" value="插入图片" />
+        <input type="button" id="preview" value="预览" />
+        <input type="button" id="btnYuan" value="显示源码" />
+        <input type="button" id="btnB" value="加粗/正常" />
+        预览区<br/>
+        <p style="border: 1px dashed #ccc;" id="preview_area"></p>
+    </div>
+
+    <div class="pan-edit-frame" id="test_edit">
+
+    </div>
 {% endblock %}
 {% block script %}
-<script>
 
-</script>
 <script type="text/javascript" src="{{static_url}}/lib/syntaxhighlighter/scripts/shCore.js"></script>
 <script type="text/javascript" src="{{static_url}}/lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
 <script type="text/javascript" src="{{static_url}}/js/panEasyUI.js"></script>
 <script>
 
     SyntaxHighlighter.all();
-    $('a').css('display','none');
     $('#area_id').click(function(){
 
         console.log($(this).val());
     })
+
+    $(function () {
+
+        var $d = document.getElementById("editor").contentWindow.document;
+
+        //$d = $("#editor")[0].contentWindow.document; // IE、FF都兼容
+
+        $d.designMode = "on";
+        $d.contentEditable = true;
+        //$d.open();
+        //$d.close();
+        //$d.append("123");
+        //console.log($('#editor').contents());
+        $('#insert_img').click(function () {
+            // 在iframe中插入一张图片
+            var img = '<img src="11.jpg" width="200"/>';
+            $("body", $d).append(img);
+        });
+
+        //设置选定的文本为粗体/正常
+        $('#btnB').click(function () {
+            var win = document.getElementById("editor").contentWindow;
+            win.document.execCommand('ForeColor', false, '#ff00ff');
+            win.focus();
+        });
+        //
+        $('#btnYuan').click(function () {
+            $('#txtYuan').val($('#editor').contents().find('body').html());
+        });
+        $('#preview').click(function () {
+            // 获取iframe的body内容，用于显示或者插入到数据库
+            //alert($('#editor').contents().find('body').html());
+            $('#preview_area').html($('#editor').contents().find('body').html());
+
+        });
+    });
+
 </script>
 {% endblock %}
 

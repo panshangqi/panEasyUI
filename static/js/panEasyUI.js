@@ -632,3 +632,106 @@ $('#test_datetime').panDateTimePicker({
 /*
 $('#test_pansq').panScrollBar({'height':100})
 */
+//富文本编辑器
+$.fn.extend({
+    panEditFrame:function(data){
+        var defaults = {
+
+        };
+        var setttings = $.extend(data,defaults,{});
+        var family_arr = ['宋体','黑体','新宋体','仿宋','楷体','幼圆'];
+        var fontsize_arr = {
+            '初号':'9',
+            '一号':'8',
+            '二号':'7',
+            '三号':'6',
+            '小三':'5',
+            '四号':'4',
+            '小四':'3',
+            '五号':'2',
+            '小五':'1',
+        };
+        var html = '<div class="tool">';
+        html += '<select class="family"></select>';
+        html += '<select class="fontsize"></select>';
+        html += '<span class="bold">B</span>';
+        html += '<span class="italic">I</span>';
+        html += '</div>';
+        $(this).append(html);
+        $(this).append('<iframe class="edit"></iframe>');
+        //抽取对象
+        var $family = $(this).find('.family');
+        var $fontsize = $(this).find('.fontsize');
+        var $edit = $(this).find('.edit');
+        var $bold = $(this).find('.bold');
+        var $italic = $(this).find('.italic');
+        //添加字体
+        html = '';
+        for(var i in family_arr){
+            html += '<option value ="'+ family_arr[i] +'">'+ family_arr[i] +'</option>'
+        }
+        $family.html(html);
+        //添加字号
+        html = '';
+        for(var key in fontsize_arr){
+            html += '<option value ="'+ fontsize_arr[key] +'">'+ key +'</option>'
+        }
+        $fontsize.html(html);
+
+
+
+        //获取iframe dom
+        var ifwin = $edit[0].contentWindow;
+        var ifdom = $edit[0].contentWindow.document;
+        console.log(ifwin);
+        ifdom.designMode = "on";
+        ifdom.contentEditable = true;
+        //编辑字型：
+        //设置选定的文本为粗体/正常
+
+        $family.change(function () {
+            console.log($(this).val());
+            setFontFamily($(this).val())
+        });
+        $fontsize.change(function () {
+            console.log($(this).val());
+            setFontSize(parseInt($(this).val()));
+        });
+        $bold.on('click',function(){
+            setFontBold();
+            console.log('bold');
+        })
+        $italic.on('click',function(){
+            setFontItalic();
+        })
+
+
+        //修改字体
+        function setFontFamily(params){
+            ifwin.document.execCommand('FontName', false, params);
+            ifwin.focus();
+        }
+        //字体大小
+        function setFontSize(params){
+            ifwin.document.execCommand('FontSize', false, params);
+            ifwin.focus();
+        }
+        //字体颜色
+        function setFontColor(params){
+            ifwin.document.execCommand('ForeColor', false, params);
+            ifwin.focus();
+        }
+        //Bold
+        function setFontBold(){
+            ifwin.document.execCommand('Bold', false, null);
+            ifwin.focus();
+        }
+        function setFontItalic(){
+            ifwin.document.execCommand('Italic', false, null);
+            ifwin.focus();
+        }
+    }
+});
+$('#test_edit').panEditFrame({
+
+});
