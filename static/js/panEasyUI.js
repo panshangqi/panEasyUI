@@ -634,27 +634,54 @@ $('#test_pansq').panScrollBar({'height':100})
 */
 //颜色选择器
 $.fn.extend({
-    panColorPicker:function(data){
-
+    panColorPicker:function(data,fn){
 
         var defaults = {
-
+            'width':50,
+            'height': 26,
+            'borderColor':'#333',  //边框颜色
+            'iconBorderColor':'#333', //图标边框颜色
+            'iconColor':'#ff0000'  //图标默认显示的颜色
         };
-        var settings = $.extend(data,defaults,{});
+        var settings = $.extend({},defaults,data);
+        var canvasWidth = 180;
         var html = '';
         html += '<div class="cur_color"></div><div class="arrow_btn"></div>';
         html += '<div class="picker_box">';
-        html += '<div class="color_panel"><span></span></div><div class="rainbow_panel"><span></span></div>';
+        html += '<div class="panel_box"><canvas class="color_canvas" width="'+canvasWidth+'" height="'+canvasWidth+'"></canvas>';
+        html += '<div class="canvas_point"></div>';
+        html += '<div class="rainbow_panel"><span></span></div></div>';
         html += '<div class="op_box"><div class="pre_color"></div><div class="now_color"></div>';
-        html += '<div class="rgb_value">255,255,255</div><div class="hex_value">#ff00ff</div>';
+        html += '<div class="rgb_value">255,0,0</div><div class="hex_value">#ff0000</div>';
         html += '<div class="cancel_btn">取消</div><div class="ok_btn">确定</div></div>';
         html += '</div>';
         $(this).append(html);
-        var $colorPanel = $(this).find('.color_panel');
-        var $colorSpan = $(this).find('.color_panel').find('span');
+        var $picker_box = $(this).find('.picker_box');
+        var $arrow_btn = $(this).find('.arrow_btn');
+        var $colorCanvas = $(this).find('.color_canvas');
+        var $colorSpan = $(this).find('.canvas_point');
         var $rainbowPanel = $(this).find('.rainbow_panel');
         var $rainbowSpan = $(this).find('.rainbow_panel').find('span');
-
+        var $rgb_value = $(this).find('.rgb_value');
+        var $hex_value = $(this).find('.hex_value');
+        var $cur_color = $(this).find('.cur_color');
+        var $pre_color = $(this).find('.pre_color');
+        var $now_color = $(this).find('.now_color');
+        var $ok_btn = $(this).find('.ok_btn');
+        var $cancel_btn = $(this).find('.cancel_btn');
+        //配置样式
+        $picker_box.css({'display':'none'});
+        $(this).css({
+            'border-color':settings.borderColor,
+            'width':settings.width + 'px',
+            'height':settings.height + 'px'
+        });
+        $cur_color.css({
+            'background-color':settings.iconColor,
+            'height': (settings.height - 6) + 'px',
+            'border-color':settings.iconBorderColor
+        });
+        $pre_color.css('background-color',settings.iconColor);
         //@red : rgb(255,0,0);
         //@orange : rgb(255,128,0);
         //@yellow : rgb(255,255,0);
@@ -667,112 +694,170 @@ $.fn.extend({
         var colorNum = 0;
         for(var idx=1;idx<7;idx++){
             gradient_list = gradientColor(color_list[idx-1],color_list[idx],30);
-            $.merge(color_sets,gradient_list);
+            $.merge(color_sets,gradient_list,false);
         }
-        //console.log(color_sets);
         colorNum = color_sets.length;
 
-
-        var colorPanelWidth = $colorPanel.width();
-        var colorPanelHeight = $colorPanel.height();
-        var rainbowPanelHeight = $rainbowPanel.height();
-        var startY = 0;
-        var startX = 0;
+        var rainbowPanelHeight = canvasWidth;
         var endY = 0;
         var endX = 0;
-        var mouseStartY = 0;
-        var mouseEndY = 0;
-        var mouseStartX = 0;
-        var mouseEndX = 0;
-        ColorEvent();
+        var endY7 = 0;
+        var selectPointColor = {'r':0,'g':0,'b':0};
+        var mainColor = {'r':255,'g':0,'b':0};
+
+        //获取画布2d数据对象
+        var ctx=$colorCanvas[0].getContext("2d");
+        var imgData=ctx.createImageData(canvasWidth,canvasWidth);
+        updateCanvas({'r':255,'g':255,'b':255},mainColor,{'r':0,'g':0,'b':0},180);
+
+        ColorCanvasEvent();
         rainbowEvent();
+        $ok_btn.on('click',function () {
+            if(typeof fn === 'function'){
+                data = {
+                    'hex':$hex_value.html(),
+                    'rgb':selectPointColor
+                }
+                fn(data);
+                $picker_box.css({'display':'none'});
+                $cur_color.css('background-color',$hex_value.html());
+                $pre_color.css('background-color',$hex_value.html());
+            }
+        });
+        $cancel_btn.on('click',function () {
+            $picker_box.css('display','none');
+            console.log('none');
+        });
+        $cur_color.click(function(){
+            $picker_box.css({'display':'block'});
+            $picker_box.css({'display':'block'});
+
+        });
+        $arrow_btn.click(function(){
+            $cur_color.click();
+        });
+
         //三色面板滑块
-        function ColorEvent(){
+        function ColorCanvasEvent(){
             $colorSpan.on('mousedown',function(event){
-                startX = $(this).position().left;
-                startY = $(this).position().top;
-                mouseStartX = event.pageX;
-                mouseStartY = event.pageY;
+                $colorCanvas.mousedown();
+            })
+            $colorCanvas.on('mousedown',function (event) {
+                endX = event.pageX - $colorCanvas.offset().left;
+                endY = event.pageY - $colorCanvas.offset().top;
+                $colorSpan.css({'top':endY+'px', 'left':endX+'px'});
                 document.onmousemove = onColorMouseMove;
                 document.onmouseup = onColorMouseUp;
                 document.onselectstart = function () { return false; }
-                console.log(startX+','+startY);
-            })
-            $colorPanel.on('mousedown',function (event) {
-                //console.log($colorPanel.offset().top);
-                //console.log(event.pageY);
-                endX = event.pageX - $colorPanel.offset().left -4;
-                endY = event.pageY - $colorPanel.offset().top - 4;
-                if(endX < 0) {endX = -1;}
-                if(endY < 0) {endY = -1;}
-
-                if(endX > colorPanelWidth-5){endX = colorPanelWidth - 5;}
-                if(endY > colorPanelHeight-5){endY = colorPanelHeight - 5;}
-                $colorSpan.css({'top':endY+'px', 'left':endX+'px'});
+                updateCanvasParams(endX,endY);
             })
             function onColorMouseMove(event) {
-                mouseEndX = event.pageX;
-                mouseEndY = event.pageY;
-                endX = startX + mouseEndX - mouseStartX;
-                endY = startY + mouseEndY - mouseStartY;
-                if(endX < 0) {endX = -1;}
-                if(endY < 0) {endY = -1;}
-
-                if(endX > colorPanelWidth-5){endX = colorPanelWidth - 5;}
-                if(endY > colorPanelHeight-5){endY = colorPanelHeight - 5;}
-                $colorSpan.css({'top':endY+'px', 'left':endX+'px'});
-
+                endX = event.pageX - $colorCanvas.offset().left;
+                endY = event.pageY - $colorCanvas.offset().top;
+                endX = endX < 0 ? 0 : endX;
+                endY = endY < 0 ? 0 : endY;
+                var spanX  = endX > canvasWidth-3 ? canvasWidth-3 : endX-2;
+                var spanY = endY > canvasWidth-3 ? canvasWidth-3 : endY-2;
+                endX = endX > canvasWidth ? canvasWidth : endX;
+                endY = endY > canvasWidth ? canvasWidth : endY;
+                $colorSpan.css({'top':spanY+'px', 'left':spanX+'px'});
+                updateCanvasParams(endX,endY);
             }
             function onColorMouseUp(event){
                 document.onmousemove = null;
                 document.onmouseup = null;
-                //开启允许选择标记位
                 document.onselectstart = null;
             }
         }
         //七彩面板滑块
         function rainbowEvent(){
             $rainbowSpan.on('mousedown',function(event){
-                startY = $(this).position().top;
-                mouseStartY = event.pageY;
-                //绑定文档的移动事件
+                $rainbowPanel.mousedown();
+            })
+            $rainbowPanel.on('mousedown',function(event){
+                endY7 = event.pageY - $colorCanvas.offset().top;
+                endY7 = endY7 < 0 ? 0 : endY7;
+                endY7 = endY7 > rainbowPanelHeight-4 ? rainbowPanelHeight-4 : endY7;
                 document.onmousemove = onRainBowMouseMove;
-                //绑定文档的鼠标收起事件
                 document.onmouseup = onRainBowMouseUp;
-                //阻止页面的选择动作，非常重要，当拖拽发生时，如果存在文本选择，会影响拖拽效果
                 document.onselectstart = function () { return false; }
+                $rainbowSpan.css('top',endY7+'px');
+                updateRainbowParams(endY7);
+                updateCanvasParams(endX,endY);
             })
             function onRainBowMouseMove(event) {
-
-                mouseEndY = event.pageY;
-                endY = startY + mouseEndY - mouseStartY;
-                if(endY < 0)
-                    endY = -1;
-                if(endY > rainbowPanelHeight-4){
-                    endY = rainbowPanelHeight - 4;
-                }
-                $rainbowSpan.css('top',endY+'px');
-                var colorId = parseInt(endY*1.0/rainbowPanelHeight*colorNum);
-                $colorPanel.css({
-                    'background': '-webkit-linear-gradient(bottom left, #000, '+color_sets[colorId]+',#fff)'
-                })
+                endY7 = event.pageY - $colorCanvas.offset().top;
+                endY7 = endY7 < 0 ? 0 : endY7;
+                endY7 = endY7 > rainbowPanelHeight-4 ? rainbowPanelHeight-4 : endY7;
+                $rainbowSpan.css('top',endY7+'px');
+                updateRainbowParams(endY7);
+                updateCanvasParams(endX,endY);
             }
             function onRainBowMouseUp(event){
                 document.onmousemove = null;
                 document.onmouseup = null;
-                //开启允许选择标记位
                 document.onselectstart = null;
             }
         }
-        function getMousePos(event) {
-            var e = event || window.event;
-            var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-            var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-            var x = e.pageX || e.clientX + scrollX;
-            var y = e.pageY || e.clientY + scrollY;
-            //alert('x: ' + x + '\ny: ' + y);
-            return { 'x': x, 'y': y };
+        function updateRainbowParams(y){
+            if(isNaN(y))return;
+            var colorId = parseInt(y*1.0/rainbowPanelHeight*colorNum);
+            colorId = colorId < 0 ? 0 :colorId;
+            colorId = colorId > colorNum-1 ? colorNum-1 :colorId;
+
+            mainColor = color_sets[colorId];
+            updateCanvas({'r':255,'g':255,'b':255},mainColor,{'r':0,'g':0,'b':0},canvasWidth);
         }
+        function updateCanvasParams(x,y)
+        {
+            if(isNaN(y) || isNaN(x))return;
+            var p = getCanvasPoints({'r':255,'g':255,'b':255},mainColor,{'r':0,'g':0,'b':0},canvasWidth,endX,endY);
+            selectPointColor = p;
+            $rgb_value.html(p.r+','+p.g+','+p.b);
+            $now_color.css('background-color',rgbToHex2(p.r, p.g, p.b));
+            //$cur_color.css('background-color',rgbToHex2(p.r, p.g, p.b));
+            $hex_value.html(rgbToHex2(p.r, p.g, p.b));
+        }
+        //更新像素吸取点
+        function updateCanvas(ltColor,rtColor,bColor,cWidth){
+            var row_arr = [];
+            var avgR = (rtColor.r-ltColor.r)*1.0/cWidth;
+            var avgG = (rtColor.g-ltColor.g)*1.0/cWidth;
+            var avgB = (rtColor.b-ltColor.b)*1.0/cWidth;
+            for(var i=0;i<cWidth;i++)
+            {
+                row_arr.push({
+                    'r':parseInt(ltColor.r + avgR*i),
+                    'g':parseInt(ltColor.g + avgG*i),
+                    'b':parseInt(ltColor.b + avgB*i)
+                })
+            }
+            for(var i=0;i<cWidth;i++)
+            {
+                for(var j=0;j<cWidth;j++)
+                {
+                    var x = i*4*cWidth + j*4;
+                    imgData.data[x] = parseInt((bColor.r - row_arr[j].r)*1.0/cWidth*i+row_arr[j].r);
+                    imgData.data[x+1] = parseInt((bColor.g - row_arr[j].g)*1.0/cWidth*i+row_arr[j].g);
+                    imgData.data[x+2] = parseInt((bColor.b - row_arr[j].b)*1.0/cWidth*i+row_arr[j].b);
+                    imgData.data[x+3]= 255;
+                }
+            }
+            ctx.putImageData(imgData,0,0);
+        }
+        function getCanvasPoints(ltColor,rtColor,bColor,cWidth,left,top){
+            var avgR = parseInt((rtColor.r-ltColor.r)*1.0/cWidth * left + ltColor.r);
+            var avgG = parseInt((rtColor.g-ltColor.g)*1.0/cWidth * left + ltColor.g);
+            var avgB = parseInt((rtColor.b-ltColor.b)*1.0/cWidth * left + ltColor.b);
+            var resR = parseInt((bColor.r - avgR)*1.0/cWidth*top+avgR);
+            var resG = parseInt((bColor.g - avgG)*1.0/cWidth*top+avgG);
+            var resB = parseInt((bColor.b - avgB)*1.0/cWidth*top+avgB);
+            resR = resR > 255 ? 255 : resR;
+            resG = resG > 255 ? 255 : resG;
+            resB = resB > 255 ? 255 : resB;
+            return {'r':resR,'g':resG,'b':resB};
+        }
+
         //--------------------------------------
         function hexToRgb(mColor){
             //16进制转rgb,#ff00ff to rgb(r,g,b)
@@ -791,10 +876,15 @@ $.fn.extend({
             return hex;
         }
         function rgbToHex2(mR,mG,mB){
-            var hex = "#" + ((1 << 24) + (mR << 16) + (mG << 8) + mB).toString(16).slice(1);
-            return hex;
+            var hR = mR.toString(16);
+            var hG = mG.toString(16);
+            var hB = mB.toString(16);
+            hR = (hR.length == 1 ? '0'+hR : hR);
+            hG = (hG.length == 1 ? '0'+hG : hG);
+            hB = (hB.length == 1 ? '0'+hB : hB);
+            return '#'+hR + hG +hB;
         }
-        function gradientColor(startColor,endColor,step){
+        function gradientColor(startColor,endColor,step,returnHex){
             //'#ffffff' '#000000'
             var start = hexToRgb(startColor);
             var end = hexToRgb(endColor);
@@ -809,7 +899,10 @@ $.fn.extend({
                 resR = resR > 255 ? 255 : resR;
                 resG = resG > 255 ? 255 : resG;
                 resB = resB > 255 ? 255 : resB;
-                gradientArr.push(rgbToHex2(resR,resG,resB));
+                if(returnHex == true)
+                    gradientArr.push(rgbToHex2(resR,resG,resB));
+                else
+                    gradientArr.push({'r':resR,'g':resG,'b':resB});
             }
             return gradientArr;
         }
@@ -817,6 +910,8 @@ $.fn.extend({
 })
 $('#test_color_picker').panColorPicker({
 
+},function(data){
+    console.log(data);
 })
 //富文本编辑器
 $.fn.extend({
@@ -838,10 +933,17 @@ $.fn.extend({
             '小五':'1',
         };
         var html = '<div class="tool">';
-        html += '<select class="family"></select>';
+        html += '<div class="first_row"><select class="family"></select>';
         html += '<select class="fontsize"></select>';
         html += '<span class="bold">B</span>';
         html += '<span class="italic">I</span>';
+        html += '<div class="text_left"></div>';
+        html += '<div class="text_center"></div>';
+        html += '<div class="text_right"></div>';
+        html += '</div>';
+        html += '<div class="second_row">'
+        html += '<div class="pan-color-picker"></div>';
+        html += '</div>';
         html += '</div>';
         $(this).append(html);
         $(this).append('<iframe class="edit"></iframe>');
@@ -851,6 +953,16 @@ $.fn.extend({
         var $edit = $(this).find('.edit');
         var $bold = $(this).find('.bold');
         var $italic = $(this).find('.italic');
+        var $colorPicker = $(this).find('.pan-color-picker');
+        $colorPicker.panColorPicker({
+            'width':50,
+            'height': 24,
+            'borderColor':'#ccc',
+            'iconBorderColor':'#ccc',
+            'iconColor':'#ff0000'
+        },function(data){
+            setFontColor(data.hex);
+        });
         //添加字体
         html = '';
         for(var i in family_arr){
