@@ -935,24 +935,44 @@ $.fn.extend({
         var html = '<div class="tool">';
         html += '<div class="first_row"><select class="family"></select>';
         html += '<select class="fontsize"></select>';
-        html += '<span class="bold">B</span>';
-        html += '<span class="italic">I</span>';
-        html += '<div class="text_left"></div>';
-        html += '<div class="text_center"></div>';
-        html += '<div class="text_right"></div>';
+        html += '<span class="bold" title="粗体">B</span>';
+        html += '<span class="italic" title="斜体">I</span>';
+        html += '<div class="text_left" title="左对齐"></div>';
+        html += '<div class="text_center" title="居中对齐"></div>';
+        html += '<div class="text_right" title="右对齐"></div>';
+        html += '<div class="reply_left" title="撤销"></div>';
+        html += '<div class="reply_right" title="恢复撤销"></div>';
+        html += '<div class="indent" title="增加缩进"></div>';
+        html += '<div class="outdent" title="减少缩进"></div>';
+        html += '<div class="underline" title="下划线"></div>';
+        html += '<div class="deleteline" title="删除线"></div>';
+        html += '<div class="remove_format" title="清除格式"></div>';
+        html += '<div class="code_format" title="代码格式化"></div>';
         html += '</div>';
         html += '<div class="second_row">'
         html += '<div class="pan-color-picker"></div>';
         html += '</div>';
         html += '</div>';
         $(this).append(html);
-        $(this).append('<iframe class="edit"></iframe>');
+        $(this).append('<iframe class="edit" spellcheck="false"></iframe>');
         //抽取对象
         var $family = $(this).find('.family');
         var $fontsize = $(this).find('.fontsize');
         var $edit = $(this).find('.edit');
         var $bold = $(this).find('.bold');
         var $italic = $(this).find('.italic');
+        var $textLeft = $(this).find('.text_left');
+        var $textCenter = $(this).find('.text_center');
+        var $textRight = $(this).find('.text_right');
+        var $replyLeft = $(this).find('.reply_left');
+        var $replyRight = $(this).find('.reply_right');
+        var $indent = $(this).find('.indent');
+        var $outdent = $(this).find('.outdent');
+        var $underline = $(this).find('.underline');
+        var $deleteline = $(this).find('.deleteline');
+        var $removeFormat = $(this).find('.remove_format');
+        var $codeFormat = $(this).find('.code_format');
+
         var $colorPicker = $(this).find('.pan-color-picker');
         $colorPicker.panColorPicker({
             'width':50,
@@ -961,7 +981,8 @@ $.fn.extend({
             'iconBorderColor':'#ccc',
             'iconColor':'#ff0000'
         },function(data){
-            setFontColor(data.hex);
+            ifwin.document.execCommand('ForeColor', false, data.hex);
+            ifwin.focus();
         });
         //添加字体
         html = '';
@@ -988,46 +1009,73 @@ $.fn.extend({
         //设置选定的文本为粗体/正常
 
         $family.change(function () {
-            console.log($(this).val());
-            setFontFamily($(this).val())
+            ifwin.document.execCommand('FontName', false, $(this).val());
+            ifwin.focus();
         });
         $fontsize.change(function () {
-            console.log($(this).val());
-            setFontSize(parseInt($(this).val()));
+            ifwin.document.execCommand('FontSize', false, parseInt($(this).val()));
+            ifwin.focus();
         });
         $bold.on('click',function(){
-            setFontBold();
-            console.log('bold');
-        })
-        $italic.on('click',function(){
-            setFontItalic();
-        })
-
-
-        //修改字体
-        function setFontFamily(params){
-            ifwin.document.execCommand('FontName', false, params);
-            ifwin.focus();
-        }
-        //字体大小
-        function setFontSize(params){
-            ifwin.document.execCommand('FontSize', false, params);
-            ifwin.focus();
-        }
-        //字体颜色
-        function setFontColor(params){
-            ifwin.document.execCommand('ForeColor', false, params);
-            ifwin.focus();
-        }
-        //Bold
-        function setFontBold(){
             ifwin.document.execCommand('Bold', false, null);
             ifwin.focus();
-        }
-        function setFontItalic(){
+        })
+        $italic.on('click',function(){
             ifwin.document.execCommand('Italic', false, null);
             ifwin.focus();
-        }
+        })
+        $textLeft.on('click',function(){
+            ifwin.document.execCommand('justifyLeft', false, null);
+            ifwin.focus();
+        })
+        $textCenter.on('click',function(){
+            ifwin.document.execCommand('justifyCenter', false, null);
+            ifwin.focus();
+        })
+        $textRight.on('click',function(){
+            ifwin.document.execCommand('justifyRight', false, null);
+            ifwin.focus();
+        })
+        $replyLeft.on('click',function(){
+            ifwin.document.execCommand('undo', false, null);
+            ifwin.focus();
+        })
+        $replyRight.on('click',function(){
+            ifwin.document.execCommand('redo', false, null);
+            ifwin.focus();
+        })
+        $indent.on('click',function(){
+            ifwin.document.execCommand('indent', false, null);
+            ifwin.focus();
+        })
+        $outdent.on('click',function(){
+            ifwin.document.execCommand('outdent', false, null);
+            ifwin.focus();
+        })
+        $underline.on('click',function(){
+            ifwin.document.execCommand('underline', false, null);
+            ifwin.focus();
+        })
+        $deleteline.on('click',function(){
+            ifwin.document.execCommand('strikeThrough', false, '1');
+            ifwin.focus();
+        })
+        $removeFormat.on('click',function(){
+            ifwin.document.execCommand('removeFormat', false, '1');
+            ifwin.focus();
+        })
+        $codeFormat.on('click',function(){
+            //alert(0);
+            $('#add_code').html('<pre class="brush: js;">#include stdio.h</pre>');
+            $(ifdom.body).append('<textarea id="psq_text" style="border: 1px solid #aaa;width:80%;height:auto;padding: 10px;background-color: #ccc" >fjailfjadjfaldjfalkdjflkasdf</t>')
+            //console.log($(ifdom.body).html());
+            $(ifdom.body).find('#psq_text').on('keydown',function(event){
+
+                $(this).css({
+                    'height':'200px'
+                })
+            });
+        })
     }
 });
 

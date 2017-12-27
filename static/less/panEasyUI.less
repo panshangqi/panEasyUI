@@ -362,7 +362,11 @@
                 height:180px;
                 border: 1px solid #666;
                 margin-left: 10px;
-                background: -webkit-linear-gradient(top,@red,@orange,@yellow,@green,@blue,@indigo,@violet);
+                //background: -webkit-linear-gradient(top,@red,@orange,@yellow,@green,@blue,@indigo,@violet);
+                //background: -o-linear-gradient(top,@red,@orange,@yellow,@green,@blue,@indigo,@violet);
+                //background: -moz-linear-gradient(top,@red,@orange,@yellow,@green,@blue,@indigo,@violet);
+                background-image: url(../img/color7s.png);
+                background-size: 30px 180px;
                 span{
                     position: absolute;
                     width:30px;
@@ -467,13 +471,14 @@
     height:500px;
     border: 1px solid #ddd;
     .tool{
+
         width:100%;
         height: 100px;
+        box-sizing: border-box;
         background-color: #f0f0ee;
         border-bottom: 1px solid #ddd;
-        overflow: hidden;
+        padding: 16px;
         .first_row{
-            margin-top: 15px;
             select{
                 height:25px;
                 width:80px;
@@ -489,8 +494,6 @@
             }
             select::-ms-expand { display: none; }
             .family{
-
-                margin-left: 20px;
                 font-size: 14px;
             }
             .fontsize{
@@ -572,9 +575,41 @@
                 .textStyle;
                 background-image: url(../img/textRight.png);
             }
+            .reply_left{
+                .textStyle;
+                background-image: url(../img/reply.png);
+            }
+            .reply_right{
+                .textStyle;
+                background-image: url(../img/reply_r.png);
+            }
+            .indent{
+                .textStyle;
+                background-image: url(../img/indent.png);
+            }
+            .outdent{
+                .textStyle;
+                background-image: url(../img/outdent.png);
+            }
+            .underline{
+                .textStyle;
+                background-image: url(../img/underline.png);
+            }
+            .deleteline{
+                .textStyle;
+                background-image: url(../img/deleteline.png);
+            }
+            .remove_format{
+                .textStyle;
+                background-image: url(../img/removeFormat.png);
+            }
+            .code_format{
+                .textStyle;
+                background-image: url(../img/codeFormat1.png);
+                background-position: 5px 4px;
+            }
         }
         .second_row{
-            margin-left: 20px;
             margin-top: 15px;
         }
 
