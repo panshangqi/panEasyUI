@@ -948,6 +948,7 @@ $.fn.extend({
         html += '<div class="deleteline" title="删除线"></div>';
         html += '<div class="remove_format" title="清除格式"></div>';
         html += '<div class="code_format" title="代码格式化"></div>';
+        html += '<div class="table" title="表格"></div>';
         html += '</div>';
         html += '<div class="second_row">'
         html += '<div class="pan-color-picker"></div>';
@@ -955,6 +956,11 @@ $.fn.extend({
         html += '</div>';
         $(this).append(html);
         $(this).append('<iframe class="edit" spellcheck="false"></iframe>');
+        html = '<div class="code_dialog">';
+        html += '<div class="dialog_header"><span class="dialog_close">×</span></div><textarea class="dialog_content"></textarea>';
+        html += '<div class="dialog_ok_btn">确定</div>'
+
+        $(this).append(html);
         //抽取对象
         var $family = $(this).find('.family');
         var $fontsize = $(this).find('.fontsize');
@@ -972,8 +978,13 @@ $.fn.extend({
         var $deleteline = $(this).find('.deleteline');
         var $removeFormat = $(this).find('.remove_format');
         var $codeFormat = $(this).find('.code_format');
+        var $table = $(this).find('.table');
 
         var $colorPicker = $(this).find('.pan-color-picker');
+        var $codeDialog = $(this).find('.code_dialog');
+        var $codeContent = $(this).find('.dialog_content');
+        var $codeDialogClose = $(this).find('.dialog_close');
+        var $codeDialogOK = $(this).find('.dialog_ok_btn');
         $colorPicker.panColorPicker({
             'width':50,
             'height': 24,
@@ -1003,8 +1014,9 @@ $.fn.extend({
         var ifwin = $edit[0].contentWindow;
         var ifdom = $edit[0].contentWindow.document;
         console.log(ifwin);
+        ifdom.body.contentEditable = true;
         ifdom.designMode = "on";
-        ifdom.contentEditable = true;
+        $edit[0].focus();
         //编辑字型：
         //设置选定的文本为粗体/正常
 
@@ -1016,66 +1028,137 @@ $.fn.extend({
             ifwin.document.execCommand('FontSize', false, parseInt($(this).val()));
             ifwin.focus();
         });
+        $bold.unbind("focus"); //移除blur
         $bold.on('click',function(){
-            ifwin.document.execCommand('Bold', false, null);
             ifwin.focus();
+            ifwin.document.execCommand('Bold', false, null);
         })
+        $italic.unbind("blur"); //移除blur
         $italic.on('click',function(){
             ifwin.document.execCommand('Italic', false, null);
             ifwin.focus();
         })
+        $textLeft.unbind("blur"); //移除blur
         $textLeft.on('click',function(){
             ifwin.document.execCommand('justifyLeft', false, null);
             ifwin.focus();
         })
+        $textCenter.unbind("blur"); //移除blur
         $textCenter.on('click',function(){
             ifwin.document.execCommand('justifyCenter', false, null);
             ifwin.focus();
         })
+        $textRight.unbind("blur"); //移除blur
         $textRight.on('click',function(){
             ifwin.document.execCommand('justifyRight', false, null);
             ifwin.focus();
         })
+        $replyLeft.unbind("blur"); //移除blur
         $replyLeft.on('click',function(){
             ifwin.document.execCommand('undo', false, null);
             ifwin.focus();
         })
+        $replyRight.unbind("blur"); //移除blur
         $replyRight.on('click',function(){
             ifwin.document.execCommand('redo', false, null);
             ifwin.focus();
         })
+        $indent.unbind("blur"); //移除blur
         $indent.on('click',function(){
             ifwin.document.execCommand('indent', false, null);
             ifwin.focus();
         })
+        $outdent.unbind("blur"); //移除blur
         $outdent.on('click',function(){
             ifwin.document.execCommand('outdent', false, null);
             ifwin.focus();
         })
+        $underline.unbind("blur"); //移除blur
         $underline.on('click',function(){
             ifwin.document.execCommand('underline', false, null);
             ifwin.focus();
         })
+        $deleteline.unbind("blur"); //移除blur
         $deleteline.on('click',function(){
             ifwin.document.execCommand('strikeThrough', false, '1');
             ifwin.focus();
         })
+        $removeFormat.unbind("blur"); //移除blur
         $removeFormat.on('click',function(){
             ifwin.document.execCommand('removeFormat', false, '1');
             ifwin.focus();
         })
+        $codeFormat.unbind("blur"); //移除blur
         $codeFormat.on('click',function(){
-            //alert(0);
-            $('#add_code').html('<pre class="brush: js;">#include stdio.h</pre>');
-            $(ifdom.body).append('<textarea id="psq_text" style="border: 1px solid #aaa;width:80%;height:auto;padding: 10px;background-color: #ccc" >fjailfjadjfaldjfalkdjflkasdf</t>')
-            //console.log($(ifdom.body).html());
-            $(ifdom.body).find('#psq_text').on('keydown',function(event){
-
-                $(this).css({
-                    'height':'200px'
-                })
-            });
+            $codeContent.val('');
+            $codeDialog.css('display','block');
         })
+        $codeDialogClose.unbind("blur"); //移除blur
+        $codeDialogClose.on('click',function () {
+            $codeDialog.css('display','none');
+        })
+        $codeDialogOK.unbind("blur"); //移除blur
+        $codeDialogOK.on('click',function () {
+            $codeDialog.css('display','none');
+            //console.log($codeContent.val());
+
+            $(ifdom.body).append(barCodeStyle($codeContent.val()));
+
+        })
+        $table.unbind("blur"); //移除blur
+        $table.on('click',function () {
+
+            $(ifdom.body).append(addTable(4,5,'center'));
+        })
+
+        //条形斑马栏样式
+        function barCodeStyle(text){
+            var rHtml = '<ol style="font-size: 12px;white-space: pre-wrap;font-family: Consolas;border: 1px solid #ddd">';
+            var rowList = text.split('\n');
+            for(var row=0;row<rowList.length;row++){
+                if(row%2 == 1)
+                    rHtml += '<li style="height:20px;line-height:20px;background-color: #f8f8f8;border-left:2px solid #8DB02E;padding-left: 10px;">' + keyHighter(rowList[row]) + '</li>';
+                else
+                    rHtml += '<li style="height:20px;line-height:20px;background-color: #ffffff;border-left:2px solid #8DB02E;padding-left: 10px;">' + keyHighter(rowList[row]) + '</li>';
+            }
+            rHtml += '</ol>';
+            return rHtml;
+            /*
+            var htm = '<ol>';
+            htm  += '<li class="codeDiv" style="width: 90%;border: 1px solid #ccc;overflow-y: hidden"><pre>1111</pre></li>';
+            htm += '</ol>';
+            */
+        }
+        //替换关键字的颜色
+        function keyHighter(text){
+            return text;
+            //return text.replace('main','<span style="color:#8DB02E;">main</span>');
+        }
+        //添加表格 algin 'left' 'center' 'right'
+        function addTable(rows,cols,algin){
+            var htm = '';
+            if(algin=='left')
+                htm += '<table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
+            else if(algin=='center'){
+                htm += '<table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
+            }
+            for(var r = 0 ;r < rows;r++)
+            {
+                if(r%2==0)
+                    htm += '<tr style="background-color: #f8f8f8">';
+                else
+                    htm += '<tr style="background-color: #ffffff">';
+                for(var c=0;c < cols;c++){
+                    if(c==0)
+                        htm += '<td style="width:100px;height:30px;border-left:0px solid #d5d5d5;color:#666"></td>';
+                    else
+                        htm += '<td style="width:100px;height:30px;border-left:1px solid #d5d5d5;color:#666"></td>';
+                }
+                htm += '</tr>';
+            }
+            htm += '</table>';
+            return htm;
+        }
     }
 });
 

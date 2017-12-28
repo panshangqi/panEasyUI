@@ -248,3 +248,20 @@ body {
   vertical-align: top;
   background-color: #fff;
 }
+.essay_html {
+  padding: 20px;
+}
+.essay_html .title {
+  color: #666;
+  font-size: 14px;
+}
+.essay_html input.title_text {
+  width: 90%;
+  height: 30px;
+  margin-top: 10px;
+}
+.essay_html .article {
+  margin-top: 20px;
+  color: #666;
+  font-size: 14px;
+}

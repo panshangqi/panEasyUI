@@ -1,16 +1,31 @@
 {% extends "base.html" %}
-{% block title %}主页{% endblock %}
+{% block title %}博客{% endblock %}
 {% block style %}
+{% block blogs_style %}{% endblock %}
 {% endblock %}
 {% block content %}
-<div id="index_html">
-    <div id="plugs_list">
-
+<div id="blogs_list_html">
+    <div class="left_nav">
+        <div class="user_info">
+            <div class="title">个人资料</div>
+            <div class="head_img"></div>
+        </div>
+        <div class="classify">
+            <div class="title">博客分类</div>
+            <div>
+                {% block blogs_classify %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <div class="right_content">
+        {% block blogs_content %}
+        {% endblock %}
     </div>
 </div>
 
 {% endblock %}
-
+{% block blogs_script %}{% endblock %}
 {% block script %}
 <script>
 

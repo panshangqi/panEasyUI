@@ -9,6 +9,7 @@ url = [(r"/index",IndexHandler),
         (r"/panEasyUI",PanEasyUIHandler),
         (r"/plugs_scroll",PlugsScrollHandler),
         (r"/blogs_list",BlogsListHandler),
+        (r"/blogs_essay",BlogsEssayHandler),
         (r"/.*",BaseHandler)
 
       ]
