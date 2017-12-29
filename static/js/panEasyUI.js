@@ -920,7 +920,7 @@ $.fn.extend({
 
         };
         var setttings = $.extend(data,defaults,{});
-        var family_arr = ['宋体','黑体','新宋体','仿宋','楷体','幼圆'];
+        var family_arr = ['宋体','黑体','新宋体','仿宋','楷体','幼圆','Consolas','Courier New','Arial','Georgia','Impact','New Roman'];
         var fontsize_arr = {
             '初号':'9',
             '一号':'8',
@@ -932,39 +932,41 @@ $.fn.extend({
             '五号':'2',
             '小五':'1',
         };
+        //<iframe>标签不能动态加载，为了兼容FireFox浏览器
         var html = '<div class="tool">';
         html += '<div class="first_row"><select class="family"></select>';
         html += '<select class="fontsize"></select>';
-        html += '<span class="bold" title="粗体">B</span>';
-        html += '<span class="italic" title="斜体">I</span>';
-        html += '<div class="text_left" title="左对齐"></div>';
-        html += '<div class="text_center" title="居中对齐"></div>';
-        html += '<div class="text_right" title="右对齐"></div>';
-        html += '<div class="reply_left" title="撤销"></div>';
-        html += '<div class="reply_right" title="恢复撤销"></div>';
-        html += '<div class="indent" title="增加缩进"></div>';
-        html += '<div class="outdent" title="减少缩进"></div>';
-        html += '<div class="underline" title="下划线"></div>';
-        html += '<div class="deleteline" title="删除线"></div>';
-        html += '<div class="remove_format" title="清除格式"></div>';
-        html += '<div class="code_format" title="代码格式化"></div>';
-        html += '<div class="table" title="表格"></div>';
+        html += '<button class="bold" title="粗体">B</button>';
+        html += '<button class="italic" title="斜体">I</button>';
+        html += '<button class="text_left" title="左对齐" tabindex = "0"></button>';
+        html += '<button class="text_center" title="居中对齐"></button>';
+        html += '<button class="text_right" title="右对齐"></button>';
+        html += '<button class="reply_left" title="撤销"></button>';
+        html += '<button class="reply_right" title="恢复撤销"></button>';
+        html += '<button class="indent" title="增加缩进"></button>';
+        html += '<button class="outdent" title="减少缩进"></button>';
+        html += '<button class="underline" title="下划线"></button>';
+        html += '<button class="deleteline" title="删除线"></button>';
+        html += '<button class="remove_format" title="清除格式"></button>';
+        html += '<button class="code_format" title="代码格式化"></button>';
+        html += '<button class="table" title="表格"></button>';
         html += '</div>';
         html += '<div class="second_row">'
         html += '<div class="pan-color-picker"></div>';
         html += '</div>';
         html += '</div>';
-        $(this).append(html);
-        $(this).append('<iframe class="edit" spellcheck="false"></iframe>');
+        var $iframe = $(this).find('iframe');
+        $iframe.before(html);
+        //$(this).append(html);
         html = '<div class="code_dialog">';
         html += '<div class="dialog_header"><span class="dialog_close">×</span></div><textarea class="dialog_content"></textarea>';
         html += '<div class="dialog_ok_btn">确定</div>'
-
         $(this).append(html);
+
         //抽取对象
         var $family = $(this).find('.family');
         var $fontsize = $(this).find('.fontsize');
-        var $edit = $(this).find('.edit');
+
         var $bold = $(this).find('.bold');
         var $italic = $(this).find('.italic');
         var $textLeft = $(this).find('.text_left');
@@ -1008,17 +1010,16 @@ $.fn.extend({
         }
         $fontsize.html(html);
 
-
-
         //获取iframe dom
-        var ifwin = $edit[0].contentWindow;
-        var ifdom = $edit[0].contentWindow.document;
+        var ifwin = $iframe[0].contentWindow;
+        var ifdom = $iframe[0].contentWindow.document;
         console.log(ifwin);
         ifdom.body.contentEditable = true;
         ifdom.designMode = "on";
-        $edit[0].focus();
+        ifwin.focus();
         //编辑字型：
         //设置选定的文本为粗体/正常
+
 
         $family.change(function () {
             ifwin.document.execCommand('FontName', false, $(this).val());
@@ -1028,92 +1029,82 @@ $.fn.extend({
             ifwin.document.execCommand('FontSize', false, parseInt($(this).val()));
             ifwin.focus();
         });
-        $bold.unbind("focus"); //移除blur
+
         $bold.on('click',function(){
-            ifwin.focus();
             ifwin.document.execCommand('Bold', false, null);
+            ifwin.focus();
         })
-        $italic.unbind("blur"); //移除blur
         $italic.on('click',function(){
             ifwin.document.execCommand('Italic', false, null);
             ifwin.focus();
         })
-        $textLeft.unbind("blur"); //移除blur
+        $textLeft.unbind('focus');
         $textLeft.on('click',function(){
             ifwin.document.execCommand('justifyLeft', false, null);
             ifwin.focus();
         })
-        $textCenter.unbind("blur"); //移除blur
         $textCenter.on('click',function(){
             ifwin.document.execCommand('justifyCenter', false, null);
             ifwin.focus();
         })
-        $textRight.unbind("blur"); //移除blur
         $textRight.on('click',function(){
             ifwin.document.execCommand('justifyRight', false, null);
             ifwin.focus();
         })
-        $replyLeft.unbind("blur"); //移除blur
         $replyLeft.on('click',function(){
             ifwin.document.execCommand('undo', false, null);
             ifwin.focus();
         })
-        $replyRight.unbind("blur"); //移除blur
         $replyRight.on('click',function(){
             ifwin.document.execCommand('redo', false, null);
             ifwin.focus();
         })
-        $indent.unbind("blur"); //移除blur
         $indent.on('click',function(){
             ifwin.document.execCommand('indent', false, null);
             ifwin.focus();
         })
-        $outdent.unbind("blur"); //移除blur
         $outdent.on('click',function(){
             ifwin.document.execCommand('outdent', false, null);
             ifwin.focus();
         })
-        $underline.unbind("blur"); //移除blur
         $underline.on('click',function(){
             ifwin.document.execCommand('underline', false, null);
             ifwin.focus();
         })
-        $deleteline.unbind("blur"); //移除blur
         $deleteline.on('click',function(){
             ifwin.document.execCommand('strikeThrough', false, '1');
             ifwin.focus();
         })
-        $removeFormat.unbind("blur"); //移除blur
         $removeFormat.on('click',function(){
             ifwin.document.execCommand('removeFormat', false, '1');
             ifwin.focus();
         })
-        $codeFormat.unbind("blur"); //移除blur
         $codeFormat.on('click',function(){
             $codeContent.val('');
             $codeDialog.css('display','block');
         })
-        $codeDialogClose.unbind("blur"); //移除blur
         $codeDialogClose.on('click',function () {
             $codeDialog.css('display','none');
         })
-        $codeDialogOK.unbind("blur"); //移除blur
         $codeDialogOK.on('click',function () {
             $codeDialog.css('display','none');
-            //console.log($codeContent.val());
-
-            $(ifdom.body).append(barCodeStyle($codeContent.val()));
-
+            ifwin.focus();    //此处加上focus，兼容IE,插入代码之后找不到插入光标位置
+            var range = ifwin.getSelection().getRangeAt(0);
+            var frag = range.createContextualFragment(barCodeStyle($codeContent.val()));
+            range.insertNode(frag);
+            $(ifdom.body).append('<br/>'); //插入换行，兼容FireFox浏览器光标移动到下面
         })
-        $table.unbind("blur"); //移除blur
         $table.on('click',function () {
-
-            $(ifdom.body).append(addTable(4,5,'center'));
+            ifwin.focus();
+            var range = ifwin.getSelection().getRangeAt(0);
+            var frag = range.createContextualFragment('<br/>'+addTable(4,5,'center'));
+            range.insertNode(frag);
+            $(ifdom.body).append('<br/>');
         })
 
         //条形斑马栏样式
         function barCodeStyle(text){
-            var rHtml = '<ol style="font-size: 12px;white-space: pre-wrap;font-family: Consolas;border: 1px solid #ddd">';
+            var rHtml = '<ol style="font-size: 13px;white-space: pre-wrap;font-family: Consolas;border: 1px solid #ddd">';
             var rowList = text.split('\n');
             for(var row=0;row<rowList.length;row++){
                 if(row%2 == 1)
@@ -1138,7 +1129,7 @@ $.fn.extend({
         function addTable(rows,cols,algin){
             var htm = '';
             if(algin=='left')
-                htm += '<table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
+                htm += '<ol><table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
             else if(algin=='center'){
                 htm += '<table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
             }
@@ -1156,7 +1147,7 @@ $.fn.extend({
                 }
                 htm += '</tr>';
             }
-            htm += '</table>';
+            htm += '</table></ol>';
             return htm;
         }
     }

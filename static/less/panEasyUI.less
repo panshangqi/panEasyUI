@@ -467,10 +467,12 @@
 
 }
 .pan-edit-frame{
+
     position: relative;
     width:1000px;
     height:800px;
     border: 1px solid #ddd;
+
     .tool{
         width:100%;
         height: 100px;
@@ -479,21 +481,30 @@
         border-bottom: 1px solid #ddd;
         padding: 16px;
         .first_row{
+            button::-moz-focus-inner, input::-moz-focus-inner{
+                padding:0;border:none;
+            }
             select{
                 height:25px;
                 width:80px;
-                font-size:15px;
+                vertical-align: top;
+                line-height: 25px;
                 border: solid 1px #ddd;
                 /*很关键：将默认的select选择框样式清除*/
+                padding-left: 5px;
                 appearance:none;
                 -moz-appearance:none;
                 -webkit-appearance:none;
-                padding: 3px 10px 3px 8px;
                 color:#666;
                 border-radius: 0px;
+                background-color: #ededed;
+                &:hover{
+                    cursor: pointer;
+                }
             }
             select::-ms-expand { display: none; }
             .family{
+                width:100px;
                 font-size: 14px;
             }
             .fontsize{
@@ -504,16 +515,18 @@
             .span_style{
                 display: inline-block;
                 vertical-align: top;
-                width:25px;
+                width:28px;
                 height:25px;
-                line-height: 24px;
+                line-height: 22px;
                 text-align: center;
                 margin-left: 10px;
                 font-weight: bolder;
+                font-size: 16px;
                 border: 1px solid #ddd;
                 box-sizing: border-box;
                 color:#666;
                 font-family: Times New Roman;
+                background-color: #ededed;
                 &:hover{
                     cursor: pointer;
                     color:#222;
@@ -527,10 +540,12 @@
             }
             .bold{
                 .span_style;
+                font-size: 18px;
             }
             .italic{
                 .span_style;
                 font-style: italic;
+                font-size: 18px;
             }
             .backgroundApacity(@alp,@opa){
                 filter:alpha(opacity=@alp);
@@ -546,10 +561,10 @@
                 border: 1px solid #ddd;
                 box-sizing: border-box;
                 margin-left: 10px;
-                background-image: url(../img/textLeft.png);
                 background-size: 16px;
                 background-position: 5px 5px;
                 background-repeat: no-repeat;
+                background-color: #ebebef;
                 .backgroundApacity(70,0.7);
                 &:hover{
                     cursor: pointer;
@@ -620,10 +635,10 @@
         }
 
     }
-    .edit{
+    iframe{
         width:100%;
-        height: 700px;
-        border: 0px solid #ccc;
+        height:700px;
+        border: 0px solid #000;
         background-color: #fff;
     }
     .code_dialog{
