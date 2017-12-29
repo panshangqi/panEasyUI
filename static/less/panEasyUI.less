@@ -284,39 +284,42 @@
 .pan-color-picker{
     //赤橙黄绿蓝靛紫
     position: relative;
-    width:50px;
-    height:24px;
-    border: 1px solid #333;
-    background-color: #f0f0f0;
-    &:hover{
-        cursor: pointer;
-    }
-    .cur_color{
-        display: inline-block;
-        width:26px;
-        height:18px;
-        margin-top: 2px;
-        margin-left: 4px;
+    .picker_button{
+        width:50px;
+        height:24px;
         border: 1px solid #333;
-    }
-    .arrow_btn{
-        position: absolute;
-        display: inline-block;
-        width:0;
-        height:0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 10px solid #999;
-        top: 7px;
-        left:36px;
+        background-color: #f0f0f0;
         &:hover{
             cursor: pointer;
-            border-top: 10px solid #666;
         }
-        &:active{
-            border-top: 10px solid #111;
+        .cur_color{
+            display: inline-block;
+            width:26px;
+            height:18px;
+            margin-top: 2px;
+            margin-left: 4px;
+            border: 1px solid #333;
+        }
+        .arrow_btn{
+            position: absolute;
+            display: inline-block;
+            width:0;
+            height:0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 10px solid #999;
+            top: 7px;
+            left:36px;
+            &:hover{
+                cursor: pointer;
+                border-top: 10px solid #666;
+            }
+            &:active{
+                border-top: 10px solid #111;
+            }
         }
     }
+
     .picker_box{
         position: absolute;
         width:336px;
@@ -472,7 +475,37 @@
     width:1000px;
     height:800px;
     border: 1px solid #ddd;
-
+    .backgroundApacity(@alp,@opa){
+        filter:alpha(opacity=@alp);
+        -moz-opacity:@opa;
+        -khtml-opacity: @opa;
+        opacity: @opa;
+    }
+    .buttonStyle{
+        display: inline-block;
+        vertical-align: top;
+        width:28px;
+        height:25px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        margin-left: 10px;
+        background-size: 16px;
+        background-position: 5px 5px;
+        background-repeat: no-repeat;
+        background-color: #ebebef;
+        .backgroundApacity(70,0.7);
+        &:hover{
+            cursor: pointer;
+            color:#000;
+            border: 1px solid #aaa;
+            .backgroundApacity(80,0.8);
+        }
+        &:active{
+            border: 1px solid #888;
+            background-color: #e0e0e0;
+            .backgroundApacity(90,0.9);
+        }
+    }
     .tool{
         width:100%;
         height: 100px;
@@ -512,7 +545,7 @@
                 margin-left: 10px;
                 font-size: 14px;
             }
-            .span_style{
+            .inputSstyle{
                 display: inline-block;
                 vertical-align: top;
                 width:28px;
@@ -539,99 +572,83 @@
                 }
             }
             .bold{
-                .span_style;
+                .inputSstyle;
                 font-size: 18px;
             }
             .italic{
-                .span_style;
+                .inputSstyle;
                 font-style: italic;
                 font-size: 18px;
             }
-            .backgroundApacity(@alp,@opa){
-                filter:alpha(opacity=@alp);
-                -moz-opacity:@opa;
-                -khtml-opacity: @opa;
-                opacity: @opa;
-            }
-            .textStyle{
-                display: inline-block;
-                vertical-align: top;
-                width:28px;
-                height:25px;
-                border: 1px solid #ddd;
-                box-sizing: border-box;
-                margin-left: 10px;
-                background-size: 16px;
-                background-position: 5px 5px;
-                background-repeat: no-repeat;
-                background-color: #ebebef;
-                .backgroundApacity(70,0.7);
-                &:hover{
-                    cursor: pointer;
-                    color:#000;
-                    border: 1px solid #aaa;
-                    .backgroundApacity(80,0.8);
-                }
-                &:active{
-                    border: 1px solid #888;
-                    background-color: #e0e0e0;
-                    .backgroundApacity(90,0.9);
-                }
-            }
+
             .text_left{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/textLeft.png);
             }
             .text_center{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/textCenter.png);
             }
             .text_right{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/textRight.png);
             }
             .reply_left{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/reply.png);
             }
             .reply_right{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/reply_r.png);
             }
             .indent{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/indent.png);
             }
             .outdent{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/outdent.png);
             }
             .underline{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/underline.png);
             }
             .deleteline{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/deleteline.png);
             }
             .remove_format{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/removeFormat.png);
             }
             .code_format{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/codeFormat1.png);
                 background-position: 5px 4px;
             }
             .table{
-                .textStyle;
+                .buttonStyle;
                 background-image: url(../img/table1.png);
                 background-size: 17px;
                 background-position: 5px 5px;
             }
         }
         .second_row{
+            position: relative;
             margin-top: 15px;
+            .foreColor{
+                .buttonStyle;
+                height:26px;
+                margin-left: 0;
+            }
+            .backColor{
+                .buttonStyle;
+                height:26px;
+
+            }
+            .inlineBlock{
+                display: inline-block;
+            }
         }
 
     }
@@ -645,19 +662,30 @@
         position: absolute;
         width:500px;
         height:594px;
-        border: 1px solid #ccc;
-        background-color: #f5f5f7;
+        border: 1px solid #8db02e;
+        background-color: #fff;
         left: 50%;
         margin-left: -250px;
         top:90px;
         z-index: 10001;
         text-align: center;
-        box-shadow: 0 0 6px #d888;
+        box-shadow: 0 0 6px #8db02e;
+
         display: none;
         .dialog_header{
             width:100%;
             height:30px;
-            background-color: @theme_color;
+            text-align: left;
+            background-color: #8db02e;
+            .dialog_title{
+                display: inline-block;
+                width: 120px;
+                height: 30px;
+                line-height: 30px;
+                margin-left: 20px;
+                color:#fff;
+                font-size: 12px;
+            }
             .dialog_close{
                 display: inline-block;
                 width: 30px;
@@ -666,9 +694,10 @@
                 line-height: 27px;
                 color:#fff;
                 font-size: 20px;
-                margin-left: 470px;
+                margin-left: 330px;
                 &:hover{
                     cursor: pointer;
+                    color:#fff;
                     background-color: #f05f5f;
                 }
             }
@@ -679,20 +708,22 @@
             margin: 20px auto 0;
             height:500px;
             background-color: #fff;
-            resize:none
+            resize:none;
+            border: 1px solid #d5d5d5;
         }
         .dialog_ok_btn{
             width:60px;
             height:22px;
             margin-top: 11px;
             margin-left: 419px;
-            background-color: @theme_color;
+            background-color: #8db02e;
             color:#fff;
             line-height: 22px;
             text-align: center;
             font-size: 12px;
             &:hover{
                 cursor: pointer;
+                background-color: fadeout(#8db02e,20%);
             }
         }
     }
