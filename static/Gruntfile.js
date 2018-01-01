@@ -38,11 +38,20 @@ module.exports = function(grunt){
                     'js/ui_frame.min.js':'js/ui_frame.js'
                 }
             }
+        },
+        watch: {
+            less: {
+                files: ['less/ui_frame.less'],
+                tasks:['default1'],
+                options: {livereload:false}
+            }
         }
     })
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.registerTask('default',['less','cssmin','uglify']);
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.registerTask('default1',['less','cssmin','uglify']);
+    grunt.registerTask('default',['watch']);
 }
 

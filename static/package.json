@@ -10,10 +10,13 @@
   "license": "ISC",
   "devDependencies": {
     "grunt": "^1.0.1",
+    "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-csslint": "^2.0.0",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-less": "^1.4.1",
-    "grunt-contrib-uglify": "^3.2.1"
-  }
+    "grunt-contrib-uglify": "^3.2.1",
+    "grunt-contrib-watch": "^1.0.0"
+  },
+  "dependencies": {}
 }
