@@ -469,6 +469,9 @@
     //background: -webkit-linear-gradient(top,red,orange,yellow,green,blue,indigo,violet);
 
 }
+.pan-blogs-dialog{
+
+}
 .pan-edit-frame{
 
     position: relative;
@@ -530,7 +533,7 @@
                 -webkit-appearance:none;
                 color:#666;
                 border-radius: 0px;
-                background-color: #ededed;
+                background-color: #fefefe;
                 &:hover{
                     cursor: pointer;
                 }
@@ -628,7 +631,7 @@
             }
             .table{
                 .buttonStyle;
-                background-image: url(../img/table1.png);
+                background-image: url(../img/table2.png);
                 background-size: 17px;
                 background-position: 5px 5px;
             }
@@ -640,14 +643,20 @@
                 .buttonStyle;
                 height:26px;
                 margin-left: 0;
+                background-image: url(../img/penColor.png);
             }
             .backColor{
                 .buttonStyle;
                 height:26px;
-
+                background-image: url(../img/paintPot.png);
             }
-            .inlineBlock{
-                display: inline-block;
+            .link{
+                .buttonStyle;
+                background-image: url(../img/link_001.png);
+            }
+            .preview{
+                .buttonStyle;
+                background-image: url(../img/preview.png);
             }
         }
 
@@ -658,7 +667,8 @@
         border: 0px solid #000;
         background-color: #fff;
     }
-    .code_dialog{
+    //dialog 样式
+    .dialog_box{
         position: absolute;
         width:500px;
         height:594px;
@@ -670,37 +680,59 @@
         z-index: 10001;
         text-align: center;
         box-shadow: 0 0 6px #8db02e;
-
         display: none;
-        .dialog_header{
-            width:100%;
-            height:30px;
-            text-align: left;
-            background-color: #8db02e;
-            .dialog_title{
-                display: inline-block;
-                width: 120px;
-                height: 30px;
-                line-height: 30px;
-                margin-left: 20px;
+    }
+    .dialog_header{
+        width:100%;
+        height:30px;
+        text-align: left;
+        background-color: #8db02e;
+        .dialog_title{
+            display: inline-block;
+            vertical-align: top;
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            margin-left: 20px;
+            color:#fff;
+            font-size: 12px;
+        }
+        .dialog_close{
+            display: inline-block;
+            vertical-align: top;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 27px;
+            color:#fff;
+            font-size: 20px;
+            margin-left: 330px;
+            &:hover{
+                cursor: pointer;
                 color:#fff;
-                font-size: 12px;
+                background-color: #f05f5f;
             }
-            .dialog_close{
-                display: inline-block;
-                width: 30px;
-                height: 30px;
-                text-align: center;
-                line-height: 27px;
-                color:#fff;
-                font-size: 20px;
-                margin-left: 330px;
-                &:hover{
-                    cursor: pointer;
-                    color:#fff;
-                    background-color: #f05f5f;
-                }
-            }
+        }
+    }
+    .dialog_ok_btn{
+        width:60px;
+        height:22px;
+        margin-top: 11px;
+        margin-left: 419px;
+        background-color: #8db02e;
+        color:#fff;
+        line-height: 22px;
+        text-align: center;
+        font-size: 12px;
+        &:hover{
+            cursor: pointer;
+            background-color: fadeout(#8db02e,20%);
+        }
+    }
+    .code_dialog{
+        .dialog_box;
+        textarea{
+            outline:none
         }
         .dialog_content{
             display: inline-block;
@@ -709,22 +741,81 @@
             height:500px;
             background-color: #fff;
             resize:none;
-            border: 1px solid #d5d5d5;
+            border: 1px solid #8db02e;
+        }
+    }
+    .link_dialog{
+        .dialog_box;
+        height: 150px;
+        textarea{
+            outline:none
+        }
+        .link_content{
+            font-size: 12px;
+            span{
+                display: inline-block;
+                width:60px;
+                height:20px;
+                text-align: right;
+                padding-right: 10px;
+                margin-top: 15px;
+            }
+            input{
+                width:390px;
+                margin-top: 15px;
+                outline:none;
+                border: 1px solid #ccc;
+                &:focus{
+                    border: 1px solid #8db02e;
+                }
+            }
+        }
+    }
+    .previewGg{
+        position: fixed;
+        width:100%;
+        height:100%;
+        left:0;
+        top:0;
+        background-color: fadeout(#000,25%);
+        z-index:10001;
+        display: none;
+        .previewContent{
+            width:1100px;
+            padding: 20px;
+            height:100%;
+            margin: 0 auto;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+    }
+    .table_dialog{
+        .dialog_box;
+        width:240px;
+        height: 150px;
+        margin-left: -120px;
+        .table_content{
+            margin-top:20px;
+            height: 46px;
+            input{
+                width:40px;
+                margin-top: 15px;
+                margin-left: 15px;
+                outline:none;
+                border: 1px solid #ccc;
+                &:focus{
+                    border: 1px solid #8db02e;
+                }
+            }
+            span{
+                margin-left: 15px;
+            }
         }
         .dialog_ok_btn{
-            width:60px;
-            height:22px;
-            margin-top: 11px;
-            margin-left: 419px;
-            background-color: #8db02e;
-            color:#fff;
-            line-height: 22px;
-            text-align: center;
-            font-size: 12px;
-            &:hover{
-                cursor: pointer;
-                background-color: fadeout(#8db02e,20%);
-            }
+            margin-left: 150px;
+        }
+        .dialog_close{
+            margin-left: 70px;
         }
     }
 }

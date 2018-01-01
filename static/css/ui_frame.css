@@ -4,6 +4,15 @@ body {
   padding: 0;
   background-image: url("../img/background_003.png");
 }
+input {
+  outline: none;
+  border: 1px solid #ccc;
+  color: #333;
+}
+input:focus {
+  border: 1px solid #8db02e;
+  box-shadow: 0 0 4px #8db02e;
+}
 #frame_html .frame_header {
   width: 100%;
   height: 50px;
@@ -55,7 +64,7 @@ body {
   color: #fff;
 }
 #frame_html .frame_content {
-  width: 1100px;
+  width: 1200px;
   min-height: 800px;
   margin: 40px auto 100px;
   box-sizing: border-box;
@@ -209,7 +218,7 @@ body {
 }
 #blogs_list_html .left_nav {
   display: inline-block;
-  width: 220px;
+  width: 200px;
   height: 1000px;
   vertical-align: top;
 }
@@ -242,7 +251,7 @@ body {
 }
 #blogs_list_html .right_content {
   display: inline-block;
-  width: 850px;
+  width: 980px;
   height: 1600px;
   margin-left: 5px;
   vertical-align: top;
@@ -256,12 +265,14 @@ body {
   font-size: 14px;
 }
 .essay_html input.title_text {
-  width: 90%;
+  width: 100%;
   height: 30px;
   margin-top: 10px;
+  font-size: 14px;
 }
 .essay_html .article {
   margin-top: 20px;
+  height: 32px;
   color: #666;
   font-size: 14px;
 }
