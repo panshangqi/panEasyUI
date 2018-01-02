@@ -5,9 +5,8 @@ def sqliteTest():
     conn = sqlite3.connect('test.db')
     print "Opened database successfully";
     cursor = conn.cursor()
-    cu.execute("select * from plugs_info")
-
-
+    cursor.execute("select * from plugs_info")
+    print cursor.fetchall()
 
 
 if __name__ == '__main__':

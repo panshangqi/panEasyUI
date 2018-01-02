@@ -10,6 +10,7 @@ url = [(r"/index",IndexHandler),
         (r"/plugs_scroll",PlugsScrollHandler),
         (r"/blogs_list",BlogsListHandler),
         (r"/blogs_essay",BlogsEssayHandler),
+        (r"/blogs_sqlite",BlogsSqliteHandler),
         (r"/.*",BaseHandler)
 
       ]

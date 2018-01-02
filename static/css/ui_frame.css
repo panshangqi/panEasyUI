@@ -13,6 +13,23 @@ input:focus {
   border: 1px solid #8db02e;
   box-shadow: 0 0 4px #8db02e;
 }
+button {
+  width: 80px;
+  height: 35px;
+  border: 1px solid #8DB02E;
+  background-color: #8DB02E;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  outline: 0;
+}
+button:hover {
+  cursor: pointer;
+  background-color: rgba(141, 176, 46, 0.85);
+}
+textarea {
+  resize: none;
+}
 #frame_html .frame_header {
   width: 100%;
   height: 50px;
@@ -275,4 +292,12 @@ input:focus {
   height: 32px;
   color: #666;
   font-size: 14px;
+}
+.essay_html .selected_classify {
+  width: 100%;
+  min-height: 50px;
+}
+.essay_html .submit_btn {
+  width: 60px;
+  height: 26px;
 }
