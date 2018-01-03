@@ -14,6 +14,10 @@ insert into plugs_info(ID,NAME,SUMMARY,URL) values();
 insert into plugs_info(ID,NAME,SUMMARY,URL) values();
 insert into plugs_info(ID,NAME,SUMMARY,URL) values();
 
+create table user_info(kid integer primary key,
+username varchar(30) not null,
+password varchar(30) not null
+);
 
 =================================================================================
 终端管理密码 106363
