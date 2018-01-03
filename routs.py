@@ -1,6 +1,9 @@
+
+# -*- coding=utf-8 -*-
 import sys
 reload(sys)
-sys.setdefaultencoding('utf-8')
+sys.setdefaultencoding('utf8')
+
 from apps.components import *
 from apps.plugs import *
 from apps.blogs import *

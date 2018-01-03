@@ -9,9 +9,17 @@
 {% endblock %}
 
 {% block blogs_content %}
-
-
+<div id="blogs_html_list">
+    {% for item in blogs_list %}
+    <div class="blogs_item">
+        <div class="item_title">{{item.title}}</div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
-{% block blogs_script %}
 
+{% block blogs_script %}
+<script>
+    var blogs_list = {{json_encode(blogs_list)}};
+</script>
 {% endblock %}

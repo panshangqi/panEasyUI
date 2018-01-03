@@ -19,6 +19,28 @@ username varchar(30) not null,
 password varchar(30) not null
 );
 
+create table blogs_info(tid integer primary key,
+user_id integer not null,
+title varchar(100) not null,
+label varchar(20) not null,
+summary TEXT not null,
+article TEXT not null,
+create_time int not null,
+alter_time int not__null);
+
+//查询字段名
+pragma table_info(user_info);
+
+//复制表数据
+1.修改原表名称
+alert table mytable rename to mytable_bak;
+2.新建修改字段之后的表
+create table mytable (tid integer primary key,username text not null,password text not null);
+3.从旧表中查询数据 并插入新表
+insert into mytable select tid,username,password from mytable_bak;
+4.删除旧表
+drop table mytable_bak;
+
 =================================================================================
 终端管理密码 106363
 //创建用户信息

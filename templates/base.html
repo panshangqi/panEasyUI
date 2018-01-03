@@ -29,7 +29,7 @@
 <div id="frame_login" style="display: none">
     <div class="login_box">
         <div class="close" id="login_close">×</div>
-        <form action="/login" method="get">
+        <form action="/login" method="post">
             {{ xsrf_form_html() }}
             <input type="text" placeholder="Username" class="username" name="username"><br/>
             <input type="password" placeholder="Password" class="password" name="password">
