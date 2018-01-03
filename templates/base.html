@@ -29,9 +29,13 @@
 <div id="frame_login" style="display: none">
     <div class="login_box">
         <div class="close" id="login_close">×</div>
-        <input type="text" placeholder="Username" class="username"><br/>
-        <input type="password" placeholder="Password" class="password">
-        <div class="login_btn">登 陆</div>
+        <form action="/login" method="get">
+            {{ xsrf_form_html() }}
+            <input type="text" placeholder="Username" class="username" name="username"><br/>
+            <input type="password" placeholder="Password" class="password" name="password">
+            <input type="text" name="request_path" value="{{request.path}}"/>
+            <input class="login_btn" type="submit" value="登陆"/>
+        </form>
     </div>
 </div>
 <script type="text/javascript" src="{{static_url}}/lib/jquery/jquery.min.js"></script>
