@@ -24,7 +24,7 @@ class BlogsSqliteHandler(BaseHandler):
         conn = sqlite3.connect("database/blogs_info.db")
         cursor = conn.cursor()
         cursor.execute(sql)
-        
+
         result =  cursor.fetchall()
         print result
         self.write(sql)
