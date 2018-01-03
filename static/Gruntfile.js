@@ -41,7 +41,7 @@ module.exports = function(grunt){
         },
         watch: {
             less: {
-                files: ['less/ui_frame.less'],
+                files: ['less/ui_frame.less','less/panEasyUI.less','js/panEasyUI.js'],
                 tasks:['default1'],
                 options: {livereload:false}
             }

@@ -8,3 +8,7 @@ class BlogsListHandler(BaseHandler):
 class BlogsEssayHandler(BaseHandler):
     def get(self):
         self.render_html("blogs/blogs_essay.html")
+
+class BlogsClassifyHandler(BaseHandler):
+    def get(self):
+        self.render_html("blogs/blogs_classify.html")
