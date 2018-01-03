@@ -48,7 +48,8 @@ class BlogsListHandler(BaseHandler):
             cursor.close()
             conn.close()
         except:
-            traceback.print_exc()
+            #traceback.print_exc()
+            print 'except'
         self.render_html("blogs/blogs_list.html",blogs_list=blogs_list)
 
 class BlogsEssayHandler(BaseHandler):
