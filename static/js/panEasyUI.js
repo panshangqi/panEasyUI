@@ -949,344 +949,355 @@ var panBlogsDialog = function(ele,options,fn){
 }
 
 //富文本编辑器
-$.fn.extend({
-    panEditFrame:function(data){
-        var defaults = {
-            'width':810,
-            'height':500
-        };
-        var settings = $.extend({},defaults,data);
-        var family_arr = ['宋体','黑体','新宋体','仿宋','楷体','幼圆','Consolas','Courier New','Arial','Georgia','Impact','New Roman'];
-        var fontsize_arr = {
-            '初号':'9',
-            '一号':'8',
-            '二号':'7',
-            '三号':'6',
-            '小三':'5',
-            '四号':'4',
-            '小四':'3',
-            '五号':'2',
-            '小五':'1',
-        };
-        //<iframe>标签不能动态加载，为了兼容FireFox浏览器
-        var html = '<div class="tool">';
-        html += '<div class="first_row"><select class="family"></select>';
-        html += '<select class="fontsize"></select>';
-        html += '<button class="bold" title="粗体">B</button>';
-        html += '<button class="italic" title="斜体">I</button>';
-        html += '<button class="text_left" title="左对齐" tabindex = "0"></button>';
-        html += '<button class="text_center" title="居中对齐"></button>';
-        html += '<button class="text_right" title="右对齐"></button>';
-        html += '<button class="reply_left" title="撤销"></button>';
-        html += '<button class="reply_right" title="恢复撤销"></button>';
-        html += '<button class="indent" title="增加缩进"></button>';
-        html += '<button class="outdent" title="减少缩进"></button>';
-        html += '<button class="underline" title="下划线"></button>';
-        html += '<button class="deleteline" title="删除线"></button>';
-        html += '<button class="remove_format" title="清除格式"></button>';
-        html += '<button class="code_format" title="代码格式化"></button>';
-        html += '<button class="table" title="表格"></button>';
-        html += '</div>';
-        html += '<div class="second_row">'
-        html += '<button class="foreColor" title="字体颜色"></button><div class="pan-color-picker" id="forePicker" style="position: absolute"></div>';
-        html += '<button class="backColor" title="字体背景颜色"></button><div class="pan-color-picker" id="backPicker" style="position: absolute"></div>';
-        html += '<button class="link" title="超链接"></button>';
-        html += '<button class="preview" title="预览"></button>';
-        html += '</div>';
-        html += '</div>';
-        settings.width = settings.width < 800 ? 800:settings.width;
-        settings.height = settings.height < 400 ? 400:settings.height;
-        $(this).css({
-            'width':settings.width+'px',
-            'height':settings.height+'px'
-        })
-        var $iframe = $(this).find('iframe');
-        $iframe.before(html);
-        $iframe.css({
-            'height':(settings.height-100)+'px'
-        })
-        //$(this).append(html);
-        //插入表格
-        html = '<div class="table_dialog">';
-        html += '<div class="dialog_header"><span class="dialog_title">插入表格</span><span class="dialog_close">×</span></div>';
-        html += '<div class="table_content"><input type="text" class="table_rows" value="3"><span>行</span><input type="text" class="table_cols" value="3"><span>列</span></div>';
-        html += '<div class="dialog_ok_btn">确定</div>'
-        $(this).append(html);
-        //代码编辑框
-        html = '<div class="code_dialog">';
-        html += '<div class="dialog_header"><span class="dialog_title">插入代码</span><span class="dialog_close">×</span></div><textarea class="dialog_content" spellcheck="false"></textarea>';
-        html += '<div class="dialog_ok_btn">确定</div>'
-        $(this).append(html);
-        //插入超链接
-        html = '<div class="link_dialog">';
-        html += '<div class="dialog_header"><span class="dialog_title">插入超链接</span><span class="dialog_close">×</span></div>';
-        html += '<div class="link_content"><span>链接名字:</span><input type="text" class="link_name"/><br/><span>链接Url:</span><input type="text" class="link_id"/></div>';
-        html += '<div class="dialog_ok_btn">确定</div>'
-        $(this).append(html);
+var panEditFrameObj=function(ele,data,fn){
+    var defaults = {
+        'width':810,
+        'height':500
+    };
+    var settings = $.extend({},defaults,data);
+    var self = this;
+    var $element = ele;
+    var family_arr = ['宋体','黑体','新宋体','仿宋','楷体','幼圆','Consolas','Courier New','Arial','Georgia','Impact','New Roman'];
+    var fontsize_arr = {
+        '初号':'9',
+        '一号':'8',
+        '二号':'7',
+        '三号':'6',
+        '小三':'5',
+        '四号':'4',
+        '小四':'3',
+        '五号':'2',
+        '小五':'1',
+    };
+    //<iframe>标签不能动态加载，为了兼容FireFox浏览器
+    var html = '<div class="tool">';
+    html += '<div class="first_row"><select class="family"></select>';
+    html += '<select class="fontsize"></select>';
+    html += '<button class="bold" title="粗体">B</button>';
+    html += '<button class="italic" title="斜体">I</button>';
+    html += '<button class="text_left" title="左对齐" tabindex = "0"></button>';
+    html += '<button class="text_center" title="居中对齐"></button>';
+    html += '<button class="text_right" title="右对齐"></button>';
+    html += '<button class="reply_left" title="撤销"></button>';
+    html += '<button class="reply_right" title="恢复撤销"></button>';
+    html += '<button class="indent" title="增加缩进"></button>';
+    html += '<button class="outdent" title="减少缩进"></button>';
+    html += '<button class="underline" title="下划线"></button>';
+    html += '<button class="deleteline" title="删除线"></button>';
+    html += '<button class="remove_format" title="清除格式"></button>';
+    html += '<button class="code_format" title="代码格式化"></button>';
+    html += '<button class="table" title="表格"></button>';
+    html += '</div>';
+    html += '<div class="second_row">'
+    html += '<button class="foreColor" title="字体颜色"></button><div class="pan-color-picker" id="forePicker" style="position: absolute"></div>';
+    html += '<button class="backColor" title="字体背景颜色"></button><div class="pan-color-picker" id="backPicker" style="position: absolute"></div>';
+    html += '<button class="link" title="超链接"></button>';
+    html += '<button class="preview" title="预览"></button>';
+    html += '</div>';
+    html += '</div>';
+    settings.width = settings.width < 800 ? 800:settings.width;
+    settings.height = settings.height < 400 ? 400:settings.height;
+    $element.css({
+        'width':settings.width+'px',
+        'height':settings.height+'px'
+    })
+    var $iframe = $element.find('iframe');
+    $iframe.before(html);
+    $iframe.css({
+        'height':(settings.height-100)+'px'
+    })
+    //$(this).append(html);
+    //插入表格
+    html = '<div class="table_dialog">';
+    html += '<div class="dialog_header"><span class="dialog_title">插入表格</span><span class="dialog_close">×</span></div>';
+    html += '<div class="table_content"><input type="text" class="table_rows" value="3"><span>行</span><input type="text" class="table_cols" value="3"><span>列</span></div>';
+    html += '<div class="dialog_ok_btn">确定</div>'
+    $element.append(html);
+    //代码编辑框
+    html = '<div class="code_dialog">';
+    html += '<div class="dialog_header"><span class="dialog_title">插入代码</span><span class="dialog_close">×</span></div><textarea class="dialog_content" spellcheck="false"></textarea>';
+    html += '<div class="dialog_ok_btn">确定</div>'
+    $element.append(html);
+    //插入超链接
+    html = '<div class="link_dialog">';
+    html += '<div class="dialog_header"><span class="dialog_title">插入超链接</span><span class="dialog_close">×</span></div>';
+    html += '<div class="link_content"><span>链接名字:</span><input type="text" class="link_name"/><br/><span>链接Url:</span><input type="text" class="link_id"/></div>';
+    html += '<div class="dialog_ok_btn">确定</div>'
+    $element.append(html);
 
-        //预览
-        html = '<div class="previewGg"><div class="previewContent"></div></div>';
-        $(this).append(html);
+    //预览
+    html = '<div class="previewGg"><div class="previewContent"></div></div>';
+    $element.append(html);
 
-        //抽取对象
-        var $family = $(this).find('.family');
-        var $fontsize = $(this).find('.fontsize');
+    //抽取对象
+    var $family = $element.find('.family');
+    var $fontsize = $element.find('.fontsize');
 
-        var $bold = $(this).find('.bold');
-        var $italic = $(this).find('.italic');
-        var $textLeft = $(this).find('.text_left');
-        var $textCenter = $(this).find('.text_center');
-        var $textRight = $(this).find('.text_right');
-        var $replyLeft = $(this).find('.reply_left');
-        var $replyRight = $(this).find('.reply_right');
-        var $indent = $(this).find('.indent');
-        var $outdent = $(this).find('.outdent');
-        var $underline = $(this).find('.underline');
-        var $deleteline = $(this).find('.deleteline');
-        var $removeFormat = $(this).find('.remove_format');
-        var $codeFormat = $(this).find('.code_format');
-        var $table = $(this).find('.table');
+    var $bold = $element.find('.bold');
+    var $italic = $element.find('.italic');
+    var $textLeft = $element.find('.text_left');
+    var $textCenter = $element.find('.text_center');
+    var $textRight = $element.find('.text_right');
+    var $replyLeft = $element.find('.reply_left');
+    var $replyRight = $element.find('.reply_right');
+    var $indent = $element.find('.indent');
+    var $outdent = $element.find('.outdent');
+    var $underline = $element.find('.underline');
+    var $deleteline = $element.find('.deleteline');
+    var $removeFormat = $element.find('.remove_format');
+    var $codeFormat = $element.find('.code_format');
+    var $table = $element.find('.table');
 
-        var $colorForeBtn = $(this).find('.foreColor');
-        var $colorBackBtn = $(this).find('.backColor');
-        var $colorForePicker = $(this).find('#forePicker');
-        var $colorBackPicker = $(this).find('#backPicker');
+    var $colorForeBtn = $element.find('.foreColor');
+    var $colorBackBtn = $element.find('.backColor');
+    var $colorForePicker = $element.find('#forePicker');
+    var $colorBackPicker = $element.find('#backPicker');
 
-        var $link = $(this).find('.link');
-        var $preview = $(this).find('.preview');
-        //insert code dialog
-        var $codeDialog = $(this).find('.code_dialog');
-        var $codeContent = $codeDialog.find('.dialog_content');
-        var $codeDialogClose = $codeDialog.find('.dialog_close');
-        var $codeDialogOK = $codeDialog.find('.dialog_ok_btn');
-        //insert link dialog
-        var $linkDialog = $(this).find('.link_dialog');
-        var $linkName = $linkDialog.find('.link_name');
-        var $linkId = $linkDialog.find('.link_id');
-        var $linkDialogClose = $linkDialog.find('.dialog_close');
-        var $linkDialogOK = $linkDialog.find('.dialog_ok_btn');
+    var $link = $element.find('.link');
+    var $preview = $element.find('.preview');
+    //insert code dialog
+    var $codeDialog = $element.find('.code_dialog');
+    var $codeContent = $codeDialog.find('.dialog_content');
+    var $codeDialogClose = $codeDialog.find('.dialog_close');
+    var $codeDialogOK = $codeDialog.find('.dialog_ok_btn');
+    //insert link dialog
+    var $linkDialog = $element.find('.link_dialog');
+    var $linkName = $linkDialog.find('.link_name');
+    var $linkId = $linkDialog.find('.link_id');
+    var $linkDialogClose = $linkDialog.find('.dialog_close');
+    var $linkDialogOK = $linkDialog.find('.dialog_ok_btn');
 
-        //preview
-        var $previewDialog = $(this).find('.previewGg');
-        var $previewContent = $(this).find('.previewContent');
+    //preview
+    var $previewDialog = $element.find('.previewGg');
+    var $previewContent = $element.find('.previewContent');
 
-        //table
-        var $tableDialog = $(this).find('.table_dialog');
-        var $tableRows = $tableDialog.find('.table_rows');
-        var $tableCols = $tableDialog.find('.table_cols');
-        var $tableDialogClose = $tableDialog.find('.dialog_close');
-        var $tableDialogOK = $tableDialog.find('.dialog_ok_btn');
+    //table
+    var $tableDialog = $element.find('.table_dialog');
+    var $tableRows = $tableDialog.find('.table_rows');
+    var $tableCols = $tableDialog.find('.table_cols');
+    var $tableDialogClose = $tableDialog.find('.dialog_close');
+    var $tableDialogOK = $tableDialog.find('.dialog_ok_btn');
 
-        //实例化颜色选择器
-        var forePicker = $colorForePicker.panColorPicker({'showBtn':false},function(data){
-            ifwin.document.execCommand('ForeColor', false, data.hex);
-            ifwin.focus();
-        });
-        var backPicker = $colorBackPicker.panColorPicker({'showBtn':false},function(data){
-            ifwin.document.execCommand('BackColor', false, data.hex);
-            ifwin.focus();
-        });
-        $colorForePicker.css({'left':'1px', 'top':'1px'});
-        $colorBackPicker.css({'left':'39px', 'top':'1px'});
-        //添加字体
-        html = '';
-        for(var i in family_arr){
-            html += '<option value ="'+ family_arr[i] +'">'+ family_arr[i] +'</option>'
-        }
-        $family.html(html);
-        //添加字号
-        html = '';
-        for(var key in fontsize_arr){
-            html += '<option value ="'+ fontsize_arr[key] +'">'+ key +'</option>'
-        }
-        $fontsize.html(html);
-        //获取iframe dom
-        var ifwin = $iframe[0].contentWindow;
-        var ifdom = $iframe[0].contentWindow.document;
-        console.log(ifwin);
-        ifdom.body.contentEditable = true;
-        $(ifdom.body).attr('spellcheck','false');  //取消拼写检查
-        ifdom.designMode = "on";
+    console.log($colorForePicker.html());
+
+    //实例化颜色选择器
+    var forePicker = $colorForePicker.panColorPicker({'showBtn':false},function(data){
+        ifwin.document.execCommand('ForeColor', false, data.hex);
         ifwin.focus();
-        //编辑字型：
-        //设置选定的文本为粗体/正常
-        Events();
-        function Events() {
+    });
+    var backPicker = $colorBackPicker.panColorPicker({'showBtn':false},function(data){
+        ifwin.document.execCommand('BackColor', false, data.hex);
+        ifwin.focus();
+    });
+    $colorForePicker.css({'left':'1px', 'top':'1px'});
+    $colorBackPicker.css({'left':'39px', 'top':'1px'});
 
-            $family.change(function () {
-                ifwin.document.execCommand('FontName', false, $(this).val());
-                ifwin.focus();
-            });
-            $fontsize.change(function () {
-                ifwin.document.execCommand('FontSize', false, parseInt($(this).val()));
-                ifwin.focus();
-            });
-
-            $bold.on('click', function () {
-                ifwin.document.execCommand('Bold', false, null);
-                ifwin.focus();
-            })
-            $italic.on('click', function () {
-                ifwin.document.execCommand('Italic', false, null);
-                ifwin.focus();
-            })
-            $textLeft.unbind('focus');
-            $textLeft.on('click', function () {
-                ifwin.document.execCommand('justifyLeft', false, null);
-                ifwin.focus();
-            })
-            $textCenter.on('click', function () {
-                ifwin.document.execCommand('justifyCenter', false, null);
-                ifwin.focus();
-            })
-            $textRight.on('click', function () {
-                ifwin.document.execCommand('justifyRight', false, null);
-                ifwin.focus();
-            })
-            $replyLeft.on('click', function () {
-                ifwin.document.execCommand('undo', false, null);
-                ifwin.focus();
-            })
-            $replyRight.on('click', function () {
-                ifwin.document.execCommand('redo', false, null);
-                ifwin.focus();
-            })
-            $indent.on('click', function () {
-                ifwin.document.execCommand('indent', false, null);
-                ifwin.focus();
-            })
-            $outdent.on('click', function () {
-                ifwin.document.execCommand('outdent', false, null);
-                ifwin.focus();
-            })
-            $underline.on('click', function () {
-                ifwin.document.execCommand('underline', false, null);
-                ifwin.focus();
-            })
-            $deleteline.on('click', function () {
-                ifwin.document.execCommand('strikeThrough', false, '1');
-                ifwin.focus();
-            })
-            $removeFormat.on('click', function () {
-                ifwin.document.execCommand('removeFormat', false, '1');
-                ifwin.focus();
-            })
-            $codeFormat.on('click', function () {
-                $codeContent.val('');
-                $codeDialog.css('display', 'block');
-            })
-            $colorForeBtn.on('click', function () {
-                forePicker.showPicker();
-            })
-            $colorBackBtn.on('click', function () {
-                backPicker.showPicker();
-            })
-            $codeDialogClose.on('click', function () {
-                $codeDialog.css('display', 'none');
-            })
-            $codeDialogOK.on('click', function () {
-                $codeDialog.css('display', 'none');
-                ifwin.focus();    //此处加上focus，兼容IE,插入代码之后找不到插入光标位置
-                var range = ifwin.getSelection().getRangeAt(0);
-                var frag = range.createContextualFragment(barCodeStyle($codeContent.val()));
-                range.insertNode(frag);
-                $(ifdom.body).append('<br/>'); //插入换行，兼容FireFox浏览器光标移动到下面
-            })
-            $table.on('click', function () {
-                console.log('table.clok');
-                $tableDialog.css('display','block');
-            })
-            $tableDialogClose.on('click',function () {
-                $tableDialog.css('display','none');
-            })
-            $tableDialogOK.on('click',function () {
-                $tableDialog.css('display','none');
-                var mRows = parseInt($tableRows.val());
-                var mCols = parseInt($tableCols.val());
-                ifwin.focus();
-                var range = ifwin.getSelection().getRangeAt(0);
-                var frag = range.createContextualFragment('<br/>' + addTable(mRows, mCols, 'center'));
-                range.insertNode(frag);
-                $(ifdom.body).append('<br/>');
-            })
-            $link.on('click', function () {
-                $linkDialog.css('display', 'block');
-                $linkName.val('');$linkId.val('');
-            })
-            $linkDialogClose.on('click', function () {
-                $linkDialog.css('display', 'none');
-            })
-            $linkDialogOK.on('click', function () {
-                ifwin.focus();
-                var range = ifwin.getSelection().getRangeAt(0);
-                var frag = range.createContextualFragment(addLink($linkName.val(),$linkId.val()));
-                range.insertNode(frag);
-                $linkDialog.css('display', 'none');
-            })
-            $preview.on('click',function () {
-                $previewDialog.css('display','block');
-                $previewContent.html($(ifdom.body).html());
-                $("html,body").css({overflow:"hidden"}); //禁用滚动条
-            })
-            $previewDialog.on('click',function(){
-                $(this).css('display','none');
-                $("html,body").css({overflow:"auto"});
-            })
-            $previewContent.on('click',function (event) {
-                event.stopPropagation();
-            })
-        }
-        //条形斑马栏样式
-        function barCodeStyle(text){
-            var rHtml = '<ol style="font-size: 13px;white-space: pre-wrap;font-family: Consolas;border: 1px solid #ddd" spellcheck="false">';
-            var rowList = text.split('\n');
-            for(var row=0;row<rowList.length;row++){
-                if(row%2 == 1)
-                    rHtml += '<li style="height:20px;line-height:20px;background-color: #f8f8f8;border-left:2px solid #8DB02E;padding-left: 10px;">' + keyHighter(rowList[row]) + '</li>';
-                else
-                    rHtml += '<li style="height:20px;line-height:20px;background-color: #ffffff;border-left:2px solid #8DB02E;padding-left: 10px;">' + keyHighter(rowList[row]) + '</li>';
-            }
-            rHtml += '</ol>';
-            return rHtml;
-        }
-        //添加超链接
-        function addLink(linkName,linkId){
-            var url = '';
-            if(typeof linkId === 'string' && (linkId.indexOf('https://')==-1 && linkId.indexOf('http://')==-1)){
-                url += 'http://' + linkId;
-            }
-            var lHtml = '<a href="' + url +'" target="_blank" >'+linkName+'</a>';
-            return lHtml;
-        }
-        //替换关键字的颜色
-        function keyHighter(text){
-            return text;
-            //return text.replace('main','<span style="color:#8DB02E;">main</span>');
-        }
-        //添加表格 algin 'left' 'center' 'right'
-        function addTable(rows,cols,algin){
-            var htm = '';
-            if(algin=='left')
-                htm += '<ol><table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
-            else if(algin=='center'){
-                htm += '<table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
-            }
-            for(var r = 0 ;r < rows;r++)
-            {
-                if(r%2==0)
-                    htm += '<tr style="background-color: #f8f8f8">';
-                else
-                    htm += '<tr style="background-color: #ffffff">';
-                for(var c=0;c < cols;c++){
-                    if(c==0)
-                        htm += '<td style="width:100px;height:30px;border-left:0px solid #d5d5d5;color:#666"></td>';
-                    else
-                        htm += '<td style="width:100px;height:30px;border-left:1px solid #d5d5d5;color:#666"></td>';
-                }
-                htm += '</tr>';
-            }
-            htm += '</table></ol>';
-            return htm;
-        }
+    //添加字体
+    html = '';
+    for(var i in family_arr){
+        html += '<option value ="'+ family_arr[i] +'">'+ family_arr[i] +'</option>'
     }
-});
+    $family.html(html);
+    //添加字号
+    html = '';
+    for(var key in fontsize_arr){
+        html += '<option value ="'+ fontsize_arr[key] +'">'+ key +'</option>'
+    }
+    $fontsize.html(html);
+    //获取iframe dom
+    var ifwin = $iframe[0].contentWindow;
+    var ifdom = $iframe[0].contentWindow.document;
+    console.log(ifwin);
+    ifdom.body.contentEditable = true;
+    $(ifdom.body).attr('spellcheck','false');  //取消拼写检查
+    ifdom.designMode = "on";
+    ifwin.focus();
+    //编辑字型：
+    //设置选定的文本为粗体/正常
+    self.getFrameBodyHtml = function () {
+        return $(ifdom.body).html();
+    }
+    Events();
+    function Events() {
+
+        $family.change(function () {
+            ifwin.document.execCommand('FontName', false, $(this).val());
+            ifwin.focus();
+        });
+        $fontsize.change(function () {
+            ifwin.document.execCommand('FontSize', false, parseInt($(this).val()));
+            ifwin.focus();
+        });
+
+        $bold.on('click', function () {
+            ifwin.document.execCommand('Bold', false, null);
+            ifwin.focus();
+        })
+        $italic.on('click', function () {
+            ifwin.document.execCommand('Italic', false, null);
+            ifwin.focus();
+        })
+        $textLeft.unbind('focus');
+        $textLeft.on('click', function () {
+            ifwin.document.execCommand('justifyLeft', false, null);
+            ifwin.focus();
+        })
+        $textCenter.on('click', function () {
+            ifwin.document.execCommand('justifyCenter', false, null);
+            ifwin.focus();
+        })
+        $textRight.on('click', function () {
+            ifwin.document.execCommand('justifyRight', false, null);
+            ifwin.focus();
+        })
+        $replyLeft.on('click', function () {
+            ifwin.document.execCommand('undo', false, null);
+            ifwin.focus();
+        })
+        $replyRight.on('click', function () {
+            ifwin.document.execCommand('redo', false, null);
+            ifwin.focus();
+        })
+        $indent.on('click', function () {
+            ifwin.document.execCommand('indent', false, null);
+            ifwin.focus();
+        })
+        $outdent.on('click', function () {
+            ifwin.document.execCommand('outdent', false, null);
+            ifwin.focus();
+        })
+        $underline.on('click', function () {
+            ifwin.document.execCommand('underline', false, null);
+            ifwin.focus();
+        })
+        $deleteline.on('click', function () {
+            ifwin.document.execCommand('strikeThrough', false, '1');
+            ifwin.focus();
+        })
+        $removeFormat.on('click', function () {
+            ifwin.document.execCommand('removeFormat', false, '1');
+            ifwin.focus();
+        })
+        $codeFormat.on('click', function () {
+            $codeContent.val('');
+            $codeDialog.css('display', 'block');
+        })
+        $colorForeBtn.on('click', function () {
+            forePicker.showPicker();
+        })
+        $colorBackBtn.on('click', function () {
+            backPicker.showPicker();
+        })
+        $codeDialogClose.on('click', function () {
+            $codeDialog.css('display', 'none');
+        })
+        $codeDialogOK.on('click', function () {
+            $codeDialog.css('display', 'none');
+            ifwin.focus();    //此处加上focus，兼容IE,插入代码之后找不到插入光标位置
+            var range = ifwin.getSelection().getRangeAt(0);
+            var frag = range.createContextualFragment(barCodeStyle($codeContent.val()));
+            range.insertNode(frag);
+            $(ifdom.body).append('<br/>'); //插入换行，兼容FireFox浏览器光标移动到下面
+        })
+        $table.on('click', function () {
+            console.log('table.clok');
+            $tableDialog.css('display','block');
+        })
+        $tableDialogClose.on('click',function () {
+            $tableDialog.css('display','none');
+        })
+        $tableDialogOK.on('click',function () {
+            $tableDialog.css('display','none');
+            var mRows = parseInt($tableRows.val());
+            var mCols = parseInt($tableCols.val());
+            ifwin.focus();
+            var range = ifwin.getSelection().getRangeAt(0);
+            var frag = range.createContextualFragment('<br/>' + addTable(mRows, mCols, 'center'));
+            range.insertNode(frag);
+            $(ifdom.body).append('<br/>');
+        })
+        $link.on('click', function () {
+            $linkDialog.css('display', 'block');
+            $linkName.val('');$linkId.val('');
+        })
+        $linkDialogClose.on('click', function () {
+            $linkDialog.css('display', 'none');
+        })
+        $linkDialogOK.on('click', function () {
+            ifwin.focus();
+            var range = ifwin.getSelection().getRangeAt(0);
+            var frag = range.createContextualFragment(addLink($linkName.val(),$linkId.val()));
+            range.insertNode(frag);
+            $linkDialog.css('display', 'none');
+        })
+        $preview.on('click',function () {
+            $previewDialog.css('display','block');
+            $previewContent.html($(ifdom.body).html());
+            $("html,body").css({overflow:"hidden"}); //禁用滚动条
+        })
+        $previewDialog.on('click',function(){
+            $(this).css('display','none');
+            $("html,body").css({overflow:"auto"});
+        })
+        $previewContent.on('click',function (event) {
+            event.stopPropagation();
+        })
+    }
+    //条形斑马栏样式
+    function barCodeStyle(text){
+        var rHtml = '<ol style="font-size: 13px;white-space: pre-wrap;font-family: Consolas;border: 1px solid #ddd" spellcheck="false">';
+        var rowList = text.split('\n');
+        for(var row=0;row<rowList.length;row++){
+            if(row%2 == 1)
+                rHtml += '<li style="height:20px;line-height:20px;background-color: #f8f8f8;border-left:2px solid #8DB02E;padding-left: 10px;">' + keyHighter(rowList[row]) + '</li>';
+            else
+                rHtml += '<li style="height:20px;line-height:20px;background-color: #ffffff;border-left:2px solid #8DB02E;padding-left: 10px;">' + keyHighter(rowList[row]) + '</li>';
+        }
+        rHtml += '</ol>';
+        return rHtml;
+    }
+    //添加超链接
+    function addLink(linkName,linkId){
+        var url = '';
+        if(typeof linkId === 'string' && (linkId.indexOf('https://')==-1 && linkId.indexOf('http://')==-1)){
+            url += 'http://' + linkId;
+        }
+        var lHtml = '<a href="' + url +'" target="_blank" >'+linkName+'</a>';
+        return lHtml;
+    }
+    //替换关键字的颜色
+    function keyHighter(text){
+        return text;
+        //return text.replace('main','<span style="color:#8DB02E;">main</span>');
+    }
+    //添加表格 algin 'left' 'center' 'right'
+    function addTable(rows,cols,algin){
+        var htm = '';
+        if(algin=='left')
+            htm += '<ol><table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
+        else if(algin=='center'){
+            htm += '<table style="width:800px;border:1px solid #aaa;" cellspacing="0">';
+        }
+        for(var r = 0 ;r < rows;r++)
+        {
+            if(r%2==0)
+                htm += '<tr style="background-color: #f8f8f8">';
+            else
+                htm += '<tr style="background-color: #ffffff">';
+            for(var c=0;c < cols;c++){
+                if(c==0)
+                    htm += '<td style="width:100px;height:30px;border-left:0px solid #d5d5d5;color:#666"></td>';
+                else
+                    htm += '<td style="width:100px;height:30px;border-left:1px solid #d5d5d5;color:#666"></td>';
+            }
+            htm += '</tr>';
+        }
+        htm += '</table></ol>';
+        return htm;
+    }
+};
+$.fn.extend({
+    panEditFrame:function(data,fn){
+        return new panEditFrameObj(this,data,fn);
+    }
+})

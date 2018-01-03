@@ -16,16 +16,32 @@
     <div class="pan-edit-frame" id="blogs_edit">
         <iframe></iframe>
     </div>
+    <div class="selected_classify">
+
+    </div>
+    <div>
+        <button class="submit_btn" id="submit_btn">提交</button>
+    </div>
 </div>
 
 {% endblock %}
 {% block blogs_script %}
 <script src="{{static_url}}/js/panEasyUI.js"></script>
 <script>
-
+/*
     $('#blogs_edit').panEditFrame({
         'width':935,
         'height':600
+    });*/
+    var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {
+
     });
+    $('#submit_btn').on('click',function(){
+        console.log(panEditObj.getFrameBodyHtml());
+        $.window.http.post('/blogs_essay',{'article':'hehe'},function(result){
+            console.log(result);
+        })
+    })
+
 </script>
 {% endblock %}

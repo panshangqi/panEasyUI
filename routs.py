@@ -11,6 +11,7 @@ url = [(r"/index",IndexHandler),
         (r"/blogs_list",BlogsListHandler),
         (r"/blogs_essay",BlogsEssayHandler),
         (r"/blogs_classify",BlogsClassifyHandler),
+        (r"/blogs_sqlite",BlogsSqliteHandler),
         (r"/.*",BaseHandler)
 
       ]

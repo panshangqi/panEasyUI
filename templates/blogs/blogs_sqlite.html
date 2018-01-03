@@ -1,0 +1,27 @@
+{% extends "blogs/blogs_base.html" %}
+{% block blogs_title %}数据库{% endblock %}
+{% block blogs_classify %}
+
+{% endblock %}
+
+{% block blogs_content %}
+<div style="padding: 20px">
+    <textarea style="width:800px;height:150px" id="input_sql"></textarea>
+    <div style="text-align: right;width:800px;"><button id="execute">执行</button></div>
+    <textarea style="width:800px;height:400px;margin-top: 20px;font-family: Consolas;" id="output_result"></textarea>
+</div>
+
+{% endblock %}
+
+{% block blogs_script %}
+<script>
+$('#execute').click(function(){
+    var sql = $('#input_sql').val();
+    $.window.http.post('/blogs_sqlite',{'sql':sql},function(data){
+        console.log(data);
+        $('#output_result').val(data);
+    })
+})
+
+</script>
+{% endblock %}

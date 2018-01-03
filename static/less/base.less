@@ -13,6 +13,23 @@ input{
         box-shadow: 0 0 4px #8db02e;
     }
 }
+button{
+    width:80px;
+    height:35px;
+    border: 1px solid @theme_color;
+    background-color: @theme_color;
+    color:#fff;
+    font-size: 13px;
+    outline: none;
+    outline:0;
+    &:hover{
+        cursor: pointer;
+        background-color: fadeout(@theme_color,15%);
+    }
+}
+textarea{
+    resize: none;
+}
 #frame_html{
     .frame_header{
         width:100%;
