@@ -28,6 +28,13 @@ article TEXT not null,
 create_time int not null,
 alter_time int not__null);
 
+create table label_info(
+label_id varchar(50) not null,
+label_name text not null,
+click_rate int default 0,
+create_time int not null,
+modify_time int not null);
+
 //查询字段名
 pragma table_info(user_info);
 

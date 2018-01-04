@@ -5,9 +5,12 @@ sys.setdefaultencoding('utf8')
 import time
 import tornado.escape
 #时间戳格式化
-def timestamp_format(timestamp):
+def timestamp_format(timestamp,flag):
     time_local = time.localtime(timestamp)
-    format = time.strftime('%Y-%m-%d',time_local)
+    if flag == True:
+        format = time.strftime('%Y-%m-%d',time_local)
+    else:
+        format = time.strftime('%Y-%m-%d %H:%M:%S',time_local)
     return format
 
 def json_encode(str):

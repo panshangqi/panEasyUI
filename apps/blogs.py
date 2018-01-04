@@ -4,6 +4,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 from jinja_tornado import *
+from public import *
 import tornado.web
 import time
 import sqlite3
@@ -113,5 +114,50 @@ class BlogsSqliteHandler(BaseHandler):
         result =  cursor.fetchall()
         print result
         self.write(sql)
+
+class BlogsLabelHandler(BaseHandler):
+    def get(self):
+        conn = sqlite3.connect("database/blogs_info.db")
+        cursor = conn.cursor()
+        sql = "select label_id,label_name,click_rate,create_time,modify_time from label_info order by create_time desc;"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        label_list = []
+        for row in result:
+            item={}
+            item['label_id'] = row[0]
+            item['label_name'] = row[1]
+            item['click_rate'] = row[2]
+            item['create_time'] = row[3]
+            item['modify_time'] = row[4]
+            label_list.append(item)
+
+        self.render_html("blogs/blogs_label.html",label_list=label_list)
+
+    def post(self):
+        action = self.get_argument('action')
+        if action == 'create':
+            label_name = self.get_argument('label_name')
+            label_id = getGuid()
+            result={}
+            try:
+                conn = sqlite3.connect("database/blogs_info.db")
+                cursor = conn.cursor()
+                sql = 'insert into label_info(label_id,label_name,create_time,modify_time) values("%s","%s",%d,%d);' % \
+                (label_id,label_name,time.time(),time.time())
+                cursor.execute(sql)
+                conn.commit()
+                cursor.close()
+                conn.close()
+                result['status'] = 1
+                self.write(result)
+            except:
+                result['status'] = 0
+                self.write(result)
+
+        elif action == 'modify':
+            label_name = self.get_argument('label_name')
+            modify_time = self.get_argument('modify_time')
+
 
 

@@ -1,0 +1,36 @@
+#blogs_label_html{
+    padding: 20px;
+    #add_label_box{
+        height:30px;
+        padding-top: 20px;
+        display: none;
+        overflow: hidden;
+        input{
+            width:860px;
+        }
+    }
+    .label_table{
+        width:100%;
+        text-align: center;
+        border-spacing:0;
+        border-collapse: collapse;
+        font-size: 13px;
+        color:#444;
+        margin-top: 20px;
+        border: 1px solid #e0e0e0;
+        thead tr{
+            background-color: #f0f0f0;
+            td{
+                height: 35px;
+            }
+        }
+        tbody tr{
+            &:nth-child(even) {
+                background-color: fadeout(@theme_color, 90%);
+            }
+            td{
+                height: 35px;
+            }
+        }
+    }
+}
