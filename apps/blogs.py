@@ -5,7 +5,8 @@ import time
 import sqlite3
 class LoginHandler(BaseHandler):
     def get(self):
-        self.redirect('/blogs_list')
+        print self.get_current_user()
+        self.redirect('/index')
     def post(self):
         username = self.get_argument('username')
         password = self.get_argument('password')
@@ -14,7 +15,7 @@ class LoginHandler(BaseHandler):
         print password
         print request_path
         self.set_secure_cookie('username',self.get_argument('username'),expires_days=None,expires=time.time()+500)
-        #self.redirect(request_path)
+        self.redirect('/index')
 
 class BlogsListHandler(BaseHandler):
     @tornado.web.authenticated
