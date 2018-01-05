@@ -1,6 +1,9 @@
+
+# -*- coding=utf-8 -*-
 import sys
 reload(sys)
-sys.setdefaultencoding('utf-8')
+sys.setdefaultencoding('utf8')
+
 from apps.components import *
 from apps.plugs import *
 from apps.blogs import *
@@ -13,6 +16,7 @@ url = [(r"/index",IndexHandler),
         (r"/blogs_essay",BlogsEssayHandler),
         (r"/blogs_classify",BlogsClassifyHandler),
         (r"/blogs_sqlite",BlogsSqliteHandler),
+        (r"/blogs_label",BlogsLabelHandler),
         (r"/.*",BaseHandler)
 
       ]

@@ -28,17 +28,17 @@
 {% block blogs_script %}
 <script src="{{static_url}}/js/panEasyUI.js"></script>
 <script>
-/*
-    $('#blogs_edit').panEditFrame({
-        'width':935,
-        'height':600
-    });*/
-    var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {
 
-    });
+    var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {});
     $('#submit_btn').on('click',function(){
         console.log(panEditObj.getFrameBodyHtml());
-        $.window.http.post('/blogs_essay',{'article':'hehe'},function(result){
+        var data={
+            'title':'我的第一篇文章',
+            'label':'python',
+            'article':'这是我的文章内容',
+            'action':'create'
+        };
+        $.window.http.post('/blogs_essay',data,function(result){
             console.log(result);
         })
     })

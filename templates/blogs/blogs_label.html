@@ -1,0 +1,68 @@
+{% extends "blogs/blogs_base.html" %}
+{% block blogs_title %}编辑分类{% endblock %}
+{% block blogs_style %}
+{% endblock %}
+
+{% block blogs_classify %}
+
+{% endblock %}
+
+{% block blogs_content %}
+<div id="blogs_label_html">
+    <button id="show_add_label_btn">添加分类</button>
+    <div id="add_label_box">
+        <input type="text"/><button>添加</button>
+    </div>
+    <table class="label_table">
+        <thead>
+        <tr>
+            <td>标题</td>
+            <td>创建时间</td>
+            <td>阅读数</td>
+            <td>编辑</td>
+            <td>删除</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for label in label_list %}
+        <tr>
+            <td>{{label.label_name}}</td>
+            <td>{{timestamp_format(label.create_time,false)}}</td>
+            <td>{{label.click_rate}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
+{% block blogs_script %}
+<script>
+    var label_list = {{json_encode(label_list)}};
+
+    $('#show_add_label_btn').click(function(){
+        $('#add_label_box').css({
+            'height':'0px',
+            'display':'block'
+        });
+        $('#add_label_box').animate({
+            'height':'30px'
+        },200,function () {
+        });
+    })
+    $('#add_label_box button').on('click',function () {
+        var title = $('#add_label_box input').val();
+        $.window.http.post('/blogs_label',{'action':'create','label_name':title},function(data){
+            if(data.status){
+                console.log('ok');
+                window.location.href='/blogs_label';
+            }else{
+                console.log('fail');
+            }
+        })
+    })
+</script>
+{% endblock %}
