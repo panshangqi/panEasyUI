@@ -12,8 +12,7 @@ input{
     height:30px;
     vertical-align: top;
     &:focus{
-        border: 1px solid #8db02e;
-        box-shadow: 0 0 4px #8db02e;
+        border: 1px solid @theme_color;
     }
 }
 button{
@@ -33,6 +32,12 @@ button{
 }
 textarea{
     resize: none;
+}
+.backgroundApacity(@alp,@opa){
+    filter:alpha(opacity=@alp);
+    -moz-opacity:@opa;
+    -khtml-opacity: @opa;
+    opacity: @opa;
 }
 #frame_html{
     .frame_header{

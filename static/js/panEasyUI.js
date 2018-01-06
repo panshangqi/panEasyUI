@@ -936,18 +936,7 @@ var pc = $('#test_color_picker').panColorPicker({},function(data){
     console.log(data);
 })
 */
-
 //pc.showPicker();
-//弹出层插件
-var panBlogsDialog = function(ele,options,fn){
-    var self = this;
-    var $element = ele;
-    var defaults = {
-
-    };
-    var settings = $.extend({},defaults,options);
-}
-
 //富文本编辑器
 var panEditFrameObj=function(ele,data,fn){
     var defaults = {
@@ -1299,5 +1288,51 @@ var panEditFrameObj=function(ele,data,fn){
 $.fn.extend({
     panEditFrame:function(data,fn){
         return new panEditFrameObj(this,data,fn);
+    }
+})
+
+//弹出层插件
+var panBlogsDialogObj = function(ele,options,fn){
+    var self = this;
+    var $element = ele;
+    var defaults = {
+        'width':500,
+        'height':300,
+        'top':150
+    };
+    var settings = $.extend({},defaults,options);
+    var $content = $element.find('.pan-blogs-dialog-content');
+    $content.on('click',function (event) {
+        event.stopPropagation();
+    })
+    $element.click(function(){
+        phideDialog();
+    })
+
+    this.showDialog = function(){
+
+        $element.fadeIn(200);
+        $content.css({
+            'width':(settings.width+100)+'px',
+            'height':(settings.height+100)+'px',
+            'margin':(settings.top-50)+'px' + ' auto'
+        });
+        $content.animate({
+            'width':settings.width+'px',
+            'height':settings.height+'px',
+            'margin':(settings.top)+'px' + ' auto'
+        },200);
+
+    }
+    function phideDialog(){
+        $element.fadeOut(300);
+    }
+    this.hideDialog = function(){
+        phideDialog();
+    }
+}
+$.fn.extend({
+    panBlogsDialog:function(options,fn){
+        return new panBlogsDialogObj(this,options,fn);
     }
 })

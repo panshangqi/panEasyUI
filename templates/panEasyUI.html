@@ -60,10 +60,6 @@
 
     </div>
 
-    <div class="pan-blogs-dialog" id="text_blogs_dialog">
-
-    </div>
-
     <br/>
     <div class="pan-edit-frame" id="test_edit">
         <iframe></iframe>
@@ -85,7 +81,13 @@
 @violet : rgb(128,0,255);
 
 -->
-<div style="margin-left:50px;width:40px;height:240px;background: -webkit-linear-gradient(top,rgb(255,0,0),rgb(255,128,0),rgb(255,255,0),rgb(0,255,0),rgb(0,255,255),rgb(0,0,255),rgb(128,0,255));"></div>
+<button style="width:200px;height:35px" id="dialog_btn">弹出窗</button>
+<div class="pan-blogs-dialog" id="test_blogs_dialog">
+    <div class="pan-blogs-dialog-content">
+
+    </div>
+</div>
+
 {% endblock %}
 {% block script %}
 
@@ -142,6 +144,12 @@
     $('#test_edit').panEditFrame({
 
     });
+
+    var testBlogsDialog = $('#test_blogs_dialog').panBlogsDialog({},function(){});
+
+    $('#dialog_btn').click(function () {
+        testBlogsDialog.showDialog();
+    })
 </script>
 {% endblock %}
 

@@ -140,12 +140,30 @@ class BlogsLabelHandler(BaseHandler):
             label_name = self.get_argument('label_name')
             label_id = getGuid()
             result={}
+
+            try:
+                print 'post try'
+                conn = sqlite3.connect("database/blogs_info.db")
+                cursor = conn.cursor()
+                sql_param = (label_id,label_name,time.time(),time.time())
+                cursor.execute('insert into label_info(label_id,label_name,create_time,modify_time) values(?,?,?,?);', sql_param)
+                conn.commit()
+                cursor.close()
+                conn.close()
+                result['status'] = 1
+                self.write(result)
+            except:
+                result['status'] = 0
+                self.write(result)
+
+        elif action == 'delete':
+            label_id = self.get_argument('label_id')
+            result={}
             try:
                 conn = sqlite3.connect("database/blogs_info.db")
                 cursor = conn.cursor()
-                sql = 'insert into label_info(label_id,label_name,create_time,modify_time) values("%s","%s",%d,%d);' % \
-                (label_id,label_name,time.time(),time.time())
-                cursor.execute(sql)
+                sql_param = (label_id)
+                cursor.execute('delete from label_info where label_id = :labelId;',{'labelId':label_id})
                 conn.commit()
                 cursor.close()
                 conn.close()

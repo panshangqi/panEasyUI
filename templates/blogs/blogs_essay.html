@@ -1,7 +1,6 @@
 {% extends "blogs/blogs_base.html" %}
 {% block blogs_title %}新随笔{% endblock %}
 {% block blogs_style %}
-<link href="{{static_url}}/css/panEasyUI.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block blogs_classify %}
@@ -26,7 +25,7 @@
 
 {% endblock %}
 {% block blogs_script %}
-<script src="{{static_url}}/js/panEasyUI.js"></script>
+
 <script>
 
     var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {});

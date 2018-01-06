@@ -3,6 +3,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="icon" href="{{static_url}}/img/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="{{static_url}}/css/ui_frame.min.css">
+    <link href="{{static_url}}/css/panEasyUI.min.css" rel="stylesheet"/>
     {% block style %}{% endblock %}
 </head>
 <body>
@@ -40,6 +41,7 @@
 </div>
 <script type="text/javascript" src="{{static_url}}/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="{{static_url}}/js/ui_frame.js"></script>
+<script type="text/javascript" src="{{static_url}}/js/panEasyUI.js"></script>
 <script>
     $('#nav_login').on('click',function(){
         $('#frame_html').css('display','none');
