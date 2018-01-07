@@ -11,6 +11,7 @@ input {
   width: 200px;
   height: 30px;
   vertical-align: top;
+  padding-left: 5px;
 }
 input:focus {
   border: 1px solid #8DB02E;
@@ -244,9 +245,9 @@ textarea {
 }
 #blogs_base_html .left_nav .title {
   width: 100%;
-  height: 28px;
+  height: 30px;
   box-sizing: border-box;
-  line-height: 28px;
+  line-height: 30px;
   color: #fff;
   font-size: 14px;
   padding-left: 15px;
@@ -265,17 +266,89 @@ textarea {
 }
 #blogs_base_html .left_nav .classify {
   width: 100%;
-  height: 270px;
   margin-top: 8px;
+  min-height: 400px;
   background-color: #fff;
+}
+#blogs_base_html .left_nav .classify .label_nav ul {
+  padding: 0;
+  margin-top: 20px;
+  border-top: 2px solid #8DB02E;
+}
+#blogs_base_html .left_nav .classify .label_nav ul li {
+  margin: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  display: inline-block;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 20px;
+  color: #555;
+  font-size: 13px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+#blogs_base_html .left_nav .classify .label_nav ul li:hover {
+  color: #fff;
+  background-color: rgba(141, 176, 46, 0.8);
+  transition: background-color 0.9s;
+  -moz-transition: background-color 0.9s;
+  /* Firefox 4 */
+  -webkit-transition: background-color 0.9s;
+  /* Safari 和 Chrome */
+  -o-transition: background-color 0.9s;
+  /* Opera */
 }
 #blogs_base_html .right_content {
   display: inline-block;
   width: 980px;
-  min-height: 1200px;
   margin-left: 5px;
   vertical-align: top;
+}
+#blogs_base_html .right_content .main_nav {
+  width: 100%;
+  height: 35px;
+}
+#blogs_base_html .right_content .main_nav ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  margin-left: -1px;
+}
+#blogs_base_html .right_content .main_nav ul li {
+  display: block;
+  float: left;
+  width: 110px;
+  height: 34px;
+  margin-right: 5px;
+}
+#blogs_base_html .right_content .main_nav ul li a {
+  display: block;
+  width: 110px;
+  height: 34px;
+  text-decoration: none;
+  color: #fff;
+  border-left: 1px solid #8DB02E;
+  border-right: 1px solid #8DB02E;
+  border-top: 1px solid #8DB02E;
+  text-align: center;
+  line-height: 34px;
+  font-size: 13px;
+  background-color: #8DB02E;
+}
+#blogs_base_html .right_content .main_nav ul li a:hover {
+  color: #fff;
+  background-color: #7b9f1a;
+}
+#blogs_base_html .right_content .main_nav ul .li_active {
   background-color: #fff;
+  color: #8DB02E;
+}
+#blogs_base_html .right_content .main_content {
+  background-color: #fff;
+  min-height: 800px;
 }
 #blogs_html_list {
   padding: 20px;
@@ -315,11 +388,43 @@ textarea {
   color: #666;
   font-size: 14px;
 }
-.essay_html .selected_classify {
+.essay_html .label_title {
+  margin-top: 26px;
+  height: 25px;
+  color: #666;
+  font-size: 14px;
+}
+.essay_html .label_box {
+  margin-top: 10px;
+  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+}
+.essay_html .label_box table {
   width: 100%;
-  min-height: 50px;
+}
+.essay_html .label_box table tr {
+  height: 30px;
+}
+.essay_html .label_box table tr td {
+  cursor: pointer;
+}
+.essay_html .label_box table tr td .check_box {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #8DB02E;
+  background-size: 12px;
+  margin-top: 2px;
+}
+.essay_html .label_box table tr td .check_name {
+  margin-left: 7px;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 13px;
 }
 .essay_html .submit_btn {
+  margin-top: 20px;
   width: 60px;
   height: 26px;
 }
@@ -329,7 +434,6 @@ textarea {
 #blogs_label_html #add_label_box {
   height: 30px;
   padding-top: 20px;
-  display: none;
   overflow: hidden;
 }
 #blogs_label_html #add_label_box input {
@@ -399,7 +503,7 @@ textarea {
   -khtml-opacity: 0.7;
   opacity: 0.7;
 }
-#blogs_label_html #dialog_content .dialog_tip {
+#blogs_label_html #delete_dialog #dialog_content .dialog_tip {
   width: 100%;
   text-align: center;
   color: #888;
@@ -407,9 +511,16 @@ textarea {
   line-height: 130px;
   font-size: 16px;
 }
-#blogs_label_html #dialog_content .dialog_foot {
+#blogs_label_html #delete_dialog #dialog_content .dialog_foot {
   text-align: center;
 }
-#blogs_label_html #dialog_content .dialog_foot button:last-child {
+#blogs_label_html #delete_dialog #dialog_content .dialog_foot button:last-child {
   margin-left: 15px;
+}
+#blogs_label_html #modify_dialog .dialog_tip {
+  margin-top: 35px;
+  text-align: center;
+}
+#blogs_label_html #modify_dialog .dialog_tip input {
+  width: 600px;
 }

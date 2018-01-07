@@ -11,7 +11,7 @@
     <div class="frame_header">
         <ul>
             <li><a href="http://www.jq22.com/jquery-info122" target="_blank">jQuery下载</a></li>
-            <li><a id="nav_login" href="javascript:void(0)">登录</a></li>
+            <li><a id="nav_login" href="/login">登录</a></li>
         </ul>
     </div>
     <div class="frame_main_nav">
@@ -26,31 +26,11 @@
         {% endblock %}
     </div>
 </div>
-<!-- 登陆 -->
-<div id="frame_login" style="display: none">
-    <div class="login_box">
-        <div class="close" id="login_close">×</div>
-        <form action="/login" method="post">
-            {{ xsrf_form_html() }}
-            <input type="text" placeholder="Username" class="username" name="username"><br/>
-            <input type="password" placeholder="Password" class="password" name="password">
-            <input type="text" name="request_path" value="{{request.path}}"/>
-            <input class="login_btn" type="submit" value="登陆"/>
-        </form>
-    </div>
-</div>
 <script type="text/javascript" src="{{static_url}}/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="{{static_url}}/js/ui_frame.js"></script>
 <script type="text/javascript" src="{{static_url}}/js/panEasyUI.js"></script>
 <script>
-    $('#nav_login').on('click',function(){
-        $('#frame_html').css('display','none');
-        $('#frame_login').css('display','block');
-    })
-    $('#login_close').on('click',function(){
-        $('#frame_html').css('display','block');
-        $('#frame_login').css('display','none');
-    })
+
 </script>
 {% block script %}
 {% endblock %}

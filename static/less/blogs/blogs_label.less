@@ -3,7 +3,6 @@
     #add_label_box{
         height:30px;
         padding-top: 20px;
-        display: none;
         overflow: hidden;
         input{
             width:860px;
@@ -50,19 +49,30 @@
             }
         }
     }
-    #dialog_content{
-        .dialog_tip{
-            width:100%;
-            text-align: center;
-            color:#888;
-            height:130px;
-            line-height: 130px;
-            font-size: 16px;
+    #delete_dialog{
+        #dialog_content{
+            .dialog_tip{
+                width:100%;
+                text-align: center;
+                color:#888;
+                height:130px;
+                line-height: 130px;
+                font-size: 16px;
+            }
+            .dialog_foot{
+                text-align: center;
+                button:last-child{
+                    margin-left: 15px;
+                }
+            }
         }
-        .dialog_foot{
+    }
+    #modify_dialog{
+        .dialog_tip {
+            margin-top: 35px;
             text-align: center;
-            button:last-child{
-                margin-left: 15px;
+            input {
+                width: 600px;
             }
         }
     }

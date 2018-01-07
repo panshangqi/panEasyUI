@@ -9,7 +9,6 @@
 
 {% block blogs_content %}
 <div id="blogs_label_html">
-    <button id="show_add_label_btn">添加分类</button>
     <div id="add_label_box">
         <input type="text"/><button>添加</button>
     </div>
@@ -20,7 +19,7 @@
         <tbody>
         {% for label in label_list %}
         <tr tid="{{label.label_id}}" id="tr_{{loop.index}}" row_id="{{loop.index}}">
-            <td>{{label.label_name}}</td>
+            <td class="labelName">{{label.label_name}}</td>
             <td>{{timestamp_format(label.create_time,false)}}</td>
             <td>{{label.click_rate}}</td>
             <td><div class="edit_label"></div></td>
@@ -40,6 +39,15 @@
             </div>
         </div>
     </div>
+
+    <div class="pan-blogs-dialog" id="modify_dialog">
+        <div class="pan-blogs-dialog-content">
+            <div class="dialog_tip">
+                <input type="text" class="modify_input"><button>提交</button>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}
@@ -48,16 +56,8 @@
     var label_list = {{json_encode(label_list)}};
 
     var deleteDialog = $('#delete_dialog').panBlogsDialog({'width':320,'height':190},function(){});
-    $('#show_add_label_btn').click(function(){
-        $('#add_label_box').css({
-            'height':'0px',
-            'display':'block'
-        });
-        $('#add_label_box').animate({
-            'height':'30px'
-        },200,function () {
-        });
-    })
+    var modifyDialog = $('#modify_dialog').panBlogsDialog({'width':800,'height':100,'top':180},function(){});
+
     $('#add_label_box button').on('click',function () {
         var title = $('#add_label_box input').val();
         $.window.http.post('/blogs_label',{'action':'create','label_name':title},function(data){
@@ -78,21 +78,38 @@
                 deleteDialog.hideDialog();
                 $.window.http.post('/blogs_label',{'action':'delete','label_id':mlabelId},function (data) {
                     if(data.status == 1){
-                        $(this).unbind('click');
                         window.location.href='/blogs_label';
                     }
                     else{
                         console.log('fail ->');
                     }
                 })
+                $(this).unbind('click');
             })
         }
     })
     //编辑操作
     $('#label_table .edit_label').click(function(){
         var $curTr = $(this).parents('tr');
-        var row_id = $curTr.attr('row_id');
-        console.log(row_id);
+        var mlabelId = $curTr.attr('tid');
+        modifyDialog.showDialog();
+        if(mlabelId){
+            var labelName = $curTr.find('td.labelName').html();
+            var $modifyInput = $('#modify_dialog .modify_input');
+            $modifyInput.val(labelName);
+            $('#modify_dialog button').click(function () {
+                modifyDialog.hideDialog();
+                $.window.http.post('/blogs_label',{'action':'modify','label_id':mlabelId,'label_name':$modifyInput.val()},function (data) {
+                    if(data.status == 1){
+                        window.location.href='/blogs_label';
+                    }
+                    else{
+                        console.log('fail ->');
+                    }
+                })
+                $(this).unbind('click');
+            })
+        }
     })
 
 </script>

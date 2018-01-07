@@ -14,26 +14,33 @@ insert into plugs_info(ID,NAME,SUMMARY,URL) values();
 insert into plugs_info(ID,NAME,SUMMARY,URL) values();
 insert into plugs_info(ID,NAME,SUMMARY,URL) values();
 
-create table user_info(kid integer primary key,
+insert into user_info(user_id,username,password,create_time) values('21232f297a57a5a743894a0e4a801fc3','admin','admin',1515336726);
+//账户信息
+create table user_info(
+user_id varchar(256) not null,
 username varchar(30) not null,
-password varchar(30) not null
+password varchar(30) not null,
+create_time timestamp not null
 );
 
-create table blogs_info(tid integer primary key,
-user_id integer not null,
-title varchar(100) not null,
-label varchar(20) not null,
+//博客信息
+create table blogs_info(
+title Text not null,
 summary TEXT not null,
 article TEXT not null,
-create_time int not null,
-alter_time int not__null);
-
-create table label_info(
+blog_id varchar(50) not null,
+user_id varchar(50) not null,
 label_id varchar(50) not null,
+create_time int not null,
+modify_time int not__null);
+
+//标签信息
+create table label_info(
+label_id varchar(256) not null,
 label_name text not null,
 click_rate int default 0,
-create_time int not null,
-modify_time int not null);
+create_time timestamp not null,
+modify_time timestamp not null);
 
 //查询字段名
 pragma table_info(user_info);

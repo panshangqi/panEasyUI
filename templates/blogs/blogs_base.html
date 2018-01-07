@@ -13,16 +13,29 @@
             <div class="head_img"></div>
         </div>
         <div class="classify">
-            <div class="title">博客分类</div>
-            <div>
-                {% block blogs_classify %}
-                {% endblock %}
+            <div class="label_nav" id="label_nav">
+                <ul>
+                    {% for label in label_list %}
+                    <li>{{label.label_name}}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
     <div class="right_content">
-        {% block blogs_content %}
-        {% endblock %}
+        <div class="main_nav">
+            <ul>
+                <li><a class="{{ 'li_active' if request.path == '/blogs_list' }}" href="/blogs_list">我的博客</a></li>
+                <li><a class="{{ 'li_active' if request.path == '/blogs_essay' }}" href="/blogs_essay">新随笔</a></li>
+                <li><a class="{{ 'li_active' if request.path == '/blogs_label' }}" href="/blogs_label">分类管理</a></li>
+                <li><a href="/index">个人设置</a></li>
+                <div class="clear:both"></div>
+            </ul>
+        </div>
+        <div class="main_content">
+            {% block blogs_content %}
+            {% endblock %}
+        </div>
     </div>
 </div>
 

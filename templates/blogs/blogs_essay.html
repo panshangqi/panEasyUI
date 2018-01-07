@@ -3,20 +3,23 @@
 {% block blogs_style %}
 {% endblock %}
 
-{% block blogs_classify %}
-
-{% endblock %}
-
 {% block blogs_content %}
 <div class="essay_html">
     <div class="title">标题</div>
-    <input class="title_text" type="text">
+    <input class="title_text" type="text" id="arcticle_title">
     <div class="article">内容</div>
     <div class="pan-edit-frame" id="blogs_edit">
         <iframe></iframe>
     </div>
-    <div class="selected_classify">
-
+    <div class="label_title">个人分类</div>
+    <div class="label_box">
+        <table id="label_table">
+        {% for label in label_list %}
+            {% if (loop.index-1)%5==0 %} {% if loop.index > 1 %}</tr>{% endif %}<tr>{% endif %}
+            <td tid="{{label.label_id}}"><div class="check_box"></div><div class="check_name">{{label.label_name}}</div></td>
+        {% endfor %}
+        </tr>
+        </table>
     </div>
     <div>
         <button class="submit_btn" id="submit_btn">提交</button>
@@ -25,21 +28,45 @@
 
 {% endblock %}
 {% block blogs_script %}
+<script>
+    var label_list = {{json_encode(label_list)}};
 
+</script>
 <script>
 
     var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {});
+    var labelId = '';
+
     $('#submit_btn').on('click',function(){
-        console.log(panEditObj.getFrameBodyHtml());
+
+        var articleTitle = $('#arcticle_title').val();
+        var article = panEditObj.getFrameBodyHtml();
+        console.log(article);
+        if(articleTitle.length == 0){
+            alert('请填写文章标题');
+            return;
+        }
+        if(labelId.length == 0){
+            alert('请选择标签');
+            return;
+        }
         var data={
-            'title':'我的第一篇文章',
-            'label':'python',
-            'article':'这是我的文章内容',
+            'title':$('#arcticle_title').val(),
+            'label_id':labelId,
+            'article':article,
             'action':'create'
         };
         $.window.http.post('/blogs_essay',data,function(result){
             console.log(result);
         })
+    })
+
+    $('#label_table').on('click','td',function () {
+        var label_id = $(this).attr('tid');
+        $('#label_table td .check_box').css('background-image','');
+        $(this).find('.check_box').css('background-image','url(/static/img/check_yes.png)');
+        console.log(label_id);
+        labelId = label_id;
     })
 
 </script>
