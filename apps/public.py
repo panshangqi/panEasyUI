@@ -11,3 +11,4 @@ def getGuid():
     m_md5 = hashlib.md5()
     m_md5.update(m_uuid)
     return m_md5.hexdigest()
+

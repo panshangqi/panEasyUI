@@ -9,50 +9,55 @@
 
 {% block blogs_content %}
 <div id="blogs_label_html">
-    <button id="show_add_label_btn">添加分类</button>
     <div id="add_label_box">
         <input type="text"/><button>添加</button>
     </div>
-    <table class="label_table">
+    <table class="label_table" id="label_table">
         <thead>
-        <tr>
-            <td>标题</td>
-            <td>创建时间</td>
-            <td>阅读数</td>
-            <td>编辑</td>
-            <td>删除</td>
-        </tr>
+        <tr><td>标题</td><td>创建时间</td><td>阅读数</td><td>编辑</td><td>删除</td></tr>
         </thead>
         <tbody>
         {% for label in label_list %}
-        <tr>
-            <td>{{label.label_name}}</td>
+        <tr tid="{{label.label_id}}" id="tr_{{loop.index}}" row_id="{{loop.index}}">
+            <td class="labelName">{{label.label_name}}</td>
             <td>{{timestamp_format(label.create_time,false)}}</td>
             <td>{{label.click_rate}}</td>
-            <td></td>
-            <td></td>
+            <td><div class="edit_label"></div></td>
+            <td><div class="delete_label"></div></td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
-</div>
+    <div class="pan-blogs-dialog" id="delete_dialog">
+        <div class="pan-blogs-dialog-content">
+            <div id="dialog_content">
+                <div class="dialog_tip">确定删除？</div>
+                <div class="dialog_foot">
+                    <button class="cancel_btn">取消</button>
+                    <button class="ok_btn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="pan-blogs-dialog" id="modify_dialog">
+        <div class="pan-blogs-dialog-content">
+            <div class="dialog_tip">
+                <input type="text" class="modify_input"><button>提交</button>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
 {% block blogs_script %}
 <script>
     var label_list = {{json_encode(label_list)}};
 
-    $('#show_add_label_btn').click(function(){
-        $('#add_label_box').css({
-            'height':'0px',
-            'display':'block'
-        });
-        $('#add_label_box').animate({
-            'height':'30px'
-        },200,function () {
-        });
-    })
+    var deleteDialog = $('#delete_dialog').panBlogsDialog({'width':320,'height':190},function(){});
+    var modifyDialog = $('#modify_dialog').panBlogsDialog({'width':800,'height':100,'top':180},function(){});
+
     $('#add_label_box button').on('click',function () {
         var title = $('#add_label_box input').val();
         $.window.http.post('/blogs_label',{'action':'create','label_name':title},function(data){
@@ -60,9 +65,52 @@
                 console.log('ok');
                 window.location.href='/blogs_label';
             }else{
-                console.log('fail');
+                console.log('fail ->');
             }
         })
     })
+    //删除操作
+    $('#label_table .delete_label').click(function(){
+        deleteDialog.showDialog();
+        var mlabelId = $(this).parents('tr').attr('tid');
+        if(mlabelId){
+            $('#dialog_content .ok_btn').click(function () {
+                deleteDialog.hideDialog();
+                $.window.http.post('/blogs_label',{'action':'delete','label_id':mlabelId},function (data) {
+                    if(data.status == 1){
+                        window.location.href='/blogs_label';
+                    }
+                    else{
+                        console.log('fail ->');
+                    }
+                })
+                $(this).unbind('click');
+            })
+        }
+    })
+    //编辑操作
+    $('#label_table .edit_label').click(function(){
+        var $curTr = $(this).parents('tr');
+        var mlabelId = $curTr.attr('tid');
+        modifyDialog.showDialog();
+        if(mlabelId){
+            var labelName = $curTr.find('td.labelName').html();
+            var $modifyInput = $('#modify_dialog .modify_input');
+            $modifyInput.val(labelName);
+            $('#modify_dialog button').click(function () {
+                modifyDialog.hideDialog();
+                $.window.http.post('/blogs_label',{'action':'modify','label_id':mlabelId,'label_name':$modifyInput.val()},function (data) {
+                    if(data.status == 1){
+                        window.location.href='/blogs_label';
+                    }
+                    else{
+                        console.log('fail ->');
+                    }
+                })
+                $(this).unbind('click');
+            })
+        }
+    })
+
 </script>
 {% endblock %}
