@@ -1,0 +1,19 @@
+{% extends 'account/account_base.html' %}
+{% block title %}注册{% endblock %}
+{% block style %}{% endblock %}
+{% block content %}
+<div id="frame_login">
+    <div class="login_box">
+        <div class="close" id="login_close">×</div>
+        <form action="/login" method="post">
+            {{ xsrf_form_html() }}
+            <input type="text" placeholder="Username" class="username" name="username"><br/>
+            <input type="password" placeholder="Password" class="password" name="password"><br/>
+            <input type="password" placeholder="Repeat" class="repeat" name="repeat"><br/>
+            <input type="text" placeholder="Email" class="email" name="email"><br/>
+            <input class="login_btn" type="submit" value="登陆"/>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block script %}{% endblock %}

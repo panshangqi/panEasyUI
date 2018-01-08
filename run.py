@@ -12,7 +12,6 @@ from tornado.web import RequestHandler
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound,ChoiceLoader
 
 import time
-from apps.components import *
 from routs import url
 
 

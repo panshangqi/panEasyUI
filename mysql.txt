@@ -55,6 +55,7 @@ insert into mytable select tid,username,password from mytable_bak;
 4.删除旧表
 drop table mytable_bak;
 
+csmqytdeqvmqfjic
 =================================================================================
 终端管理密码 106363
 //创建用户信息
