@@ -20,6 +20,10 @@ create table user_info(
 user_id varchar(256) not null,
 username varchar(30) not null,
 password varchar(30) not null,
+email varchar(50) not null,
+sex varchar(10),
+birthday date,
+head_img varchar(280),
 create_time timestamp not null
 );
 

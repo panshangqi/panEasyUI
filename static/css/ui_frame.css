@@ -99,9 +99,9 @@ textarea {
 #frame_login .login_box {
   display: inline-block;
   width: 340px;
-  min-height: 300px;
+  min-height: 200px;
   margin-top: 200px;
-  padding-bottom: 30px;
+  padding-bottom: 50px;
   border: 1px solid #c9c9c9;
   background-color: rgba(255, 255, 255, 0.6);
 }
@@ -120,43 +120,47 @@ textarea {
   color: #aaa;
   cursor: pointer;
 }
+#frame_login .login_box form {
+  margin: 0;
+}
 #frame_login .login_box input {
-  width: 190px;
+  width: 200px;
   height: 30px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 12px;
 }
-#frame_login .login_box .username {
-  margin-top: 35px;
+#frame_login .login_box input:focus {
+  border: 1px solid #8DB02E;
 }
-#frame_login .login_box .password {
+#frame_login .login_box .input_cell {
   margin-top: 25px;
+  position: relative;
 }
-#frame_login .login_box .repeat {
-  margin-top: 25px;
+#frame_login .login_box .input_cell .status {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 270px;
+  top: 7px;
+  margin-left: 10px;
+  background-size: 16px;
 }
-#frame_login .login_box .email {
-  margin-top: 25px;
+#frame_login .login_box .input_cell #id_code {
+  width: 100px;
 }
-#frame_login .login_box .login_btn {
-  display: inline-block;
-  width: 190px;
-  height: 34px;
-  margin-top: 30px;
-  text-align: center;
-  line-height: 30px;
-  color: #fff;
-  font-size: 14px;
-  background-color: #8DB02E;
+#frame_login .login_box .input_cell #email_btn {
+  margin-left: 15px;
+  border-radius: 4px;
 }
-#frame_login .login_box .login_btn:hover {
-  cursor: pointer;
-  background-color: #7b9f1a;
+#frame_login .login_box .input_cell #submit_btn {
+  width: 200px;
+  border-radius: 4px;
 }
 #frame_login .login_box .opertor {
   text-align: right;
   width: 290px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 #frame_login .login_box .opertor a {
   color: #8DB02E;

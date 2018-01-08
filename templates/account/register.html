@@ -5,15 +5,71 @@
 <div id="frame_login">
     <div class="login_box">
         <div class="close" id="login_close">×</div>
-        <form action="/login" method="post">
-            {{ xsrf_form_html() }}
-            <input type="text" placeholder="Username" class="username" name="username"><br/>
-            <input type="password" placeholder="Password" class="password" name="password"><br/>
-            <input type="password" placeholder="Repeat" class="repeat" name="repeat"><br/>
-            <input type="text" placeholder="Email" class="email" name="email"><br/>
-            <input class="login_btn" type="submit" value="登陆"/>
-        </form>
+        <div class="input_cell"><input type="text" placeholder="用户名(字母，数字，@，_ )" id="username"><div class="status"></div></div>
+        <div class="input_cell"><input type="password" placeholder="密码(字母，数字，@，_ )" id="password"><div class="status"></div></div>
+        <div class="input_cell"><input type="password" placeholder="重复密码(字母，数字，@，_ )" id="repeat"><div class="status"></div></div>
+        <div class="input_cell"><input type="text" placeholder="邮箱" id="email"><div class="status"></div></div>
+        <div class="input_cell"><input type="text" placeholder="验证码" id="id_code"><button id="email_btn">获取</button></div>
+        <div class="input_cell"><button id="submit_btn" >登录</button></div>
+        <div class="opertor"><a href="/login">已有账号，现在登录</a></div>
     </div>
 </div>
 {% endblock %}
-{% block script %}{% endblock %}
+{% block script %}
+<script>
+
+    $('#username').change(function(){
+        var username = $(this).val();
+        var status = $(this).parent('.input_cell').find('.status');
+        if(check(username)){
+            status.css('background-image','url(/static/img/right_1.png)');
+        }else{
+            status.css('background-image','url(/static/img/wrong_1.png)');
+        }
+    })
+    $('#password').change(function(){
+        var password = $(this).val();
+        var status = $(this).parent('.input_cell').find('.status');
+        if(check(password)){
+            status.css('background-image','url(/static/img/right_1.png)');
+        }else{
+            status.css('background-image','url(/static/img/wrong_1.png)');
+        }
+    })
+    $('#repeat').change(function(){
+        var password = $('#password').val();
+        var repeat = $(this).val();
+        var status = $(this).parent('.input_cell').find('.status');
+        if(repeat == password){
+            status.css('background-image','url(/static/img/right_1.png)');
+        }else{
+            status.css('background-image','url(/static/img/wrong_1.png)');
+        }
+    })
+    $('#email').change(function(){
+        var email = $(this).val();
+        var status = $(this).parent('.input_cell').find('.status');
+        if(checkEmail(email)){
+            status.css('background-image','url(/static/img/right_1.png)');
+        }else{
+            status.css('background-image','url(/static/img/wrong_1.png)');
+        }
+    })
+    $('#email_btn').click(function(){
+        email = $('#email').val();
+        $.window.http.post('/send_email_code',{'email':email},function (data) {
+            console.log(data);
+        })
+    })
+    function check(str){
+        var reg=/^[0-9A-Za-z_@]*$/;
+        return(reg.test(str));
+    }
+    function checkEmail(str){
+        var reg=/^[a-zA-Z0-9_-]*@[a-zA-Z0-9_-]*(\.[a-zA-Z0-9_-]+)+$/
+        return(reg.test(str));
+    }
+
+
+</script>
+{% endblock %}

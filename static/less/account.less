@@ -6,9 +6,9 @@
     .login_box{
         display: inline-block;
         width:340px;
-        min-height:300px;
+        min-height:200px;
         margin-top: 200px;
-        padding-bottom: 30px;
+        padding-bottom: 50px;
         border: 1px solid #c9c9c9;
         background-color: fadeout(#fff,40%);
         .close{
@@ -26,43 +26,49 @@
                 cursor: pointer;
             }
         }
+        form{
+            margin: 0;
+        }
         input{
-            width:190px;
+            width:200px;
             height:30px;
             border: 1px solid #ccc;
             border-radius:4px;
-        }
-        .username{
-            margin-top: 35px;
-        }
-        .password{
-            margin-top: 25px;
-        }
-        .repeat{
-            margin-top: 25px;
-        }
-        .email{
-            margin-top: 25px;
-        }
-        .login_btn{
-            display: inline-block;
-            width:190px;
-            height:34px;
-            margin-top: 30px;
-            text-align: center;
-            line-height: 30px;
-            color:#fff;
-            font-size:14px;
-            background-color: @theme_color;
-            &:hover{
-                cursor: pointer;
-                background-color:@theme_color_deep;
+            font-size: 12px;
+            &:focus{
+                border: 1px solid @theme_color;
             }
         }
+        .input_cell{
+            margin-top: 25px;
+            position: relative;
+            .status{
+                position: absolute;
+                width:16px;
+                height:16px;
+                left:270px;
+                top:7px;
+                margin-left: 10px;
+                background-size: 16px;
+            }
+            #id_code{
+                width:100px;
+            }
+            #email_btn{
+                margin-left: 15px;
+                border-radius: 4px;
+            }
+            #submit_btn{
+                width:200px;
+                border-radius: 4px;
+            }
+        }
+
+
         .opertor{
             text-align: right;
             width:290px;
-            margin-top: 20px;
+            margin-top: 30px;
             a{
                 color:@theme_color;
                 font-size: 12px;
