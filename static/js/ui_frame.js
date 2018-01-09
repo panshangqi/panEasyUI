@@ -4,8 +4,7 @@ function getCookie(name) {
 }
 var httpDialogTip = function(){
     var self = this;
-    var html = '<div style="position: fixed;width:120px;height:25px;background-color: #8db02e;left:50%;top:-26px;z-index:100001';
-    html += 'margin-left: -60px;text-align: center;color:#fff;line-height: 25px;font-size: 13px" class="http_dialog">请求成功</div>';
+    var html = '<div style="position: fixed;width:120px;height:25px;background-color: #8db02e;left:50%;top:-26px;z-index:100001;margin-left: -60px;text-align: center;color:#fff;line-height: 25px;font-size: 13px" class="http_dialog">请求成功</div>';
     $(document.body).append(html);
     var $httpDialog = $(document.body).find('.http_dialog');
 

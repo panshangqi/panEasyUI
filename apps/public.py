@@ -17,10 +17,10 @@ def getGuid():
     return m_md5.hexdigest()
 
 def sendEmail(toEmail,e_title,e_content):
-    msg_from='1187816874@qq.com'                                 #发送方邮箱
-    passwd='csmqytdeqvmqfjic'                                   #填入发送方邮箱的授权码
-    msg_to=toEmail                                  #收件人邮箱
-    subject=e_title                                     #主题
+    msg_from='1187816874@qq.com'  #发送方邮箱
+    passwd='csmqytdeqvmqfjic' #填入发送方邮箱的授权码
+    msg_to=toEmail            #收件人邮箱
+    subject=e_title           #主题
     content=e_content      #正文
     msg = MIMEText(content,'html','utf-8')
     msg['Subject'] = Header(subject, 'utf-8').encode()

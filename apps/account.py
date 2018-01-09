@@ -23,13 +23,17 @@ class LoginHandler(BaseHandler):
             conn = sqlite3.connect("database/blogs_info.db")
             cursor = conn.cursor()
             sql_param = {'username':username,'password':password}
-            cursor.execute('select user_id,create_time from user_info where username=:username and password=:password', sql_param)
+            cursor.execute('select user_id from user_info where username=:username and password=:password', sql_param)
             res = cursor.fetchall()
+            user_id = ''
+            for row in res:
+                user_id=row[0]
             conn.commit()
             cursor.close()
             conn.close()
-            if len(res) > 0:
-                self.set_secure_cookie('username',username,expires_days=None,expires=time.time()+6000)
+
+            if len(res) > 0 and len(user_id) > 0:
+                self.set_secure_cookie('user_id',user_id,expires_days=None,expires=time.time()+6000)
                 result['status']=1
             else:
                 result['status']=0
@@ -70,3 +74,9 @@ class SendEmailCodeHandler(BaseHandler):
             self.write({'status':1})
         else:
             self.write({'status':0})
+
+
+class LogoutHandler(BaseHandler):
+    def get(self):
+        self.clear_cookie("user_id")
+        self.redirect("/login")

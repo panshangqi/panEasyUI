@@ -12,13 +12,13 @@
         <ul>
             <li><a href="http://www.jq22.com/jquery-info122" target="_blank">jQuery下载</a></li>
             <li><a id="nav_login" href="/login">登录</a></li>
+            <li><a id="nav_logout" href="/logout">注销</a></li>
         </ul>
     </div>
     <div class="frame_main_nav">
-
         <a class="nav_cell {{'active' if request.path == '/index'}}" href="/index">插件库</a>
         <a class="nav_cell">资料阁</a>
-        <a class="nav_cell {{'active' if request.path == '/blogs_list'}}" href="/blogs_list">博客苑</a>
+        <a class="nav_cell {{'active' if request.path == '/blogs_list' or request.path == '/blogs_essay' or request.path == '/blogs_label'}}" href="/blogs_list">博客苑</a>
     </div>
     <div class="frame_content">
         {% block content %}
@@ -30,7 +30,7 @@
 <script type="text/javascript" src="{{static_url}}/js/ui_frame.js"></script>
 <script type="text/javascript" src="{{static_url}}/js/panEasyUI.js"></script>
 <script>
-
+    var current_user = {{json_encode(current_user)}};
 </script>
 {% block script %}
 {% endblock %}

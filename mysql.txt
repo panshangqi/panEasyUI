@@ -32,15 +32,16 @@ create table blogs_info(
 title Text not null,
 summary TEXT not null,
 article TEXT not null,
-blog_id varchar(50) not null,
-user_id varchar(50) not null,
-label_id varchar(50) not null,
+blog_id varchar(256) not null,
+user_id varchar(256) not null,
+label_id varchar(256) not null,
 create_time int not null,
 modify_time int not__null);
 
 //标签信息
 create table label_info(
 label_id varchar(256) not null,
+user_id varchar(256) not null,
 label_name text not null,
 click_rate int default 0,
 create_time timestamp not null,

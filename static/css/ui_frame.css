@@ -157,6 +157,21 @@ textarea {
   width: 200px;
   border-radius: 4px;
 }
+#frame_login .login_box .input_cell .login_btn {
+  color: #fff;
+  background-color: #8DB02E;
+  cursor: pointer;
+}
+#frame_login .login_box .input_cell .login_btn:hover {
+  background-color: #7b9f1a;
+}
+#frame_login .login_box #login_error {
+  margin-top: 25px;
+  color: #990000;
+  height: 15px;
+  font-size: 13px;
+  display: none;
+}
 #frame_login .login_box .opertor {
   text-align: right;
   width: 290px;

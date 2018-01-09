@@ -57,6 +57,9 @@
             'action':'create'
         };
         $.window.http.post('/blogs_essay',data,function(result){
+            if(result.status==1){
+                window.location.href='/blogs_list';
+            }
             console.log(result);
         })
     })

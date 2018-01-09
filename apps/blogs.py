@@ -29,43 +29,43 @@ def getLabellist():
 
 class BlogsListHandler(BaseHandler):
     def get(self):
+        user_id = self.get_current_user()
+        blogs_list=[]
+        label_list = getLabellist()
+        result={}
         try:
-            username = self.get_current_user()
             conn = sqlite3.connect('database/blogs_info.db')
-            conn.text_factory = str
             cursor = conn.cursor()
-            sql = 'select tid from user_info where username = "%s";' % (username)
-            result = cursor.execute(sql)
-            user_id = -1;
-            for row in result:
+            res = cursor.execute('select user_id from user_info where username = :username;',{'username':username})
+            user_id = '';
+            for row in res:
                 user_id = row[0]
-
-            sql = "select user_id,title,label,summary,article,create_time,alter_time from blogs_info where user_id="+str(user_id)+";"
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            blogs_list=[]
+            print user_id
+            cursor.execute('select blog_id,title,summary,article,create_time,modify_time,label_id from blogs_info where user_id=:user_id;',{'user_id':user_id})
+            res = cursor.fetchall()
             blogs_item={}
-            for row in result:
-                blogs_item['title'] = row[0]
-                blogs_item['label'] = row[1]
+            for row in res:
+                blogs_item['blog_id'] = row[0]
+                blogs_item['title'] = row[1]
                 blogs_item['summary'] = row[2]
                 blogs_item['article'] = row[3]
                 blogs_item['create_time'] = row[4]
-                blogs_item['alter_time'] = row[5]
+                blogs_item['modify_time'] = row[5]
+                blogs_item['label_id'] = row[5]
                 blogs_list.append(blogs_item)
-            print blogs_list
             conn.commit()
             cursor.close()
             conn.close()
+            result['status']=1
         except:
-            #traceback.print_exc()
-            print 'except'
-        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list)
+            result['status']=0
+        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
 
 class BlogsEssayHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         label_list = getLabellist()
+        print self.get_current_user()
         self.render_html("blogs/blogs_essay.html",label_list=label_list)
 
     def post(self):
@@ -73,33 +73,32 @@ class BlogsEssayHandler(BaseHandler):
         label_id = self.get_argument('label_id')
         article = self.get_argument('article')
         action = self.get_argument('action')
+        result={}
         if action == 'create':
             username = self.get_current_user()
             try:
                 conn = sqlite3.connect('database/blogs_info.db')
-                conn.text_factory = str
                 cursor = conn.cursor()
-                sql = 'select tid from user_info where username = "%s";' % (username)
-                cursor.execute(sql)
-                result = cursor.fetchall()
+                cursor.execute('select user_id from user_info where username = :username;',{'username':username})
+                res = cursor.fetchall()
                 user_id = ''
-                for row in result:
+                for row in res:
                     user_id = row[0]
-
-                sql = "insert into blogs_info(user_id,title,label,summary,article,create_time,alter_time) values(%d,'%s','%s','%s','%s',%d,%d);" % (user_id,title,label,'',article,time.time(),0)
-                print sql
-                cursor.execute(sql)
+                print user_id
+                sql_param = (getGuid(),title,'summary',article,time.time(),time.time(),user_id,label_id)
+                cursor.execute('insert into blogs_info(blog_id,title,summary,article,create_time,modify_time,user_id,label_id) values(?,?,?,?,?,?,?,?);',sql_param)
                 conn.commit()
                 cursor.close()
                 conn.close()
+                result['status']=1
             except:
-                print 'except'
-                self.write('create ok')
+                result['status']=0
+            self.write(result)
 
 
 
 class BlogsClassifyHandler(BaseHandler):
-    #@tornado.web.authenticated
+    @tornado.web.authenticated
     def get(self):
         self.render_html("blogs/blogs_classify.html")
 
@@ -109,7 +108,7 @@ class BlogsClassifyHandler(BaseHandler):
         self.write(dict)
 
 class BlogsSqliteHandler(BaseHandler):
-    #@tornado.web.authenticated
+    @tornado.web.authenticated
     def get(self):
         self.render_html("blogs/blogs_sqlite.html")
 
@@ -124,6 +123,7 @@ class BlogsSqliteHandler(BaseHandler):
         self.write(sql)
 
 class BlogsLabelHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self):
         label_list = getLabellist()
         self.render_html("blogs/blogs_label.html",label_list=label_list)
@@ -133,12 +133,13 @@ class BlogsLabelHandler(BaseHandler):
         if action == 'create':
             label_name = self.get_argument('label_name')
             label_id = getGuid()
+            user_info = self.get_current_user_info()
             result={}
             try:
                 conn = sqlite3.connect("database/blogs_info.db")
                 cursor = conn.cursor()
-                sql_param = (label_id,label_name,time.time(),time.time())
-                cursor.execute('insert into label_info(label_id,label_name,create_time,modify_time) values(?,?,?,?);', sql_param)
+                sql_param = (label_id,user_info['user_id'],label_name,time.time(),time.time())
+                cursor.execute('insert into label_info(label_id,user_id,label_name,create_time,modify_time) values(?,?,?,?,?);', sql_param)
                 conn.commit()
                 cursor.close()
                 conn.close()

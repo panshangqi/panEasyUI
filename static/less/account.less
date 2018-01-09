@@ -62,9 +62,23 @@
                 width:200px;
                 border-radius: 4px;
             }
+            .login_btn{
+                color: #fff;
+                background-color: @theme_color;
+                cursor: pointer;
+                &:hover{
+                    background-color: @theme_color_deep;
+                }
+            }
+
         }
-
-
+        #login_error{
+            margin-top: 25px;
+            color: #990000;
+            height:15px;
+            font-size: 13px;
+            display: none;
+        }
         .opertor{
             text-align: right;
             width:290px;
