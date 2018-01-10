@@ -28,7 +28,7 @@
                 <li><a class="{{ 'li_active' if request.path == '/blogs_list' }}" href="/blogs_list">我的博客</a></li>
                 <li><a class="{{ 'li_active' if request.path == '/blogs_essay' }}" href="/blogs_essay">新随笔</a></li>
                 <li><a class="{{ 'li_active' if request.path == '/blogs_label' }}" href="/blogs_label">分类管理</a></li>
-                <li><a href="/index">个人设置</a></li>
+                <li><a class="{{ 'li_active' if request.path == '/blogs_setting' }}"  href="/blogs_setting">个人设置</a></li>
                 <div class="clear:both"></div>
             </ul>
         </div>
