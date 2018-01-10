@@ -10,33 +10,15 @@ import tornado.web
 import time
 import sqlite3
 
-#获取标签列表
-def getLabellist():
-    conn = sqlite3.connect("database/blogs_info.db")
-    cursor = conn.cursor()
-    sql = "select label_id,label_name,click_rate,create_time,modify_time from label_info order by create_time desc;"
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    label_list = []
-    for row in result:
-        item={}
-        item['label_id'] = row[0]
-        item['label_name'] = row[1]
-        item['click_rate'] = row[2]
-        item['create_time'] = row[3]
-        item['modify_time'] = row[4]
-        label_list.append(item)
-    return label_list
 #获取文章摘要
 class SummaryHTMLParser(HTMLParser):
 
     def __init__(self, count):
         HTMLParser.__init__(self)
         self.count = count
-        self.summary = u''
+        self.summary = ''
 
     def feed(self, data):
-        """Only accept unicode `data`"""
         assert (isinstance(data, unicode))
         HTMLParser.feed(self, data)
 
@@ -44,19 +26,35 @@ class SummaryHTMLParser(HTMLParser):
         more = self.count - len(self.summary)
         if more > 0:
             # Remove possible whitespaces in `data`
-            data_without_whitespace = u''.join(data.split())
+            data_without_whitespace = ''.join(data.split())
 
             self.summary += data_without_whitespace[0:more]
 
-    def get_summary(self, suffix=u'', wrapper=u'p'):
-        return u'{1}{2}{0}'.format(wrapper, self.summary, suffix)
+    def get_summary(self, suffix='', wrapper='p'):
+        return '{1}{2}{0}'.format(wrapper, self.summary, suffix)
 
-class BlogsListHandler(BaseHandler):
-    def get(self,rout_name):
-        user_id = self.get_current_user()
+class BlogsMethod(object):
+    #获取标签列表
+    @staticmethod
+    def getLabellist():
+        conn = sqlite3.connect("database/blogs_info.db")
+        cursor = conn.cursor()
+        sql = "select label_id,label_name,click_rate,create_time,modify_time from label_info order by create_time desc;"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        label_list = []
+        for row in result:
+            item={}
+            item['label_id'] = row[0]
+            item['label_name'] = row[1]
+            item['click_rate'] = row[2]
+            item['create_time'] = row[3]
+            item['modify_time'] = row[4]
+            label_list.append(item)
+        return label_list
+    @staticmethod
+    def get_blogs_list(user_id):
         blogs_list=[]
-        label_list = getLabellist()
-        result={}
         try:
             conn = sqlite3.connect('database/blogs_info.db')
             cursor = conn.cursor()
@@ -73,13 +71,25 @@ class BlogsListHandler(BaseHandler):
                 blogs_item['type'] = row[6]
                 blogs_item['click_rate'] = row[7]
                 blogs_list.append(blogs_item)
-
             conn.commit()
             cursor.close()
             conn.close()
-            result['status']=1
         except:
-            result['status']=0
+            blogs_list=[]
+        return blogs_list
+
+class BlogsListHandler(BaseHandler):
+    def get(self):
+        user_id = self.get_current_user()
+        blogs_list=BlogsMethod.get_blogs_list(user_id)
+        label_list = BlogsMethod.getLabellist()
+        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
+
+class BlogsHandler(BaseHandler):
+    def get(self,nickname):
+        user_id = nickname
+        blogs_list=BlogsMethod.get_blogs_list(user_id)
+        label_list = BlogsMethod.getLabellist()
         self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
 
 class BlogsArticleHandler(BaseHandler):
@@ -95,7 +105,6 @@ class BlogsArticleHandler(BaseHandler):
             cursor.execute('select blog_id,title,article,create_time,type,click_rate from blogs_info where user_id=:user_id and blog_id=:blog_id',{'user_id':user_id,'blog_id':blog_id})
             res = cursor.fetchall()
             for row in res:
-                blogs_item={}
                 article_info['blog_id'] = row[0]
                 article_info['title'] = row[1]
                 article_info['article'] = row[2]
@@ -113,7 +122,7 @@ class BlogsArticleHandler(BaseHandler):
 class BlogsEssayHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        label_list = getLabellist()
+        label_list = BlogsMethod.getLabellist()
         self.render_html("blogs/blogs_essay.html",label_list=label_list)
 
     def post(self):
@@ -184,7 +193,7 @@ class BlogsSqliteHandler(BaseHandler):
 class BlogsLabelHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        label_list = getLabellist()
+        label_list = BlogsMethod.getLabellist()
         self.render_html("blogs/blogs_label.html",label_list=label_list)
 
     def post(self):
@@ -239,6 +248,25 @@ class BlogsLabelHandler(BaseHandler):
             except:
                 result['status']=0
             self.write(result)
+class BlogsSettingHandler(BaseHandler):
+    def get(self):
+        label_list = BlogsMethod.getLabellist()
+        user_id = self.get_current_user()
+        user_info={}
+        conn = sqlite3.connect("database/blogs_info.db")
+        cursor = conn.cursor()
+        cursor.execute('select user_id,username,email,create_time from user_info where user_id = :user_id;',{'user_id':user_id})
+        res = cursor.fetchall()
+        for row in res:
+            user_info['user_id'] = row[0]
+            user_info['username'] = row[1]
+            user_info['email'] = row[2]
+            user_info['create_time'] = row[3]
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        self.render_html('blogs/blogs_setting.html',user_info=user_info,label_list=label_list)
 
 
 
