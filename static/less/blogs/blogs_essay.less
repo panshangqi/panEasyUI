@@ -5,12 +5,81 @@
         color:#666;
         font-size: 14px;
     }
-    input.title_text{
-        width:100%;
-        height:30px;
-        margin-top: 10px;
-        font-size: 14px;
+    .title_input{
+        margin-top: 15px;
+        input.title_text{
+            width:850px;
+            height:30px;
+            font-size: 14px;
+        }
+        .blog_type{
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            width:80px;
+            height:28px;
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            &:hover{
+                background-color: #f0f0f0;
+            }
+            .selector{
+                .select_text{
+                    display: inline-block;
+                    vertical-align: top;
+                    width:76%;
+                    height:30px;
+                    font-size: 14px;
+                    line-height: 28px;
+                    text-align: center;
+                    color:#777;
+                }
+                .select_btn{
+                    display: inline-block;
+                    vertical-align: top;
+                    width:20%;
+                    padding-top: 11px;
+                    div{
+                        width:0;
+                        height:0;
+                        border-width: 7px;
+                        border-style: solid;
+                        border-color:#999 transparent transparent transparent;
+                    }
+                }
+            }
+            ul{
+                position: absolute;
+                display: block;
+                width:80px;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                border: 1px solid @theme_color;
+                z-index: 1001;
+                background-color: #fff;
+                margin-left: -1px;
+                margin-top: -1px;
+                display: none;
+                li{
+                    display: block;
+                    box-sizing: border-box;
+                    margin: 0;
+                    height:25px;
+                    line-height: 25px;
+                    color:#888;
+                    font-size: 13px;
+                    padding-left: 8px;
+                    &:hover{
+                        color: #fff;
+                        background-color: fadeout(@theme_color,30%);
+                    }
+                }
+            }
+        }
     }
+
     .article{
         margin-top: 20px;
         height: 32px;

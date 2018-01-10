@@ -41,5 +41,8 @@
 
 {% endblock %}
 {% block script %}
+<script>
+    var label_list = {{json_encode(label_list)}}
+</script>
 {% block blogs_script %}{% endblock %}
 {% endblock %}

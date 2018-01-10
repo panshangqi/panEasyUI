@@ -35,8 +35,10 @@ article TEXT not null,
 blog_id varchar(256) not null,
 user_id varchar(256) not null,
 label_id varchar(256) not null,
+type varchar(50) not null,
 create_time int not null,
-modify_time int not__null);
+modify_time int not null,
+click_rate int default 0);
 
 //标签信息
 create table label_info(
@@ -50,15 +52,21 @@ modify_time timestamp not null);
 //查询字段名
 pragma table_info(user_info);
 
+//添加字段
+例如在student表中添加一列名为name，类型为varchar:
+alter table student add column name varchar;
+
 //复制表数据
 1.修改原表名称
-alert table mytable rename to mytable_bak;
+alter table mytable rename to mytable_bak;
 2.新建修改字段之后的表
 create table mytable (tid integer primary key,username text not null,password text not null);
 3.从旧表中查询数据 并插入新表
 insert into mytable select tid,username,password from mytable_bak;
 4.删除旧表
 drop table mytable_bak;
+
+insert into blogs_info select title,summary,article,blog_id,user_id,label_id,type,create_time,modify_time from blogs_info_bak;
 
 csmqytdeqvmqfjic
 =================================================================================

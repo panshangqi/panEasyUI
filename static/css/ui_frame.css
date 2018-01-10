@@ -396,17 +396,98 @@ textarea {
   width: 100%;
   height: 150px;
   margin-top: 20px;
-  border: 1px solid #8DB02E;
+  border-bottom: 1px solid #c9c9c9;
 }
-#blogs_html_list .item_title {
+#blogs_html_list .blogs_item .item_header {
   width: 100%;
   height: 26px;
   line-height: 26px;
-  background-color: rgba(141, 176, 46, 0.8);
-  color: #fff;
   font-size: 12px;
-  box-sizing: border-box;
-  padding-left: 15px;
+}
+#blogs_html_list .blogs_item .item_header .item_type {
+  width: 40px;
+  height: 22px;
+  line-height: 22px;
+  display: inline-block;
+  text-align: center;
+  background-color: #8DB02E;
+  color: #fff;
+  border-radius: 4px;
+}
+#blogs_html_list .blogs_item .item_header .item_title {
+  font-size: 16px;
+  margin-left: 12px;
+}
+#blogs_html_list .blogs_item .item_header a {
+  color: #333;
+  text-decoration: none;
+}
+#blogs_html_list .blogs_item .item_header a:hover {
+  color: #8DB02E;
+}
+#blogs_html_list .blogs_item .item_summary {
+  width: 96%;
+  height: 80px;
+  color: #888;
+  line-height: 25px;
+  font-size: 14px;
+  margin-top: 15px;
+  margin-left: 20px;
+  overflow: hidden;
+}
+#blogs_html_list .blogs_item .item_foot {
+  color: #666;
+  text-align: right;
+  font-size: 13px;
+  padding-right: 15px;
+}
+#blogs_html_list .blogs_item .item_foot span {
+  margin-left: 12px;
+}
+#blogs_html_list .blogs_item .item_foot .label_name {
+  display: inline-block;
+  background-color: #bbb;
+  color: #fff;
+  padding: 1px 10px 1px 10px;
+  border-radius: 4px;
+}
+#blogs_html_list .blogs_item .item_foot .modify_blog_btn {
+  cursor: pointer;
+  color: #8DB02E;
+}
+#blogs_html_list .blogs_item .item_foot .modify_blog_btn:hover {
+  text-decoration: underline;
+}
+#blogs_html_list .blogs_item .item_foot .delete_blog_btn {
+  cursor: pointer;
+  color: #E3170D;
+}
+#blogs_html_list .blogs_item .item_foot .delete_blog_btn:hover {
+  text-decoration: underline;
+}
+#blogs_html_list #delete_dialog #dialog_content .dialog_tip {
+  width: 100%;
+  text-align: center;
+  color: #888;
+  height: 130px;
+  line-height: 130px;
+  font-size: 16px;
+}
+#blogs_html_list #delete_dialog #dialog_content .dialog_foot {
+  text-align: center;
+}
+#blogs_html_list #delete_dialog #dialog_content .dialog_foot button:last-child {
+  margin-left: 15px;
+}
+#blogs_article_html {
+  width: 100%;
+  min-height: 800px;
+  background-color: #ffffff;
+  margin-top: 50px auto;
+  padding: 20px;
+}
+#blogs_article_html .article_title {
+  font-size: 25px;
 }
 .essay_html {
   padding: 20px;
@@ -415,11 +496,77 @@ textarea {
   color: #666;
   font-size: 14px;
 }
-.essay_html input.title_text {
-  width: 100%;
+.essay_html .title_input {
+  margin-top: 15px;
+}
+.essay_html .title_input input.title_text {
+  width: 850px;
   height: 30px;
-  margin-top: 10px;
   font-size: 14px;
+}
+.essay_html .title_input .blog_type {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 80px;
+  height: 28px;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.essay_html .title_input .blog_type:hover {
+  background-color: #f0f0f0;
+}
+.essay_html .title_input .blog_type .selector .select_text {
+  display: inline-block;
+  vertical-align: top;
+  width: 76%;
+  height: 30px;
+  font-size: 14px;
+  line-height: 28px;
+  text-align: center;
+  color: #777;
+}
+.essay_html .title_input .blog_type .selector .select_btn {
+  display: inline-block;
+  vertical-align: top;
+  width: 20%;
+  padding-top: 11px;
+}
+.essay_html .title_input .blog_type .selector .select_btn div {
+  width: 0;
+  height: 0;
+  border-width: 7px;
+  border-style: solid;
+  border-color: #999 transparent transparent transparent;
+}
+.essay_html .title_input .blog_type ul {
+  position: absolute;
+  display: block;
+  width: 80px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #8DB02E;
+  z-index: 1001;
+  background-color: #fff;
+  margin-left: -1px;
+  margin-top: -1px;
+  display: none;
+}
+.essay_html .title_input .blog_type ul li {
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  height: 25px;
+  line-height: 25px;
+  color: #888;
+  font-size: 13px;
+  padding-left: 8px;
+}
+.essay_html .title_input .blog_type ul li:hover {
+  color: #fff;
+  background-color: rgba(141, 176, 46, 0.7);
 }
 .essay_html .article {
   margin-top: 20px;

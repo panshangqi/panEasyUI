@@ -6,7 +6,17 @@
 {% block blogs_content %}
 <div class="essay_html">
     <div class="title">标题</div>
-    <input class="title_text" type="text" id="arcticle_title">
+    <div class="title_input">
+        <input class="title_text" type="text" id="arcticle_title">
+        <div class="blog_type" id="blog_type">
+            <div class="selector"><span class="select_text">原创</span><span class="select_btn"><div></div></span></div>
+            <ul>
+                <li>原创</li>
+                <li>转载</li>
+                <li>翻译</li>
+            </ul>
+        </div>
+    </div>
     <div class="article">内容</div>
     <div class="pan-edit-frame" id="blogs_edit">
         <iframe></iframe>
@@ -36,9 +46,20 @@
 
     var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {});
     var labelId = '';
+    $('#blog_type .selector').click(function () {
+        $('#blog_type ul').css('display','block');
+        document.onmouseup = onDocumentMouseDown;
+    })
+    function onDocumentMouseDown(event){
+        $('#blog_type ul').css('display','none');
+        document.onmousedown = null;
+    }
+    $('#blog_type ul').on('click','li',function () {
+        $('#blog_type .select_text').html($(this).html());
+    })
 
     $('#submit_btn').on('click',function(){
-
+        var blog_type = $('#blog_type .select_text').html();
         var articleTitle = $('#arcticle_title').val();
         var article = panEditObj.getFrameBodyHtml();
         console.log(article);
@@ -52,6 +73,7 @@
         }
         var data={
             'title':$('#arcticle_title').val(),
+            'type':blog_type,
             'label_id':labelId,
             'article':article,
             'action':'create'

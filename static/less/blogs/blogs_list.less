@@ -4,17 +4,93 @@
         width:100%;
         height:150px;
         margin-top: 20px;
-        border: 1px solid @theme_color;
+        border-bottom: 1px solid #c9c9c9;
+        .item_header{
+            width:100%;
+            height:26px;
+            line-height: 26px;
+            font-size: 12px;
+            .item_type{
+                width:40px;
+                height:22px;
+                line-height: 22px;
+                display: inline-block;
+                text-align: center;
+                background-color: @theme_color;
+                color:#fff;
+                border-radius: 4px;
+            }
+            .item_title{
+                font-size: 16px;
+                margin-left: 12px;
+            }
+            a{
+                color:#333;
+                text-decoration: none;
+                &:hover{
+                    color:@theme_color;
+                }
+            }
+        }
+        .item_summary{
+            width:96%;
+            height:80px;
+            color:#888;
+            line-height: 25px;
+            font-size: 14px;
+            margin-top: 15px;
+            margin-left: 20px;
+            overflow: hidden;
+        }
+        .item_foot{
+            color:#666;
+            text-align: right;
+            font-size: 13px;
+            padding-right: 15px;
+            span{
+                margin-left: 12px;
+            }
+            .label_name{
+                display: inline-block;
+                background-color: #bbb;
+                color:#fff;
+                padding: 1px 10px 1px 10px;
+                border-radius: 4px;
+            }
+            .modify_blog_btn{
+                cursor:pointer;
+                color:@theme_color;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+            .delete_blog_btn{
+                cursor:pointer;
+                color:#E3170D;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
     }
-    .item_title{
-        width:100%;
-        height:26px;
-        line-height: 26px;
-        background-color: fadeout(@theme_color,20%);
-        color:#fff;
-        font-size: 12px;
-        box-sizing: border-box;
-        padding-left: 15px;
+
+    #delete_dialog{
+        #dialog_content{
+            .dialog_tip{
+                width:100%;
+                text-align: center;
+                color:#888;
+                height:130px;
+                line-height: 130px;
+                font-size: 16px;
+            }
+            .dialog_foot{
+                text-align: center;
+                button:last-child{
+                    margin-left: 15px;
+                }
+            }
+        }
     }
 }
 

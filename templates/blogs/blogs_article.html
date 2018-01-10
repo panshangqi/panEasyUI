@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}主页{% endblock %}
+{% block style %}
+{% endblock %}
+{% block content %}
+<div id="blogs_article_html">
+    <div class="article_title">{{article_info.title}}</div>
+    <div class="article_content">{{article_info.article}}</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+ var article_info = {{json_encode(article_info)}}
+</script>
+<script src="{{static_url}}/js/index.js"></script>
+{% endblock %}

@@ -36,9 +36,9 @@ var tipDlg = new httpDialogTip();
 $.extend({
     window:{
         http:{
-            post:function(url,data,fn,complete,error) {
+            post:function(url,data,fn,animation,complete,error) {
                 data['_xsrf'] = getCookie('_xsrf');
-
+                animation = (typeof animation == 'undefined')?true:animation;
                 $.ajax({
                     'type': 'post',
                     'url': url,
@@ -46,11 +46,19 @@ $.extend({
                     'datatype': 'json',
                     'async':false,
                     'success': function (result) {
-                        tipDlg.showDialog(true,function(){
+                        if(animation){
+                            tipDlg.showDialog(true,function(){
+                                if (typeof fn === 'function') {
+                                    fn(result);
+                                }
+                            });
+                        }
+                        else{
                             if (typeof fn === 'function') {
                                 fn(result);
                             }
-                        });
+                        }
+
                     },
                     'complete': function () {
                         if (typeof complete === 'function') {
