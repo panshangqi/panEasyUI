@@ -16,12 +16,11 @@ url = [(r"/index",IndexHandler),
         (r"/logout",LogoutHandler),
         (r"/register",RegisterHandler),
         (r"/send_email_code",SendEmailCodeHandler),
-        (r"/blogs_list",BlogsListHandler),
+        (r"/blogs_list/(\w*)",BlogsListHandler),
         (r"/blogs_article",BlogsArticleHandler),
         (r"/blogs_essay",BlogsEssayHandler),
         (r"/blogs_classify",BlogsClassifyHandler),
         (r"/blogs_sqlite",BlogsSqliteHandler),
         (r"/blogs_label",BlogsLabelHandler),
         (r"/.*",BaseHandler)
-
       ]

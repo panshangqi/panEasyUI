@@ -52,7 +52,7 @@ class SummaryHTMLParser(HTMLParser):
         return u'{1}{2}{0}'.format(wrapper, self.summary, suffix)
 
 class BlogsListHandler(BaseHandler):
-    def get(self):
+    def get(self,rout_name):
         user_id = self.get_current_user()
         blogs_list=[]
         label_list = getLabellist()

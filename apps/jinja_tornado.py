@@ -46,7 +46,7 @@ class BaseHandler(tornado.web.RequestHandler):
         current_user = self.get_current_user_info()
         kwargs.update({
             'settings':self.settings,
-            'static_url':self.settings.get('static_path','static'),
+            'static_url':'/static', #self.settings.get('static_path','/static'),
             'request':self.request,
             'current_user':current_user,
             'xsrf_token':self.xsrf_token,
