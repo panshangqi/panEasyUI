@@ -1,2 +1,4 @@
-*.pyc
+/apps/*.pyc
 /static/node_modules
+/*.pyc
+
