@@ -81,7 +81,7 @@ class BlogsMethod(object):
         user_info={}
         conn = sqlite3.connect("database/blogs_info.db")
         cursor = conn.cursor()
-        cursor.execute('select user_id,username,email,create_time,head_img from user_info where user_id = :user_id;',{'user_id':user_id})
+        cursor.execute('select user_id,username,email,create_time,head_img,rout_address from user_info where user_id = :user_id;',{'user_id':user_id})
         res = cursor.fetchall()
         for row in res:
             user_info['user_id'] = row[0]
@@ -89,7 +89,12 @@ class BlogsMethod(object):
             user_info['email'] = row[2]
             user_info['create_time'] = row[3]
             user_info['head_img'] = row[4];
-            user_info['head_img_url'] = url + '/static/files/'+ user_info['head_img'];
+            if row[4]:
+                user_info['head_img_url'] = url + '/static/files/'+ user_info['head_img'];
+            else:
+                user_info['head_img_url'] = None
+            user_info['rout_address'] = row[5];
+
 
         conn.commit()
         cursor.close()
@@ -103,8 +108,7 @@ class BlogsListHandler(BaseHandler):
         user_id = self.get_current_user()
         blogs_list = BlogsMethod.get_blogs_list(user_id)
         label_list = BlogsMethod.getLabellist(user_id)
-        user_info = BlogsMethod.get_user_info(self.get_host_url(),user_id)
-        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list,user_info=user_info)
+        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
 
 class BlogsHandler(BaseHandler):
     def get(self,rout_address):
@@ -116,10 +120,9 @@ class BlogsHandler(BaseHandler):
         for row in res:
             m_user_id = row[0]
         if m_user_id:
-	        blogs_list = BlogsMethod.get_blogs_list(m_user_id)
-	        label_list = BlogsMethod.getLabellist(m_user_id)
-	        user_info = BlogsMethod.get_user_info(self.get_host_url(),m_user_id)
-	        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list,user_info=user_info)
+            blogs_list = BlogsMethod.get_blogs_list(m_user_id)
+            label_list = BlogsMethod.getLabellist(m_user_id)
+            self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
         else:
             raise tornado.web.HTTPError(404)
 
@@ -155,8 +158,7 @@ class BlogsEssayHandler(BaseHandler):
     def get(self):
         user_id = self.get_current_user()
         label_list = BlogsMethod.getLabellist(user_id)
-        user_info = BlogsMethod.get_user_info(self.get_host_url(),user_id)
-        self.render_html("blogs/blogs_essay.html",user_info=user_info,label_list=label_list)
+        self.render_html("blogs/blogs_essay.html",label_list=label_list)
 
     def post(self):
         action = self.get_argument('action')
@@ -228,8 +230,7 @@ class BlogsLabelHandler(BaseHandler):
     def get(self):
         user_id = self.get_current_user()
         label_list = BlogsMethod.getLabellist(user_id)
-        user_info = BlogsMethod.get_user_info(self.get_host_url(),user_id)
-        self.render_html("blogs/blogs_label.html",user_info=user_info,label_list=label_list)
+        self.render_html("blogs/blogs_label.html",label_list=label_list)
 
     def post(self):
         action = self.get_argument('action')
@@ -289,8 +290,7 @@ class BlogsSettingHandler(BaseHandler):
     def get(self):
         user_id = self.get_current_user()
         label_list = BlogsMethod.getLabellist(user_id)
-        user_info = BlogsMethod.get_user_info(self.get_host_url(),user_id)
-        self.render_html('blogs/blogs_setting.html',user_info=user_info,label_list=label_list)
+        self.render_html('blogs/blogs_setting.html',label_list=label_list)
 
 class BlogsUploadHeadHandler(BaseHandler):
     def post(self):

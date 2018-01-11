@@ -66,6 +66,12 @@ class RegisterHandler(BaseHandler):
                 result['status']=-1
         self.write(result)
 
+class CheckIdentityHandler(BaseHandler):
+    def get(self):
+        self.render_html("account/check_identity.html")
+class ModifyPasswordHandler(BaseHandler):
+    def get(self):
+        self.render_html("account/modify_password.html")
 class SendEmailCodeHandler(BaseHandler):
     def post(self):
         email = self.get_argument('email')

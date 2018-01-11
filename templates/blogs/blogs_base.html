@@ -25,7 +25,8 @@
     <div class="right_content">
         <div class="main_nav">
             <ul>
-                <li><a class="{{ 'li_active' if request.path == '/blogs/(\w+)' }}" href="/blogs/(\w+)">我的博客</a></li>
+                {% set rout = '/blogs/'+current_user.rout_address if current_user.rout_address else '/blogs_list' %}
+                <li><a class="{{ 'li_active' if request.path=='/blogs_list' or request.path==rout}}" href="/blogs_list">我的博客</a></li>
                 <li><a class="{{ 'li_active' if request.path == '/blogs_essay' }}" href="/blogs_essay">新随笔</a></li>
                 <li><a class="{{ 'li_active' if request.path == '/blogs_label' }}" href="/blogs_label">分类管理</a></li>
                 <li><a class="{{ 'li_active' if request.path == '/blogs_setting' }}"  href="/blogs_setting">个人设置</a></li>
@@ -43,8 +44,8 @@
 {% block script %}
 <script>
     var label_list = {{json_encode(label_list)}}
-    var user_info = {{json_encode(user_info)}}
-    $('#head_img').css('background-image','url('+user_info.head_img_url+')');
+    if(current_user.rout_address)
+        $('#head_img').css('background-image','url('+current_user.head_img_url+')');
 </script>
 {% block blogs_script %}{% endblock %}
 {% endblock %}
