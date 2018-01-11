@@ -23,8 +23,10 @@
             {% endfor %}
             <span>{{timestamp_format(item.create_time,false)}}</span>
             <span>阅读({{item.click_rate}})</span>
+            {% if current_user.user_id %}
             <span class="modify_blog_btn">编辑</span>
             <span class="delete_blog_btn">删除</span>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

@@ -1,5 +1,6 @@
 # -*- coding=utf-8 -*-
 import sqlite3
+import os.path
 import smtplib
 from email.mime.text import MIMEText
 
@@ -29,5 +30,16 @@ def sendEmail():
 	    print "发送失败"
 	finally:
 	    s.quit()
+
+def get_files_path():
+
+	files_path = os.path.dirname(__file__)
+	return files_path
+
+def get_file_suffix(filename):
+	shotname,extension = os.path.splitext(filename)
+	return extension
+
 if __name__ == '__main__':
-    sendEmail()
+
+    print get_file_suffix('/opt/www/big.jpg')

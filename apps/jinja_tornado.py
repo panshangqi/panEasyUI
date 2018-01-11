@@ -1,5 +1,6 @@
 # -*- coding=utf-8 -*-
 import tornado.web
+import os.path
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
@@ -41,6 +42,9 @@ class BaseHandler(tornado.web.RequestHandler):
         except:
             user_dict={}
         return user_dict
+
+    def get_host_url(self):
+		return self.request.protocol + '://'+ self.request.host;
 
     def render_html(self, template_name, **kwargs):
         current_user = self.get_current_user_info()

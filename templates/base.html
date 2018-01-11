@@ -10,15 +10,20 @@
 <div id="frame_html" style="display: block">
     <div class="frame_header">
         <ul>
-            <li><a href="http://www.jq22.com/jquery-info122" target="_blank">jQuery下载</a></li>
+            {% if current_user.user_id %}
+                <li><a id="nav_logout" href="/logout">注销</a></li>
+                <li><span class="user_name">{{current_user.username}}</span></li>
+            {% else %}
             <li><a id="nav_login" href="/login">登录</a></li>
-            <li><a id="nav_logout" href="/logout">注销</a></li>
+            {% endif %}
+
         </ul>
     </div>
+    {% set rout_dict={'/blogs_list':1,'/blogs_essay':1,'/blogs_label':1,'/blogs_setting':1,'/blogs_article':1} %}
     <div class="frame_main_nav">
         <a class="nav_cell {{'active' if request.path == '/index'}}" href="/index">插件库</a>
         <a class="nav_cell">资料阁</a>
-        <a class="nav_cell {{'active' if request.path == '/blogs_list' or request.path == '/blogs_essay' or request.path == '/blogs_label'}}" href="/blogs_list">博客苑</a>
+        <a class="nav_cell {{'active' if rout_dict[request.path]}}" href="/blogs_list">博客苑</a>
     </div>
     <div class="frame_content">
         {% block content %}

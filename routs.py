@@ -24,5 +24,6 @@ url = [(r"/index",IndexHandler),
         (r"/blogs_sqlite",BlogsSqliteHandler),
         (r"/blogs_label",BlogsLabelHandler),
         (r"/blogs_setting",BlogsSettingHandler),
+        (r"/blogs_upload_head",BlogsUploadHeadHandler),
         (r"/.*",BaseHandler)
       ]

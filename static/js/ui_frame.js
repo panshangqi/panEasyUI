@@ -58,7 +58,6 @@ $.extend({
                                 fn(result);
                             }
                         }
-
                     },
                     'complete': function () {
                         if (typeof complete === 'function') {
@@ -71,6 +70,51 @@ $.extend({
                                 error();
                             }
                         });
+                    }
+                });
+            },
+            post_file:function(url,data,fn,animation,complete,error){
+                animation = (typeof animation == 'undefined')?true:animation;
+                $.ajax({
+                    'url': url,
+                    'type': 'post',
+                    'data': data,
+                    'async': true,
+                    'cache': false,
+                    'contentType': false,
+                    'processData': false,
+                    'success':function(result){
+                        if(animation){
+                            tipDlg.showDialog(true,function(){
+                                if (typeof fn === 'function') {
+                                    fn(result);
+                                }
+                            });
+                        }
+                        else{
+                            if (typeof fn === 'function') {
+                                fn(result);
+                            }
+                        }
+                    },
+                    'complete': function () {
+                        if (typeof complete === 'function') {
+                            complete();
+                        }
+                    },
+                    'error': function () {
+                        if(animation){
+                            tipDlg.showDialog(true,function(){
+                                if (typeof error === 'function') {
+                                    error();
+                                }
+                            });
+                        }
+                        else{
+                            if (typeof error === 'function') {
+                                error();
+                            }
+                        }
                     }
                 });
             }

@@ -1,5 +1,5 @@
 {% extends "blogs/blogs_base.html" %}
-{% block blogs_title %}编辑分类{% endblock %}
+{% block blogs_title %}个人设置{% endblock %}
 {% block blogs_style %}
 {% endblock %}
 
@@ -12,17 +12,16 @@
     <div class="sub_title" style="margin-top: 20px;">基本资料</div>
     <div class="cut_line"></div>
     <div class="user_head_img">
-        <div classs="image"></div>
-        <a>更换头像</a>
+        <div class="image_rect"><img src="{{user_info.head_img_url}}"></div>
+        <a id="upload_head_btn">更换头像</a>
     </div>
-    <div class="user_info_box">
-        <div class="box_cell"><span class="data_name">登陆账号：</span><span class="data_value">{{user_info.username}}</span><a>修改</a></div>
+    <div class="user_info_box" style="margin-left: 190px;">
+        <div class="box_cell"><span class="data_name">登陆账号：</span><span class="data_value">{{user_info.username}}</span></div>
         <div class="box_cell"><span class="data_name">账号ID：</span><span class="data_value">{{user_info.user_id}}</span></div>
         <div class="box_cell"><span class="data_name">密码：</span><span class="data_value">**********</span><a>修改</a></div>
         <div class="box_cell"><span class="data_name">注册邮箱：</span><span class="data_value">{{user_info.email}}</span><a>修改</a></div>
         <div class="box_cell"><span class="data_name">注册时间：</span><span class="data_value">{{timestamp_format(user_info.create_time,false)}}</span></div>
     </div>
-
 
     <div class="sub_title" style="margin-top: 70px;">博客设置</div>
     <div class="cut_line"></div>
@@ -32,11 +31,44 @@
         <div class="box_cell"><span class="data_name">博客地址：</span><span class="data_value">{{user_info.email}}</span><a>修改</a><span class="tip">（只支持字母，数字，下划线，通过域名/blogs/地址，即可访问）</span>
         </div>
     </div>
+    <form id="upload_head" style="display: none">
+        {{xsrf_form_html()}}
+        <input type="file" name="file" id="img_file">
+    </form>
+
+    <div class="pan-blogs-dialog" id="alert_dialog">
+        <div class="pan-blogs-dialog-content">
+            <div id="alert_dialog_content">
+
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
 {% block blogs_script %}
 <script>
  var user_info = {{json_encode(user_info)}}
+ var alertDialog = $('#alert_dialog').panBlogsDialog({'width':400,'height':300,'top':180},function(){});
+</script>
+<script>
+
+    $('#upload_head_btn').click(function(){
+        $('#img_file').click();
+    })
+    //打开excel
+    $('#img_file').change(function(){
+        var formData = new FormData($("#upload_head")[0]);
+        $('#img_file').val('');
+        $.window.http.post_file('/blogs_upload_head',formData,function(data){
+            if(data.status == 1){
+                window.location.href='/blogs_setting';
+            }
+            else{
+                $('#alert_dialog_content').html(data.message);
+                alertDialog.showDialog();
+            }
+        })
+    })
 </script>
 {% endblock %}

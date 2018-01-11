@@ -56,6 +56,11 @@ textarea {
 #frame_html .frame_header ul li a:hover {
   color: #f5f5f5;
 }
+#frame_html .frame_header ul li .user_name {
+  font-size: 14px;
+  color: #fff;
+  font-family: Consolas;
+}
 #frame_html .frame_main_nav {
   width: 100%;
   height: 45px;
@@ -301,7 +306,7 @@ textarea {
   width: 140px;
   min-height: 140px;
   margin: 25px auto;
-  background-image: url(../img/head_001.jpg);
+  background-size: 140px 140px;
 }
 #blogs_base_html .left_nav .classify {
   width: 100%;
@@ -385,12 +390,17 @@ textarea {
   background-color: #fff;
   color: #8DB02E;
 }
+#blogs_base_html .right_content .main_nav ul .li_active:hover {
+  background-color: #fff;
+  color: #8DB02E;
+}
 #blogs_base_html .right_content .main_content {
   background-color: #fff;
   min-height: 800px;
 }
 #blogs_html_list {
   padding: 20px;
+  padding-bottom: 100px;
 }
 #blogs_html_list .blogs_item {
   width: 100%;
@@ -484,7 +494,7 @@ textarea {
   min-height: 800px;
   background-color: #ffffff;
   margin-top: 50px auto;
-  padding: 20px;
+  padding: 40px;
 }
 #blogs_article_html .article_title {
   font-size: 25px;
@@ -712,6 +722,7 @@ textarea {
 }
 #blogs_setting_html {
   padding: 25px;
+  position: relative;
 }
 #blogs_setting_html .sub_title {
   font-size: 15px;
@@ -729,24 +740,35 @@ textarea {
   background-color: #c5c5c5;
 }
 #blogs_setting_html .user_head_img {
-  display: inline-block;
-  margin-left: 20px;
-  margin-top: 30px;
+  position: absolute;
+  left: 60px;
   width: 130px;
+  top: 110px;
+  text-align: center;
+  overflow: hidden;
+}
+#blogs_setting_html .user_head_img .image_rect {
+  width: 120px;
+  height: 120px;
+  margin: 15px auto 12px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#blogs_setting_html .user_head_img .image_rect img {
+  width: 120px;
+  height: 120px;
 }
 #blogs_setting_html .user_head_img a {
   width: 50px;
   height: 20px;
   font-size: 12px;
-  margin-left: 12px;
   cursor: pointer;
   color: #7b9f1a;
   text-decoration: underline;
 }
 #blogs_setting_html .user_info_box {
-  display: inline-block;
-  margin-left: 20px;
-  margin-top: 30px;
+  margin-left: 50px;
+  margin-top: 50px;
 }
 #blogs_setting_html .user_info_box .box_cell {
   margin-top: 15px;

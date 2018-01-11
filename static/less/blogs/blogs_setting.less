@@ -1,5 +1,6 @@
 #blogs_setting_html{
     padding:25px;
+    position: relative;
     .sub_title{
         font-size: 15px;
         color: #666;
@@ -16,27 +17,35 @@
         background-color: #c5c5c5;
     }
     .user_head_img{
-        display: inline-block;
-        margin-left: 20px;
-        margin-top: 30px;
+        position: absolute;
+        left: 60px;
         width:130px;
-        .image{
-
+        top: 110px;
+        text-align: center;
+        overflow: hidden;
+        .image_rect{
+            width:120px;
+            height:120px;
+            margin: 15px auto 12px;
+            border-radius: 5px;
+            overflow: hidden;
+            img{
+                width:120px;
+                height:120px;
+            }
         }
         a{
             width: 50px;
             height: 20px;
             font-size: 12px;
-            margin-left: 12px;
             cursor: pointer;
             color: @theme_color_deep;
             text-decoration: underline;
         }
     }
     .user_info_box {
-        display: inline-block;
-        margin-left: 20px;
-        margin-top: 30px;
+        margin-left: 50px;
+        margin-top: 50px;
         .box_cell {
             margin-top: 15px;
             .data_name {

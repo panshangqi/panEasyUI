@@ -2,7 +2,7 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-
+import os.path
 import md5
 import uuid
 import hashlib
@@ -15,6 +15,16 @@ def getGuid():
     m_md5 = hashlib.md5()
     m_md5.update(m_uuid)
     return m_md5.hexdigest()
+
+def getGuid16():
+    return getGuid()[0:16]
+
+def getGuid8():
+	return getGuid()[0:8]
+
+def get_file_suffix(filename):
+	shotname,extension = os.path.splitext(filename)
+	return extension
 
 def sendEmail(toEmail,e_title,e_content):
     msg_from='1187816874@qq.com'  #发送方邮箱
