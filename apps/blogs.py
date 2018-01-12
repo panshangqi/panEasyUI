@@ -306,7 +306,7 @@ class BlogsUploadHeadHandler(BaseHandler):
 	            extension = get_file_suffix(filename)
                 if extension == '.jpg' or extension == '.png' or extension == '.bmp' or extension == '.jpeg':
                     newfilename = 'image_'+getGuid16() + extension
-                    upload_path = os.path.join(os.getcwd(), 'static/files')
+                    upload_path = self.get_image_cache_path()
                     file_path = os.path.join(upload_path,newfilename)
                     with open(file_path,'wb') as up:
                         up.write(img['body'])

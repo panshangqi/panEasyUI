@@ -40,6 +40,45 @@ def get_file_suffix(filename):
 	shotname,extension = os.path.splitext(filename)
 	return extension
 
+from PIL import Image
+import ImageFilter,ImageDraw,ImageFont
+import random
+
+def get_random_id_code():
+    list = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIDKLMNOPQRSTUVWXYZ0123456789'
+    font = []
+    font1 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',35)
+    font2 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',45)
+    font3 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',30)
+    font4 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',40)
+    font.append(font1)
+    font.append(font2)
+    font.append(font3)
+    font.append(font4)
+    width = 160
+    height = 60
+    image = Image.new("RGB",(width,height),(255,255,255))
+    draw = ImageDraw.Draw(image)
+    for t in range(10):
+        x = random.randint(0,width-1)
+        y = random.randint(0,height-1)
+        x1 = random.randint(0,width-1)
+        y1 = random.randint(0,height-1)
+        draw.line([x,y,x1,y1],fill=(random.randint(0,255),random.randint(0,255),random.randint(0,255)));
+    for t in range(50):
+        x = random.randint(0,width-1)
+        y = random.randint(0,height-1)
+        draw.ellipse([x,y,x+2,y+2], fill=(random.randint(0,255),random.randint(0,255),random.randint(0,255)))
+    for t in range(4):
+        draw.text([34*t+16,0],random.choice(list),font=font[random.randint(0,3)],fill=(random.randint(0,255),random.randint(0,255),random.randint(0,255)))
+    #image.show()
+    image.save('code.jpg')
+
+class B(object):
+    def __init__(self,name):
+        self.name=name
+    def getName(self):
+        return 'A '+self.name
 if __name__ == '__main__':
 
-    print get_file_suffix('/opt/www/big.jpg')
+    get_random_id_code()

@@ -103,16 +103,25 @@
     overflow: hidden;
 
     .progress_bar{
-        width:800px;
+        width:1000px;
         height:110px;
         margin: 0 auto;
         position: relative;
         overflow: hidden;
         .line{
-            width:800px;
+            width:1000px;
             height:5px;
-            background-color: #ccc;
+            background-color: #ddd;
             margin: 50px auto;
+        }
+        .line_active1{
+            background: -webkit-linear-gradient(left, @theme_color , #ddd,#ddd,#ddd,#ddd); /* Safari 5.1 - 6.0 */
+        }
+        .line_active2{
+            background: -webkit-linear-gradient(left, @theme_color , @theme_color,@theme_color,#ddd,#ddd,#ddd); /* Safari 5.1 - 6.0 */
+        }
+        .line_active3{
+            background: -webkit-linear-gradient(left, @theme_color , @theme_color,#ddd); /* Safari 5.1 - 6.0 */
         }
         .step{
             display: inline-block;
@@ -125,7 +134,7 @@
                 width:40px;
                 height:40px;
                 color:#fff;
-                background-color: #ccc;
+                background-color: #ddd;
                 border-radius:40px;
                 text-align: center;
                 line-height: 40px;
@@ -150,5 +159,37 @@
         width:800px;
         height:500px;
         margin: 0 auto;
+    }
+}
+#fill_account_html{
+    width:200px;
+    margin: 40px auto;
+    .cell{
+        margin-top: 10px;
+        color:#888;
+        .id_code{
+            display: inline-block;
+            width:160px;
+            height:60px;
+            margin-top: 16px;
+            height:60px;
+            border: 1px solid #bbb;
+            img{
+                width:160px;
+                height:60px;
+            }
+        }
+        a{
+            color:@theme_color;
+            font-size: 12px;
+        }
+        button{
+            width:100%;
+            margin-top: 16px;
+        }
+    }
+    #error_tip{
+        color:#FF0000;
+        font-size: 12px;
     }
 }

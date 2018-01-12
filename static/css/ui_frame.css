@@ -208,17 +208,29 @@ textarea {
   overflow: hidden;
 }
 #password_base_html .progress_bar {
-  width: 800px;
+  width: 1000px;
   height: 110px;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
 }
 #password_base_html .progress_bar .line {
-  width: 800px;
+  width: 1000px;
   height: 5px;
-  background-color: #ccc;
+  background-color: #ddd;
   margin: 50px auto;
+}
+#password_base_html .progress_bar .line_active1 {
+  background: -webkit-linear-gradient(left, #8DB02E, #ddd, #ddd, #ddd, #ddd);
+  /* Safari 5.1 - 6.0 */
+}
+#password_base_html .progress_bar .line_active2 {
+  background: -webkit-linear-gradient(left, #8DB02E, #8DB02E, #8DB02E, #ddd, #ddd, #ddd);
+  /* Safari 5.1 - 6.0 */
+}
+#password_base_html .progress_bar .line_active3 {
+  background: -webkit-linear-gradient(left, #8DB02E, #8DB02E, #ddd);
+  /* Safari 5.1 - 6.0 */
 }
 #password_base_html .progress_bar .step {
   display: inline-block;
@@ -232,7 +244,7 @@ textarea {
   width: 40px;
   height: 40px;
   color: #fff;
-  background-color: #ccc;
+  background-color: #ddd;
   border-radius: 40px;
   text-align: center;
   line-height: 40px;
@@ -253,6 +265,37 @@ textarea {
   width: 800px;
   height: 500px;
   margin: 0 auto;
+}
+#fill_account_html {
+  width: 200px;
+  margin: 40px auto;
+}
+#fill_account_html .cell {
+  margin-top: 10px;
+  color: #888;
+}
+#fill_account_html .cell .id_code {
+  display: inline-block;
+  width: 160px;
+  margin-top: 16px;
+  height: 60px;
+  border: 1px solid #bbb;
+}
+#fill_account_html .cell .id_code img {
+  width: 160px;
+  height: 60px;
+}
+#fill_account_html .cell a {
+  color: #8DB02E;
+  font-size: 12px;
+}
+#fill_account_html .cell button {
+  width: 100%;
+  margin-top: 16px;
+}
+#fill_account_html #error_tip {
+  color: #FF0000;
+  font-size: 12px;
 }
 #index_html #plugs_list {
   background-color: #fff;

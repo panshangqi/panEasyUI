@@ -9,6 +9,12 @@ import hashlib
 import smtplib
 from email.header import Header
 from email.mime.text import MIMEText
+from PIL import Image
+import ImageFilter,ImageDraw,ImageFont
+import random
+import redis
+
+global_redis = redis.Redis(host='127.0.0.1',port=6379,db=0)
 
 def getGuid():
     m_uuid = str(uuid.uuid1())
@@ -45,3 +51,39 @@ def sendEmail(toEmail,e_title,e_content):
         return False
     finally:
         s.quit()
+
+
+def get_random_id_code(filepath,filename):
+    list = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIDKLMNOPQRSTUVWXYZ0123456789'
+    font = []
+    font1 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',35)
+    font2 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',45)
+    font3 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',30)
+    font4 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',40)
+    font.append(font1)
+    font.append(font2)
+    font.append(font3)
+    font.append(font4)
+    width = 160
+    height = 60
+    image = Image.new("RGB",(width,height),(255,255,255))
+    draw = ImageDraw.Draw(image)
+    for t in range(10):
+        x = random.randint(0,width-1)
+        y = random.randint(0,height-1)
+        x1 = random.randint(0,width-1)
+        y1 = random.randint(0,height-1)
+        draw.line([x,y,x1,y1],fill=(random.randint(0,255),random.randint(0,255),random.randint(0,255)));
+    for t in range(50):
+        x = random.randint(0,width-1)
+        y = random.randint(0,height-1)
+        draw.ellipse([x,y,x+2,y+2], fill=(random.randint(0,255),random.randint(0,255),random.randint(0,255)))
+    value = '';
+    for t in range(4):
+        number = random.choice(list)
+        value = value + number;
+        draw.text([34*t+16,0],number,font=font[random.randint(0,3)],fill=(random.randint(0,255),random.randint(0,255),random.randint(0,255)))
+    #image.show()
+    path = os.path.join(filepath,filename)
+    image.save(path)
+    return value

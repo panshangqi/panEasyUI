@@ -8,6 +8,7 @@ from ui_methods import *
 import traceback
 import sqlite3
 
+
 class BaseHandler(tornado.web.RequestHandler):
     def get(self):
         raise tornado.web.HTTPError(404)
@@ -38,7 +39,7 @@ class BaseHandler(tornado.web.RequestHandler):
             user_info['create_time'] = row[3]
             user_info['head_img'] = row[4];
             if row[4]:
-                user_info['head_img_url'] = self.request.protocol+'://'+ self.request.host + '/static/files/'+ user_info['head_img'];
+                user_info['head_img_url'] = self.get_host_url() + self.get_cache_path() + user_info['head_img'];
             else:
                 user_info['head_img_url'] = None
             user_info['rout_address'] = row[5];
@@ -48,7 +49,10 @@ class BaseHandler(tornado.web.RequestHandler):
         return user_info
 
     def get_host_url(self):
-		return self.request.protocol + '://'+ self.request.host;
+		return self.request.protocol + '://'+ self.request.host + '/';
+
+    def get_cache_path(self):
+        return 'static/files/'
 
     def render_html(self, template_name, **kwargs):
         current_user = self.get_current_user_info()
