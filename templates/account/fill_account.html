@@ -8,7 +8,9 @@
     <div class="cell" style="margin-top: 19px">验证码：</div>
     <div class="cell">
         <input type="text" placeholder="验证码" id="input_code">
-        <div class="id_code"><img src="" id="code_img"></div>
+        <div class="id_code">
+            <canvas id="image_canvas" height="60" width="160"></canvas>
+        </div>
         <a href="javascript:void(0)" id="update_code">刷新</a>
     </div>
     <div class="cell"><button id="next_button">下一步</button></div>
@@ -17,6 +19,10 @@
 {% endblock %}
 {% block passwd_script %}
 <script>
+
+    var drawCode = $('#image_canvas').panRandomCode({});
+
+
     var GCODE_INFO = null;
     $('#update_code').on('click',function(){
         $.window.http.post('/fill_account',{'action':'update'},function(data){
@@ -24,7 +30,8 @@
             if(data.status==1){
                 var code_info = data.code_info;
                 GCODE_INFO = code_info;
-                $('#code_img').attr('src',code_info.img_url);
+                drawCode.clearDrawCode();
+                drawCode.setDrawCode(code_info.value);
             }
         },false)
     })
@@ -48,10 +55,13 @@
         $.window.http.post('/fill_account',dataPost,function(data){
             console.log(data);
             if(data.status==1){
-
+                window.location.href='/check_identity?md5='+data.code_info.md5+'&email='+data.code_info.email;
+            }else{
+                $('#error_tip').html(data.message);
             }
         },false)
     })
     $('#update_code').click();
+
 </script>
 {% endblock %}

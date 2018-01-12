@@ -3,7 +3,9 @@
 {% block passwd_style %}{% endblock %}
 {% block passwd_content %}
 <div id="check_identify_html">
-
+    <div class="cell"><span>邮箱：</span><span id="user_email" class="user_email">{{email}}</span></div>
+    <div class="cell"><input type="text"><button id="get_code_btn" class="get_code_btn">获取验证码</button></div>
+    <div class="cell"><button id="next_button" class="next_button">下一步</button></div>
 </div>
 {% endblock %}
 {% block passwd_script %}

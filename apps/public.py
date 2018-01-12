@@ -52,8 +52,15 @@ def sendEmail(toEmail,e_title,e_content):
     finally:
         s.quit()
 
+def get_random_code(len):
+    list = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIDKLMNOPQRSTUVWXYZ0123456789'
+    result = ''
+    for i in range(len):
+        number = random.choice(list)
+        result = result + number
+    return result
 
-def get_random_id_code(filepath,filename):
+def get_random_code_image(filepath,filename):
     list = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIDKLMNOPQRSTUVWXYZ0123456789'
     font = []
     font1 = ImageFont.truetype('/usr/share/fonts/truetype/lao/Phetsarath_OT.ttf',35)
@@ -87,3 +94,4 @@ def get_random_id_code(filepath,filename):
     path = os.path.join(filepath,filename)
     image.save(path)
     return value
+

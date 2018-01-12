@@ -79,32 +79,29 @@ class FillAccountHandler(BaseHandler):
         action = self.get_argument('action')
         if action == 'submit':
             email = self.get_argument('email')
-            code_value = self.get_argument('code_value')
-            code_md5 = self.get_argument('code_md5')
-            code_info = global_redis.get(code_md5)
-            code_info = json.loads(code_info)
-            image_path = self.get_cache_path()+code_info['img_name']
-            if os.path.exists(image_path):
-                os.remove(image_path)
-
             if  self.checkEmailExist(email) == False:
                 self.write({'status':0,'message':'该邮箱不存在'})
             else:
-	            result={'status':0,'message':'验证码错误'}
-	            if code_info:
-	                str1 = code_value.lower()
-	                str2 = code_info['value'].lower()
-	                if str1 == str2:
-	                    result={'status':1,'message':'校验成功'}
-	            self.write(result)
+                code_value = self.get_argument('code_value')
+                code_md5 = self.get_argument('code_md5')
+                value = global_redis.get(code_md5)
+                result={'status':0,'message':'验证码错误'}
+                if value:
+                    str1 = code_value.lower()
+                    str2 = value.lower()
+                    if str1 == str2:
+                        global_redis.set(code_md5,email)
+                        code_info={'md5':code_md5,'email':email}
+                        result={'status':1,'message':'校验成功','code_info':code_info}
+                else:
+                    result={'status':0,'message':'验证码已过期，请刷新'}
+                self.write(result)
+
         elif action == 'update':
             md5 = getGuid8()
-            img_name = 'code_' + md5 + '.jpg';
-            value = get_random_id_code(self.get_cache_path(),img_name)
-            code_dict={'img_name':img_name,'value':value}
-            global_redis.set(md5,json.dumps(code_dict));
-            img_url = self.get_host_url() + self.get_cache_path() + img_name
-            code_info={'img_url':img_url,'md5':md5}
+            value = get_random_code(4)
+            global_redis.set(md5,value,60);  #key，value ,秒过期时间，毫秒过期时间
+            code_info={'md5':md5,'value':value}
             result = {'status':1,'code_info':code_info}
             self.write(result)
 
@@ -128,7 +125,9 @@ class FillAccountHandler(BaseHandler):
 
 class CheckIdentityHandler(BaseHandler):
     def get(self):
-        self.render_html("account/check_identity.html")
+        md5 = self.get_argument('md5','undefined')
+        email = self.get_argument('email','undefined')
+        self.render_html("account/check_identity.html",email=email)
 class ModifyPasswordHandler(BaseHandler):
     def get(self):
         self.render_html("account/modify_password.html")

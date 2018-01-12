@@ -273,6 +273,7 @@ textarea {
 #fill_account_html .cell {
   margin-top: 10px;
   color: #888;
+  font-size: 14px;
 }
 #fill_account_html .cell .id_code {
   display: inline-block;
@@ -296,6 +297,32 @@ textarea {
 #fill_account_html #error_tip {
   color: #FF0000;
   font-size: 12px;
+}
+#check_identify_html {
+  width: 202px;
+  margin: 40px auto;
+}
+#check_identify_html .cell {
+  margin-top: 30px;
+}
+#check_identify_html .cell span {
+  color: #777;
+  font-size: 12px;
+}
+#check_identify_html .cell .user_email {
+  color: #555;
+  font-size: 13px;
+  font-family: Consolas;
+}
+#check_identify_html .cell input {
+  width: 99px;
+}
+#check_identify_html .cell .get_code_btn {
+  margin-left: 20px;
+  width: 80px;
+}
+#check_identify_html .cell .next_button {
+  width: 200px;
 }
 #index_html #plugs_list {
   background-color: #fff;
