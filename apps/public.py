@@ -33,8 +33,8 @@ def get_file_suffix(filename):
 	return extension
 
 def sendEmail(toEmail,e_title,e_content):
-    msg_from='1187816874@qq.com'  #发送方邮箱
-    passwd='csmqytdeqvmqfjic' #填入发送方邮箱的授权码
+    msg_from='13937134284@163.com'  #发送方邮箱
+    passwd='blogs123email' #填入发送方邮箱的授权码
     msg_to=toEmail            #收件人邮箱
     subject=e_title           #主题
     content=e_content      #正文
@@ -43,17 +43,20 @@ def sendEmail(toEmail,e_title,e_content):
     msg['From'] = msg_from
     msg['To'] = msg_to
     try:
-        s = smtplib.SMTP_SSL("smtp.qq.com",465)   #邮件服务器及端口号
+        s = smtplib.SMTP_SSL("smtp.163.com",timeout=30)   #邮件服务器及端口号
         s.login(msg_from, passwd)
         s.sendmail(msg_from, msg_to, msg.as_string())
+        print '发送成功'
         return True
     except:
         return False
     finally:
         s.quit()
 
-def get_random_code(len):
+def get_random_code(len,isNum=True):
     list = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIDKLMNOPQRSTUVWXYZ0123456789'
+    if isNum and isNum == True:
+        list = '0123456789'
     result = ''
     for i in range(len):
         number = random.choice(list)

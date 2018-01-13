@@ -4,12 +4,76 @@
 {% block passwd_content %}
 <div id="check_identify_html">
     <div class="cell"><span>邮箱：</span><span id="user_email" class="user_email">{{email}}</span></div>
-    <div class="cell"><input type="text"><button id="get_code_btn" class="get_code_btn">获取验证码</button></div>
+    <div class="cell"><input type="text" id="code_input" maxlength="6"><button id="get_code_btn" class="get_code_btn">获取验证码</button></div>
     <div class="cell"><button id="next_button" class="next_button">下一步</button></div>
+    <div class="cell" style="margin-top: 11px"><div id="error_tip"></div></div>
 </div>
 {% endblock %}
 {% block passwd_script %}
 <script>
+    var md5 = {{json_encode(md5)}}
+    var email = {{json_encode(email)}}
+</script>
+<script>
+    //正则匹配是否都是数字
+    function checkCode(str){
+        var reg=/^[0-9]*$/;
+        return(reg.test(str));
+    }
+    var timer = null;
+    var second = 60;
+    var enable = true;
+    function timecount(){
+        second --;
+        if(second<0){
+            if(timer) {
+                clearInterval(timer);
+            }
+            $('#get_code_btn').html('获取验证码');
+            $('#get_code_btn').removeClass('btnGray');
+            return;
+        }
+        $('#get_code_btn').html(second+'s后重新发送');
+    }
 
+    $('#get_code_btn').click(function(){
+        if(enable == false)
+            return;
+        var dataPost={
+            'action':'send_email',
+            'md5':md5,
+            'email':email
+        }
+        $.window.http.post('/check_identity',dataPost,function(data){
+            if(data.status == 1){
+                timer = setInterval(timecount,1000);
+                $('#get_code_btn').addClass('btnGray');
+            }else{
+                $('#error_tip').html(data.message);
+            }
+        })
+    })
+
+    $('#next_button').click(function(){
+        var code = $('#code_input').val();
+        if(checkCode(code) == false || code.length != 6 ){
+            $('#error_tip').html('验证码错误');
+            return;
+        }
+        var dataPost={
+            'action':'submit',
+            'md5':md5,
+            'email':email,
+            'code':code
+        }
+        $.window.http.post('/check_identity',dataPost,function(data){
+            console.log(data);
+            if(data.status == 1){
+                window.location.href='/modify_password?email='+email;
+            }else{
+                $('#error_tip').html(data.message);
+            }
+        })
+    })
 </script>
 {% endblock %}

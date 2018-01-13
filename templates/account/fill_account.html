@@ -22,7 +22,6 @@
 
     var drawCode = $('#image_canvas').panRandomCode({});
 
-
     var GCODE_INFO = null;
     $('#update_code').on('click',function(){
         $.window.http.post('/fill_account',{'action':'update'},function(data){

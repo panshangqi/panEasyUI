@@ -15,9 +15,12 @@ url = [(r"/index",IndexHandler),
 (r"/login",LoginHandler),
 (r"/logout",LogoutHandler),
 (r"/register",RegisterHandler),
-(r"/modify_password",ModifyPasswordHandler),
+
 (r"/fill_account",FillAccountHandler),
 (r"/check_identity",CheckIdentityHandler),
+(r"/modify_password",ModifyPasswordHandler),
+(r"/modify_successful",ModifySuccessfulHandler),
+
 (r"/send_email_code",SendEmailCodeHandler),
 (r"/blogs_list",BlogsListHandler),
 (r"/blogs/(\w+)",BlogsHandler),

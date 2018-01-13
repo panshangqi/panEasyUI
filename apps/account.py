@@ -125,12 +125,69 @@ class FillAccountHandler(BaseHandler):
 
 class CheckIdentityHandler(BaseHandler):
     def get(self):
-        md5 = self.get_argument('md5','undefined')
-        email = self.get_argument('email','undefined')
-        self.render_html("account/check_identity.html",email=email)
+        md5 = self.get_argument('md5')
+        email = self.get_argument('email')
+        self.render_html("account/check_identity.html",email=email,md5=md5)
+
+    def post(self):
+        action = self.get_argument('action')
+        if action == 'send_email':
+            md5 = self.get_argument('md5')
+            email = self.get_argument('email')
+            code = get_random_code(6,True)
+            res = sendEmail(email,'博客验证码','您的验证码为：'+code+',有效期30分钟')
+            print email
+            if res == True:
+                global_redis.set(md5,code,1800)
+                result={'status':1,'email_info':{'md5':md5,'email':email},'message':'验证码已发送邮箱'}
+                self.write(result)
+            else:
+                result={'status':0,'message':'验证码未成功发送至您的邮箱，请重新发送'}
+                self.write(result)
+
+        elif action == 'submit':
+            md5 = self.get_argument('md5')
+            email = self.get_argument('email')
+            code = self.get_argument('code')
+            redis_code = global_redis.get(md5)
+            if redis_code:
+                if code == redis_code:
+                    result={'status':1,'message':''}
+                    self.write(result)
+                else:
+                    result={'status':0,'message':'验证码错误'}
+                    self.write(result)
+            else:
+                result={'status':0,'message':'验证码已失效'}
+                self.write(result)
+
+
 class ModifyPasswordHandler(BaseHandler):
     def get(self):
-        self.render_html("account/modify_password.html")
+        email = self.get_argument('email')
+        self.render_html("account/modify_password.html",email=email)
+
+    def post(self):
+        email = self.get_argument('email')
+        password = self.get_argument('password')
+        result = {}
+        try:
+            conn = sqlite3.connect("database/blogs_info.db")
+            cursor = conn.cursor()
+            cursor.execute('update user_info set password=:password where email=:email', {'password':password,'email':email})
+            conn.commit()
+            cursor.close()
+            conn.close()
+            result['status']=1
+        except:
+            result['status']=0
+        self.write(result)
+
+class ModifySuccessfulHandler(BaseHandler):
+    def get(self):
+        self.render_html("account/modify_successful.html")
+
+
 class SendEmailCodeHandler(BaseHandler):
     def post(self):
         email = self.get_argument('email')

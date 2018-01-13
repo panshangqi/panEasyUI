@@ -12,9 +12,11 @@ def sqliteTest():
     print cursor.fetchall()
 
 def sendEmail():
-	msg_from='1187816874@qq.com'                                 #发送方邮箱
-	passwd='csmqytdeqvmqfjic'                                   #填入发送方邮箱的授权码
-	msg_to='13937134284@163.com'                                  #收件人邮箱
+	#msg_from='1187816874@qq.com'                                 #发送方邮箱
+	msg_from='13937134284@163.com'
+	#passwd='csmqytdeqvmqfjic'                                   #填入发送方邮箱的授权码
+	passwd='blogs123email'
+	msg_to='1187816874@qq.com'                                  #收件人邮箱
 	subject="python邮件测试"                                     #主题
 	content="这是我使用python smtplib及email模块发送的邮件"      #正文
 	msg = MIMEText(content)
@@ -22,14 +24,15 @@ def sendEmail():
 	msg['From'] = msg_from
 	msg['To'] = msg_to
 	try:
-	    s = smtplib.SMTP_SSL("smtp.qq.com",465)   #邮件服务器及端口号
+	    #s = smtplib.SMTP_SSL("smtp.qq.com",465)   #邮件服务器及端口号
+	    s = smtplib.SMTP_SSL("smtp.163.com",timeout=30)   #邮件服务器及端口号
 	    s.login(msg_from, passwd)
 	    s.sendmail(msg_from, msg_to, msg.as_string())
 	    print "发送成功"
 	except:
 	    print "发送失败"
-	finally:
-	    s.quit()
+	#finally:
+	    #s.quit()
 
 def get_files_path():
 
@@ -79,6 +82,16 @@ class B(object):
         self.name=name
     def getName(self):
         return 'A '+self.name
+
+def pan():
+    try:
+        print 'try'
+        return True
+    except:
+        print 'except'
+        return False
+    finally:
+        print 'finally'
 if __name__ == '__main__':
 
-    get_random_id_code()
+    sendEmail()

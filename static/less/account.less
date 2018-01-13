@@ -123,6 +123,9 @@
         .line_active3{
             background: -webkit-linear-gradient(left, @theme_color , @theme_color,#ddd); /* Safari 5.1 - 6.0 */
         }
+        .line_active4{
+            background: -webkit-linear-gradient(left, @theme_color , @theme_color); /* Safari 5.1 - 6.0 */
+        }
         .step{
             display: inline-block;
             position: absolute;
@@ -200,23 +203,63 @@
     .cell{
         margin-top: 30px;
         span{
-            color:#777;
+            color:#444;
             font-size: 12px;
         }
         .user_email{
-            color:#555;
+            color:#454545;
             font-size: 13px;
             font-family: Consolas;
         }
         input{
-            width:99px;
+            width:80px;
         }
         .get_code_btn{
-            margin-left: 20px;
-            width:80px;
+            margin-left: 10px;
+            width:110px;
         }
         .next_button{
             width:200px;
+        }
+        #error_tip{
+            color:#FF0000;
+            font-size: 12px;
+        }
+    }
+    .btnGray{
+        background-color: #999;
+        border:1px solid #999;
+    }
+}
+#modify_password_html{
+    width:290px;
+    margin: 40px auto;
+    text-align: center;
+    .cell{
+        margin-top: 30px;
+        span{
+            display: inline-block;
+            vertical-align:top;
+            width:66px;
+            height:30px;
+            line-height:30px;
+            color:#444;
+            font-size: 12px;
+            text-align: right;
+        }
+        input{
+            display: inline-block;
+            vertical-align:top;
+            margin-left: 8px;
+        }
+        button{
+            display: inline-block;
+            width:130px;
+            
+        }
+        #error_tip{
+            color:#FF0000;
+            font-size: 12px;
         }
     }
 }

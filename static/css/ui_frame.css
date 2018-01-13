@@ -41,6 +41,12 @@ textarea {
   text-align: right;
   overflow: hidden;
 }
+#frame_html .frame_header img.logo_img {
+  position: absolute;
+  width: 40px;
+  left: 30px;
+  top: 5px;
+}
 #frame_html .frame_header ul {
   margin: 15px 50px;
   list-style: none;
@@ -232,6 +238,10 @@ textarea {
   background: -webkit-linear-gradient(left, #8DB02E, #8DB02E, #ddd);
   /* Safari 5.1 - 6.0 */
 }
+#password_base_html .progress_bar .line_active4 {
+  background: -webkit-linear-gradient(left, #8DB02E, #8DB02E);
+  /* Safari 5.1 - 6.0 */
+}
 #password_base_html .progress_bar .step {
   display: inline-block;
   position: absolute;
@@ -306,23 +316,62 @@ textarea {
   margin-top: 30px;
 }
 #check_identify_html .cell span {
-  color: #777;
+  color: #444;
   font-size: 12px;
 }
 #check_identify_html .cell .user_email {
-  color: #555;
+  color: #454545;
   font-size: 13px;
   font-family: Consolas;
 }
 #check_identify_html .cell input {
-  width: 99px;
+  width: 80px;
 }
 #check_identify_html .cell .get_code_btn {
-  margin-left: 20px;
-  width: 80px;
+  margin-left: 10px;
+  width: 110px;
 }
 #check_identify_html .cell .next_button {
   width: 200px;
+}
+#check_identify_html .cell #error_tip {
+  color: #FF0000;
+  font-size: 12px;
+}
+#check_identify_html .btnGray {
+  background-color: #999;
+  border: 1px solid #999;
+}
+#modify_password_html {
+  width: 290px;
+  margin: 40px auto;
+  text-align: center;
+}
+#modify_password_html .cell {
+  margin-top: 30px;
+}
+#modify_password_html .cell span {
+  display: inline-block;
+  vertical-align: top;
+  width: 66px;
+  height: 30px;
+  line-height: 30px;
+  color: #444;
+  font-size: 12px;
+  text-align: right;
+}
+#modify_password_html .cell input {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 8px;
+}
+#modify_password_html .cell button {
+  display: inline-block;
+  width: 130px;
+}
+#modify_password_html .cell #error_tip {
+  color: #FF0000;
+  font-size: 12px;
 }
 #index_html #plugs_list {
   background-color: #fff;

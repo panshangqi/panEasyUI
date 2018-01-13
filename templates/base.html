@@ -2,6 +2,7 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     <link rel="icon" href="{{static_url}}/img/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{static_url}}/img/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="{{static_url}}/css/ui_frame.min.css">
     <link href="{{static_url}}/css/panEasyUI.min.css" rel="stylesheet"/>
     {% block style %}{% endblock %}
@@ -9,6 +10,7 @@
 <body>
 <div id="frame_html" style="display: block">
     <div class="frame_header">
+        <img src="{{static_url}}/img/favicon.ico" class="logo_img">
         <ul>
             {% if current_user.user_id %}
             <li><span class="user_name"><img src="{{static_url}}/img/account_login.png"/><span>{{current_user.username}}</span></span></li>
