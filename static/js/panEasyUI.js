@@ -1336,3 +1336,63 @@ $.fn.extend({
         return new panBlogsDialogObj(this,options,fn);
     }
 })
+
+var panRandomCodeObj = function(ele,options,fn){
+    var self = ele;
+    var defaults = {};
+    var settings = $.extend({},defaults,options);
+    var canvas = self[0];//document.getElementById('image_canvas');
+    var width = canvas.width;
+    var height = canvas.height;
+    var ctx = canvas.getContext('2d');
+    this.setDrawCode = function(code){
+        drawPic(code);
+    }
+    this.clearDrawCode = function(){
+        ctx.clearRect(0,0,width,height);
+    }
+    function drawPic(code){
+        var fontsize = ['55px','30px','35px','40px','45px','50px','25px'];
+        var fontfamily = ['Arial','Times New Roman','Georgia','Serif','Microsoft YaHei'];
+
+        for(var i=0;i<8;i++){
+            ctx.beginPath();
+            ctx.strokeStyle= 'rgb('+random(0,255)+','+random(0,255)+','+random(0,255)+')';
+            ctx.moveTo(random(0,width),random(0,height));
+            ctx.lineTo(random(0,width),random(0,height));
+            ctx.closePath();
+            ctx.stroke();
+        }
+        for(var i=0;i<50;i++){
+            ctx.beginPath();
+            ctx.lineWidth=2;
+            ctx.strokeStyle= 'rgb('+random(0,255)+','+random(0,255)+','+random(0,255)+')';
+            var x = random(0,width);
+            var y = random(0,height);
+            ctx.moveTo(x,y);
+            ctx.lineTo(x+2,y+2);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        for(var i=0;i<4;i++){
+            var char = code.substr(i,1);
+            var type = random(0,20);
+            ctx.fillStyle = 'rgb('+random(0,255)+','+random(0,255)+','+random(0,255)+')';
+            ctx.strokeStyle= 'rgb('+random(0,255)+','+random(0,255)+','+random(0,255)+')';
+            ctx.font = 'bold ' + fontsize[random(0,6)] + ' '+fontfamily[random(0,5)];
+            if(type%2==0){
+                ctx.strokeText(char,i*36+13,50);
+            }else{
+                ctx.fillText(char,i*36+13,50);
+            }
+        }
+    }
+    function random(n,m){
+        return Math.floor(Math.random()*(m-n)) + n;
+    }
+}
+$.fn.extend({
+    panRandomCode:function(options,fn){
+        return new panRandomCodeObj(this,options,fn);
+    }
+})

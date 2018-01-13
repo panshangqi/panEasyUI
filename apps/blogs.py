@@ -2,7 +2,7 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-
+import os.path
 from jinja_tornado import *
 from HTMLParser import HTMLParser
 from public import *
@@ -36,11 +36,10 @@ class SummaryHTMLParser(HTMLParser):
 class BlogsMethod(object):
     #获取标签列表
     @staticmethod
-    def getLabellist():
+    def getLabellist(user_id):
         conn = sqlite3.connect("database/blogs_info.db")
         cursor = conn.cursor()
-        sql = "select label_id,label_name,click_rate,create_time,modify_time from label_info order by create_time desc;"
-        cursor.execute(sql)
+        cursor.execute('select label_id,label_name,click_rate,create_time,modify_time from label_info where user_id=:user_id order by create_time desc;',{'user_id':user_id})
         result = cursor.fetchall()
         label_list = []
         for row in result:
@@ -77,20 +76,55 @@ class BlogsMethod(object):
         except:
             blogs_list=[]
         return blogs_list
+    @staticmethod
+    def get_user_info(url,user_id):
+        user_info={}
+        conn = sqlite3.connect("database/blogs_info.db")
+        cursor = conn.cursor()
+        cursor.execute('select user_id,username,email,create_time,head_img,rout_address from user_info where user_id = :user_id;',{'user_id':user_id})
+        res = cursor.fetchall()
+        for row in res:
+            user_info['user_id'] = row[0]
+            user_info['username'] = row[1]
+            user_info['email'] = row[2]
+            user_info['create_time'] = row[3]
+            user_info['head_img'] = row[4];
+            if row[4]:
+                user_info['head_img_url'] = url + '/static/files/'+ user_info['head_img'];
+            else:
+                user_info['head_img_url'] = None
+            user_info['rout_address'] = row[5];
+
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return user_info
+
 
 class BlogsListHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self):
         user_id = self.get_current_user()
-        blogs_list=BlogsMethod.get_blogs_list(user_id)
-        label_list = BlogsMethod.getLabellist()
+        blogs_list = BlogsMethod.get_blogs_list(user_id)
+        label_list = BlogsMethod.getLabellist(user_id)
         self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
 
 class BlogsHandler(BaseHandler):
-    def get(self,nickname):
-        user_id = nickname
-        blogs_list=BlogsMethod.get_blogs_list(user_id)
-        label_list = BlogsMethod.getLabellist()
-        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
+    def get(self,rout_address):
+        conn = sqlite3.connect("database/blogs_info.db")
+        cursor = conn.cursor()
+        cursor.execute('select user_id from user_info where rout_address = :rout_address;',{'rout_address':rout_address})
+        res = cursor.fetchall()
+        m_user_id = None
+        for row in res:
+            m_user_id = row[0]
+        if m_user_id:
+            blogs_list = BlogsMethod.get_blogs_list(m_user_id)
+            label_list = BlogsMethod.getLabellist(m_user_id)
+            self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
+        else:
+            raise tornado.web.HTTPError(404)
 
 class BlogsArticleHandler(BaseHandler):
     @tornado.web.authenticated
@@ -122,7 +156,8 @@ class BlogsArticleHandler(BaseHandler):
 class BlogsEssayHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        label_list = BlogsMethod.getLabellist()
+        user_id = self.get_current_user()
+        label_list = BlogsMethod.getLabellist(user_id)
         self.render_html("blogs/blogs_essay.html",label_list=label_list)
 
     def post(self):
@@ -193,7 +228,8 @@ class BlogsSqliteHandler(BaseHandler):
 class BlogsLabelHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        label_list = BlogsMethod.getLabellist()
+        user_id = self.get_current_user()
+        label_list = BlogsMethod.getLabellist(user_id)
         self.render_html("blogs/blogs_label.html",label_list=label_list)
 
     def post(self):
@@ -248,25 +284,54 @@ class BlogsLabelHandler(BaseHandler):
             except:
                 result['status']=0
             self.write(result)
+
 class BlogsSettingHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self):
-        label_list = BlogsMethod.getLabellist()
         user_id = self.get_current_user()
-        user_info={}
+        label_list = BlogsMethod.getLabellist(user_id)
+        self.render_html('blogs/blogs_setting.html',label_list=label_list)
+
+class BlogsUploadHeadHandler(BaseHandler):
+    def post(self):
+        result = {'status':1,'message':'文件上传成功'}
+        try:
+	        file_images = self.request.files.get('file',None)
+	        if not file_images:
+	            result['status'] = 0
+	            result['message'] = '服务器未接收到文件'
+	            return result
+	        for img in file_images:
+	            filename = img['filename']
+	            extension = get_file_suffix(filename)
+                if extension == '.jpg' or extension == '.png' or extension == '.bmp' or extension == '.jpeg':
+                    newfilename = 'image_'+getGuid16() + extension
+                    upload_path = self.get_image_cache_path()
+                    file_path = os.path.join(upload_path,newfilename)
+                    with open(file_path,'wb') as up:
+                        up.write(img['body'])
+                    self.save_file_to_sql(upload_path,newfilename)
+                else:
+                    result['status'] = 0
+                    result['message'] = '图片格式不正确'
+        except:
+            result['status'] = -1
+            result['message'] = '文件上传异常'
+            print traceback.print_exc()
+        self.write(result)
+
+	#删除旧文件，并更新数据库
+    def save_file_to_sql(self,upload_path,filename):
+        user_id = self.get_current_user()
         conn = sqlite3.connect("database/blogs_info.db")
         cursor = conn.cursor()
-        cursor.execute('select user_id,username,email,create_time from user_info where user_id = :user_id;',{'user_id':user_id})
+        cursor.execute('select head_img from user_info where user_id = :user_id;',{'user_id':user_id})
         res = cursor.fetchall()
         for row in res:
-            user_info['user_id'] = row[0]
-            user_info['username'] = row[1]
-            user_info['email'] = row[2]
-            user_info['create_time'] = row[3]
-
+            oldfilename = os.path.join(upload_path,row[0])
+            if os.path.exists(oldfilename):
+                os.remove(oldfilename)
+        cursor.execute('update user_info set head_img = :filename where user_id = :user_id;',{'filename':filename,'user_id':user_id})
         conn.commit()
         cursor.close()
         conn.close()
-        self.render_html('blogs/blogs_setting.html',user_info=user_info,label_list=label_list)
-
-
-

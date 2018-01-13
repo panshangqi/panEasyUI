@@ -41,20 +41,41 @@ textarea {
   text-align: right;
   overflow: hidden;
 }
+#frame_html .frame_header img.logo_img {
+  position: absolute;
+  width: 40px;
+  left: 30px;
+  top: 5px;
+}
 #frame_html .frame_header ul {
   margin: 15px 50px;
   list-style: none;
 }
 #frame_html .frame_header ul li {
   display: inline;
-  margin-left: 15px;
+  margin-left: 20px;
 }
 #frame_html .frame_header ul li a {
+  vertical-align: top;
   color: #d2d2d2;
   font-size: 12px;
 }
 #frame_html .frame_header ul li a:hover {
   color: #f5f5f5;
+}
+#frame_html .frame_header ul li .user_name {
+  font-size: 14px;
+  color: #fff;
+  font-family: Consolas;
+}
+#frame_html .frame_header ul li .user_name img {
+  width: 14px;
+  vertical-align: top;
+  margin-top: 1px;
+}
+#frame_html .frame_header ul li .user_name span {
+  margin-left: 6px;
+  vertical-align: top;
 }
 #frame_html .frame_main_nav {
   width: 100%;
@@ -185,6 +206,173 @@ textarea {
 #frame_login .login_box .opertor a:hover {
   color: #7b9f1a;
 }
+#password_base_html {
+  width: 100%;
+  height: 80%;
+  background-color: #fff;
+  margin-top: 100px;
+  overflow: hidden;
+}
+#password_base_html .progress_bar {
+  width: 1000px;
+  height: 110px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+#password_base_html .progress_bar .line {
+  width: 1000px;
+  height: 5px;
+  background-color: #ddd;
+  margin: 50px auto;
+}
+#password_base_html .progress_bar .line_active1 {
+  background: -webkit-linear-gradient(left, #8DB02E, #ddd, #ddd, #ddd, #ddd);
+  /* Safari 5.1 - 6.0 */
+}
+#password_base_html .progress_bar .line_active2 {
+  background: -webkit-linear-gradient(left, #8DB02E, #8DB02E, #8DB02E, #ddd, #ddd, #ddd);
+  /* Safari 5.1 - 6.0 */
+}
+#password_base_html .progress_bar .line_active3 {
+  background: -webkit-linear-gradient(left, #8DB02E, #8DB02E, #ddd);
+  /* Safari 5.1 - 6.0 */
+}
+#password_base_html .progress_bar .line_active4 {
+  background: -webkit-linear-gradient(left, #8DB02E, #8DB02E);
+  /* Safari 5.1 - 6.0 */
+}
+#password_base_html .progress_bar .step {
+  display: inline-block;
+  position: absolute;
+  width: 100px;
+  text-align: center;
+  background-color: #fff;
+}
+#password_base_html .progress_bar .step .number {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  color: #fff;
+  background-color: #ddd;
+  border-radius: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+}
+#password_base_html .progress_bar .step .tip {
+  color: #999;
+  margin-top: 8px;
+  font-size: 13px;
+}
+#password_base_html .progress_bar .active .number {
+  background-color: #8DB02E;
+}
+#password_base_html .progress_bar .active .tip {
+  color: #8DB02E;
+}
+#password_base_html .background_content {
+  width: 800px;
+  height: 500px;
+  margin: 0 auto;
+}
+#fill_account_html {
+  width: 200px;
+  margin: 40px auto;
+}
+#fill_account_html .cell {
+  margin-top: 10px;
+  color: #888;
+  font-size: 14px;
+}
+#fill_account_html .cell .id_code {
+  display: inline-block;
+  width: 160px;
+  margin-top: 16px;
+  height: 60px;
+  border: 1px solid #bbb;
+}
+#fill_account_html .cell .id_code img {
+  width: 160px;
+  height: 60px;
+}
+#fill_account_html .cell a {
+  color: #8DB02E;
+  font-size: 12px;
+}
+#fill_account_html .cell button {
+  width: 100%;
+  margin-top: 16px;
+}
+#fill_account_html #error_tip {
+  color: #FF0000;
+  font-size: 12px;
+}
+#check_identify_html {
+  width: 202px;
+  margin: 40px auto;
+}
+#check_identify_html .cell {
+  margin-top: 30px;
+}
+#check_identify_html .cell span {
+  color: #444;
+  font-size: 12px;
+}
+#check_identify_html .cell .user_email {
+  color: #454545;
+  font-size: 13px;
+  font-family: Consolas;
+}
+#check_identify_html .cell input {
+  width: 80px;
+}
+#check_identify_html .cell .get_code_btn {
+  margin-left: 10px;
+  width: 110px;
+}
+#check_identify_html .cell .next_button {
+  width: 200px;
+}
+#check_identify_html .cell #error_tip {
+  color: #FF0000;
+  font-size: 12px;
+}
+#check_identify_html .btnGray {
+  background-color: #999;
+  border: 1px solid #999;
+}
+#modify_password_html {
+  width: 290px;
+  margin: 40px auto;
+  text-align: center;
+}
+#modify_password_html .cell {
+  margin-top: 30px;
+}
+#modify_password_html .cell span {
+  display: inline-block;
+  vertical-align: top;
+  width: 66px;
+  height: 30px;
+  line-height: 30px;
+  color: #444;
+  font-size: 12px;
+  text-align: right;
+}
+#modify_password_html .cell input {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 8px;
+}
+#modify_password_html .cell button {
+  display: inline-block;
+  width: 130px;
+}
+#modify_password_html .cell #error_tip {
+  color: #FF0000;
+  font-size: 12px;
+}
 #index_html #plugs_list {
   background-color: #fff;
   min-height: 800px;
@@ -301,7 +489,7 @@ textarea {
   width: 140px;
   min-height: 140px;
   margin: 25px auto;
-  background-image: url(../img/head_001.jpg);
+  background-size: 140px 140px;
 }
 #blogs_base_html .left_nav .classify {
   width: 100%;
@@ -385,12 +573,17 @@ textarea {
   background-color: #fff;
   color: #8DB02E;
 }
+#blogs_base_html .right_content .main_nav ul .li_active:hover {
+  background-color: #fff;
+  color: #8DB02E;
+}
 #blogs_base_html .right_content .main_content {
   background-color: #fff;
   min-height: 800px;
 }
 #blogs_html_list {
   padding: 20px;
+  padding-bottom: 100px;
 }
 #blogs_html_list .blogs_item {
   width: 100%;
@@ -484,7 +677,7 @@ textarea {
   min-height: 800px;
   background-color: #ffffff;
   margin-top: 50px auto;
-  padding: 20px;
+  padding: 40px;
 }
 #blogs_article_html .article_title {
   font-size: 25px;
@@ -712,6 +905,7 @@ textarea {
 }
 #blogs_setting_html {
   padding: 25px;
+  position: relative;
 }
 #blogs_setting_html .sub_title {
   font-size: 15px;
@@ -729,24 +923,35 @@ textarea {
   background-color: #c5c5c5;
 }
 #blogs_setting_html .user_head_img {
-  display: inline-block;
-  margin-left: 20px;
-  margin-top: 30px;
+  position: absolute;
+  left: 60px;
   width: 130px;
+  top: 110px;
+  text-align: center;
+  overflow: hidden;
+}
+#blogs_setting_html .user_head_img .image_rect {
+  width: 120px;
+  height: 120px;
+  margin: 15px auto 12px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#blogs_setting_html .user_head_img .image_rect img {
+  width: 120px;
+  height: 120px;
 }
 #blogs_setting_html .user_head_img a {
   width: 50px;
   height: 20px;
   font-size: 12px;
-  margin-left: 12px;
   cursor: pointer;
   color: #7b9f1a;
   text-decoration: underline;
 }
 #blogs_setting_html .user_info_box {
-  display: inline-block;
-  margin-left: 20px;
-  margin-top: 30px;
+  margin-left: 50px;
+  margin-top: 50px;
 }
 #blogs_setting_html .user_info_box .box_cell {
   margin-top: 15px;

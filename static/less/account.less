@@ -94,3 +94,172 @@
         }
     }
 }
+
+#password_base_html{
+    width:100%;
+    height:80%;
+    background-color: #fff;
+    margin-top:100px;
+    overflow: hidden;
+
+    .progress_bar{
+        width:1000px;
+        height:110px;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+        .line{
+            width:1000px;
+            height:5px;
+            background-color: #ddd;
+            margin: 50px auto;
+        }
+        .line_active1{
+            background: -webkit-linear-gradient(left, @theme_color , #ddd,#ddd,#ddd,#ddd); /* Safari 5.1 - 6.0 */
+        }
+        .line_active2{
+            background: -webkit-linear-gradient(left, @theme_color , @theme_color,@theme_color,#ddd,#ddd,#ddd); /* Safari 5.1 - 6.0 */
+        }
+        .line_active3{
+            background: -webkit-linear-gradient(left, @theme_color , @theme_color,#ddd); /* Safari 5.1 - 6.0 */
+        }
+        .line_active4{
+            background: -webkit-linear-gradient(left, @theme_color , @theme_color); /* Safari 5.1 - 6.0 */
+        }
+        .step{
+            display: inline-block;
+            position: absolute;
+            width:100px;
+            text-align: center;
+            background-color: #fff;
+            .number{
+                display: inline-block;
+                width:40px;
+                height:40px;
+                color:#fff;
+                background-color: #ddd;
+                border-radius:40px;
+                text-align: center;
+                line-height: 40px;
+                font-size: 16px;
+            }
+            .tip{
+                color:#999;
+                margin-top: 8px;
+                font-size: 13px;
+            }
+        }
+        .active{
+            .number{
+                background-color: @theme_color;
+            }
+            .tip{
+                color: @theme_color;
+            }
+        }
+    }
+    .background_content{
+        width:800px;
+        height:500px;
+        margin: 0 auto;
+    }
+}
+#fill_account_html{
+    width:200px;
+    margin: 40px auto;
+    .cell{
+        margin-top: 10px;
+        color:#888;
+        font-size: 14px;
+        .id_code{
+            display: inline-block;
+            width:160px;
+            height:60px;
+            margin-top: 16px;
+            height:60px;
+            border: 1px solid #bbb;
+            img{
+                width:160px;
+                height:60px;
+            }
+        }
+        a{
+            color:@theme_color;
+            font-size: 12px;
+        }
+        button{
+            width:100%;
+            margin-top: 16px;
+        }
+    }
+    #error_tip{
+        color:#FF0000;
+        font-size: 12px;
+    }
+}
+#check_identify_html{
+    width:202px;
+    margin: 40px auto;
+    .cell{
+        margin-top: 30px;
+        span{
+            color:#444;
+            font-size: 12px;
+        }
+        .user_email{
+            color:#454545;
+            font-size: 13px;
+            font-family: Consolas;
+        }
+        input{
+            width:80px;
+        }
+        .get_code_btn{
+            margin-left: 10px;
+            width:110px;
+        }
+        .next_button{
+            width:200px;
+        }
+        #error_tip{
+            color:#FF0000;
+            font-size: 12px;
+        }
+    }
+    .btnGray{
+        background-color: #999;
+        border:1px solid #999;
+    }
+}
+#modify_password_html{
+    width:290px;
+    margin: 40px auto;
+    text-align: center;
+    .cell{
+        margin-top: 30px;
+        span{
+            display: inline-block;
+            vertical-align:top;
+            width:66px;
+            height:30px;
+            line-height:30px;
+            color:#444;
+            font-size: 12px;
+            text-align: right;
+        }
+        input{
+            display: inline-block;
+            vertical-align:top;
+            margin-left: 8px;
+        }
+        button{
+            display: inline-block;
+            width:130px;
+            
+        }
+        #error_tip{
+            color:#FF0000;
+            font-size: 12px;
+        }
+    }
+}

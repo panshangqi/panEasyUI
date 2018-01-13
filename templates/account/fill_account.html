@@ -1,0 +1,66 @@
+{% extends 'account/password_base.html' %}
+{% block passwd_title %}修改密码{% endblock %}
+{% block passwd_style %}{% endblock %}
+{% block passwd_content %}
+<div id="fill_account_html">
+    <div class="cell">账号：</div>
+    <div class="cell"><input type="text" placeholder="邮箱" id="input_email"></div>
+    <div class="cell" style="margin-top: 19px">验证码：</div>
+    <div class="cell">
+        <input type="text" placeholder="验证码" id="input_code">
+        <div class="id_code">
+            <canvas id="image_canvas" height="60" width="160"></canvas>
+        </div>
+        <a href="javascript:void(0)" id="update_code">刷新</a>
+    </div>
+    <div class="cell"><button id="next_button">下一步</button></div>
+    <div class="cell" id="error_tip"></div>
+</div>
+{% endblock %}
+{% block passwd_script %}
+<script>
+
+    var drawCode = $('#image_canvas').panRandomCode({});
+
+    var GCODE_INFO = null;
+    $('#update_code').on('click',function(){
+        $.window.http.post('/fill_account',{'action':'update'},function(data){
+            console.log(data);
+            if(data.status==1){
+                var code_info = data.code_info;
+                GCODE_INFO = code_info;
+                drawCode.clearDrawCode();
+                drawCode.setDrawCode(code_info.value);
+            }
+        },false)
+    })
+    $('#next_button').on('click',function(){
+        var email = $('#input_email').val();
+        var code = $('#input_code').val();
+        if(email.length==0){
+            $('#error_tip').html('请填写邮箱');
+            return;
+        }
+        if(code.length==0){
+            $('#error_tip').html('请填写验证码');
+            return;
+        }
+        var dataPost = {
+            'action':'submit',
+            'code_md5':GCODE_INFO.md5,
+            'code_value':code,
+            'email':email
+        }
+        $.window.http.post('/fill_account',dataPost,function(data){
+            console.log(data);
+            if(data.status==1){
+                window.location.href='/check_identity?md5='+data.code_info.md5+'&email='+data.code_info.email;
+            }else{
+                $('#error_tip').html(data.message);
+            }
+        },false)
+    })
+    $('#update_code').click();
+
+</script>
+{% endblock %}

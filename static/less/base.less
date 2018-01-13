@@ -54,17 +54,38 @@ textarea{
         background-color: #2a2a2a;
         text-align: right;
         overflow: hidden;
+        img.logo_img{
+            position: absolute;
+            width:40px;
+            left:30px;
+            top:5px;
+        }
         ul{
             margin: 15px 50px;
             list-style: none;
             li{
                 display: inline;
-                margin-left: 15px;
+                margin-left: 20px;
                 a{
+                    vertical-align: top;
                     color:#d2d2d2;
                     font-size: 12px;
                     &:hover{
                         color:#f5f5f5;
+                    }
+                }
+                .user_name{
+                    font-size: 14px;
+                    color:#fff;
+                    font-family: Consolas;
+                    img{
+                        width:14px;
+                        vertical-align: top;
+                        margin-top: 1px;
+                    }
+                    span{
+                        margin-left: 6px;
+                        vertical-align: top;
                     }
                 }
             }

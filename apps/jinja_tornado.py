@@ -1,11 +1,13 @@
 # -*- coding=utf-8 -*-
 import tornado.web
+import os.path
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
 from ui_methods import *
 import traceback
 import sqlite3
+
 
 class BaseHandler(tornado.web.RequestHandler):
     def get(self):
@@ -25,22 +27,32 @@ class BaseHandler(tornado.web.RequestHandler):
         user_id = self.get_secure_cookie('user_id')
         if user_id == None:
             return {}
-        user_dict = {}
-        try:
-            conn = sqlite3.connect('database/blogs_info.db')
-            cursor = conn.cursor()
-            cursor.execute('select username from user_info where user_id = :user_id;',{'user_id':user_id})
-            res = cursor.fetchall()
-            username = '';
-            for row in res:
-                username = row[0]
-            user_dict['user_id']=user_id
-            user_dict['username']=username
-            cursor.close()
-            conn.close()
-        except:
-            user_dict={}
-        return user_dict
+        user_info={}
+        conn = sqlite3.connect("database/blogs_info.db")
+        cursor = conn.cursor()
+        cursor.execute('select user_id,username,email,create_time,head_img,rout_address from user_info where user_id = :user_id;',{'user_id':user_id})
+        res = cursor.fetchall()
+        for row in res:
+            user_info['user_id'] = row[0]
+            user_info['username'] = row[1]
+            user_info['email'] = row[2]
+            user_info['create_time'] = row[3]
+            user_info['head_img'] = row[4];
+            if row[4]:
+                user_info['head_img_url'] = self.get_host_url() + self.get_cache_path() + user_info['head_img'];
+            else:
+                user_info['head_img_url'] = None
+            user_info['rout_address'] = row[5];
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return user_info
+
+    def get_host_url(self):
+		return self.request.protocol + '://'+ self.request.host + '/';
+
+    def get_cache_path(self):
+        return 'static/files/'
 
     def render_html(self, template_name, **kwargs):
         current_user = self.get_current_user_info()
