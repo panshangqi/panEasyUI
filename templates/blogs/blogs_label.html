@@ -58,16 +58,19 @@
     var deleteDialog = $('#delete_dialog').panBlogsDialog({'width':320,'height':190},function(){});
     var modifyDialog = $('#modify_dialog').panBlogsDialog({'width':800,'height':100,'top':180},function(){});
 
+    var disableBtn = true;
     $('#add_label_box button').on('click',function () {
+        if(!disableBtn) return;
+        disableBtn = false;
         var title = $('#add_label_box input').val();
         $.window.http.post('/blogs_label',{'action':'create','label_name':title},function(data){
             if(data.status){
-                console.log('ok');
                 window.location.href='/blogs_label';
             }else{
                 console.log('fail ->');
             }
-        })
+            disableBtn =  true;
+        },false)
     })
     //删除操作
     $('#label_table .delete_label').click(function(){
