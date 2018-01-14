@@ -44,7 +44,7 @@ $.extend({
                     'url': url,
                     'data': data,
                     'datatype': 'json',
-                    'async':false,
+                    'async':true,
                     'success': function (result) {
                         if(animation){
                             tipDlg.showDialog(true,function(){

@@ -10,7 +10,7 @@
             <div class="input_cell"><input type="password" placeholder="Password" id="password" name="password"></div>
             <div class="input_cell"><input type="submit" id="login_btn" class="login_btn" value="登陆"></input></div>
 
-        <div class="opertor"><a href="/register">注册</a><a href="/register">找回密码</a></div>
+        <div class="opertor"><a href="/register">注册</a><a href="/register" id="find_password_btn">找回密码</a></div>
         <div id="login_error"><span>账号或密码错误</span></div>
     </div>
 </div>
@@ -34,7 +34,9 @@
             }
         },false);
     })
-    
+    $('#find_password_btn').click(function () {
+        window.open('/fill_account');
+    })
     
 </script>
 {% endblock %}

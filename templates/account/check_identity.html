@@ -31,6 +31,7 @@
             }
             $('#get_code_btn').html('获取验证码');
             $('#get_code_btn').removeClass('btnGray');
+            enable = true;
             return;
         }
         $('#get_code_btn').html(second+'s后重新发送');
@@ -39,6 +40,10 @@
     $('#get_code_btn').click(function(){
         if(enable == false)
             return;
+        enable = false;
+        timer = setInterval(timecount,1000);
+        $('#get_code_btn').addClass('btnGray');
+        $('#get_code_btn').html('60s后重新发送');
         var dataPost={
             'action':'send_email',
             'md5':md5,
@@ -46,12 +51,11 @@
         }
         $.window.http.post('/check_identity',dataPost,function(data){
             if(data.status == 1){
-                timer = setInterval(timecount,1000);
-                $('#get_code_btn').addClass('btnGray');
+                $('#error_tip').html('验证码已发送至您的邮箱');
             }else{
                 $('#error_tip').html(data.message);
             }
-        })
+        },false)
     })
 
     $('#next_button').click(function(){

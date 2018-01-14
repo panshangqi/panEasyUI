@@ -18,7 +18,7 @@
     <div class="user_info_box" style="margin-left: 190px;">
         <div class="box_cell"><span class="data_name">登陆账号：</span><span class="data_value">{{current_user.username}}</span></div>
         <div class="box_cell"><span class="data_name">账号ID：</span><span class="data_value">{{current_user.user_id}}</span></div>
-        <div class="box_cell"><span class="data_name">密码：</span><span class="data_value">**********</span><a>修改</a></div>
+        <div class="box_cell"><span class="data_name">密码：</span><span class="data_value">**********</span><a id="password_btn">修改</a></div>
         <div class="box_cell"><span class="data_name">注册邮箱：</span><span class="data_value">{{current_user.email}}</span><a>修改</a></div>
         <div class="box_cell"><span class="data_name">注册时间：</span><span class="data_value">{{timestamp_format(current_user.create_time,false)}}</span></div>
     </div>
@@ -69,6 +69,9 @@
                 alertDialog.showDialog();
             }
         })
+    })
+    $('#password_btn').click(function(){
+        window.open('/check_identity?email='+current_user.email);
     })
 </script>
 {% endblock %}

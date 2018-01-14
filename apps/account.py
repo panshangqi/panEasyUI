@@ -125,7 +125,7 @@ class FillAccountHandler(BaseHandler):
 
 class CheckIdentityHandler(BaseHandler):
     def get(self):
-        md5 = self.get_argument('md5')
+        md5 = self.get_argument('md5',getGuid8())
         email = self.get_argument('email')
         self.render_html("account/check_identity.html",email=email,md5=md5)
 
