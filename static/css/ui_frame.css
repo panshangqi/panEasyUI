@@ -37,7 +37,6 @@ textarea {
 #frame_html .frame_header {
   width: 100%;
   height: 50px;
-  background-color: #2a2a2a;
   text-align: right;
   overflow: hidden;
 }
@@ -78,31 +77,29 @@ textarea {
   vertical-align: top;
 }
 #frame_html .frame_main_nav {
-  width: 100%;
-  height: 50px;
-  background-color: #fff;
-  box-shadow: 0 0px 5px #ccc;
-  text-align: center;
+  height: 30px;
+  border-bottom: 2px solid rgba(20, 20, 20, 0.8);
+  padding-left: 20px;
+  font-size: 0px;
 }
-#frame_html .frame_main_nav .nav_cell {
+#frame_html .frame_main_nav a {
   text-decoration: none;
   box-sizing: border-box;
   display: inline-block;
   width: 120px;
-  height: 50px;
-  line-height: 50px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
-  color: #666;
-  font-size: 18px;
-  border-bottom: 3px solid #ddd;
-}
-#frame_html .frame_main_nav .nav_cell:hover {
+  color: #fff;
+  font-size: 14px;
+  background-color: rgba(20, 20, 20, 0.5);
   cursor: pointer;
-  border-bottom: 3px solid #8DB02E;
+}
+#frame_html .frame_main_nav a:hover {
+  background-color: rgba(20, 20, 20, 0.6);
 }
 #frame_html .frame_main_nav .active {
-  border-bottom: 3px solid #8DB02E;
-  background-color: #8DB02E;
+  background-color: rgba(34, 34, 34, 0.8);
   color: #fff;
 }
 #frame_html .frame_content {

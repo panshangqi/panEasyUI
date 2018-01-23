@@ -6,6 +6,25 @@ keys *查看所有key
 flushall   清空所有数据库缓存
 flushdb 清空当前缓存
 
+==========================================mongodb---------------------------------------
+创建yum仓库文件repo
+vi /etc/yum.repos.d/mongodb-org-3.2.repo
+
+repo文件内容如下：
+[mongodb-org-3.2]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.2/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc
+
+安装所有的mongodb组件：
+yum install -y mongodb-org
+
+
+Ubuntu  service mongodb start/stop/restart
+Centos  service mongod start/stop/restart or systemctl start mongod
+
 
 ==========================================Sqlite3=======================================
 创建表 组件信息表：
