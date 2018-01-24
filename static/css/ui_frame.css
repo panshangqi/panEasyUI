@@ -103,10 +103,7 @@ textarea {
   color: #fff;
 }
 #frame_html .frame_content {
-  width: 1200px;
   min-height: 800px;
-  margin: 40px auto 100px;
-  box-sizing: border-box;
 }
 #frame_login {
   width: 100%;
@@ -609,19 +606,36 @@ textarea {
   padding: 20px;
   padding-bottom: 100px;
 }
-#blogs_html_list .blogs_item {
+#blogs_html_list .blogs_box {
+  width: 100%;
+  height: 800px;
+}
+#blogs_html_list .blogs_box .blogs_nav_box {
+  float: right;
+  width: 250px;
+  min-height: 500px;
+  overflow: hidden;
+  background-color: #e0e0e0;
+}
+#blogs_html_list .blogs_box .blogs_list_box {
+  margin-right: 50px;
+  min-height: 500px;
+  overflow: hidden;
+  background-color: #fffff8;
+}
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item {
   width: 100%;
   height: 150px;
   margin-top: 20px;
   border-bottom: 1px solid #c9c9c9;
 }
-#blogs_html_list .blogs_item .item_header {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_header {
   width: 100%;
   height: 26px;
   line-height: 26px;
   font-size: 12px;
 }
-#blogs_html_list .blogs_item .item_header .item_type {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_header .item_type {
   width: 40px;
   height: 22px;
   line-height: 22px;
@@ -631,18 +645,18 @@ textarea {
   color: #fff;
   border-radius: 4px;
 }
-#blogs_html_list .blogs_item .item_header .item_title {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_header .item_title {
   font-size: 16px;
   margin-left: 12px;
 }
-#blogs_html_list .blogs_item .item_header a {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_header a {
   color: #333;
   text-decoration: none;
 }
-#blogs_html_list .blogs_item .item_header a:hover {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_header a:hover {
   color: #8DB02E;
 }
-#blogs_html_list .blogs_item .item_summary {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_summary {
   width: 96%;
   height: 80px;
   color: #888;
@@ -652,34 +666,34 @@ textarea {
   margin-left: 20px;
   overflow: hidden;
 }
-#blogs_html_list .blogs_item .item_foot {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_foot {
   color: #666;
   text-align: right;
   font-size: 13px;
   padding-right: 15px;
 }
-#blogs_html_list .blogs_item .item_foot span {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_foot span {
   margin-left: 12px;
 }
-#blogs_html_list .blogs_item .item_foot .label_name {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_foot .label_name {
   display: inline-block;
   background-color: #bbb;
   color: #fff;
   padding: 1px 10px 1px 10px;
   border-radius: 4px;
 }
-#blogs_html_list .blogs_item .item_foot .modify_blog_btn {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_foot .modify_blog_btn {
   cursor: pointer;
   color: #8DB02E;
 }
-#blogs_html_list .blogs_item .item_foot .modify_blog_btn:hover {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_foot .modify_blog_btn:hover {
   text-decoration: underline;
 }
-#blogs_html_list .blogs_item .item_foot .delete_blog_btn {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_foot .delete_blog_btn {
   cursor: pointer;
   color: #E3170D;
 }
-#blogs_html_list .blogs_item .item_foot .delete_blog_btn:hover {
+#blogs_html_list .blogs_box .blogs_list_box .blogs_item .item_foot .delete_blog_btn:hover {
   text-decoration: underline;
 }
 #blogs_html_list #delete_dialog #dialog_content .dialog_tip {

@@ -23,9 +23,12 @@
     {% set rout = '/blogs/'+current_user.rout_address if current_user.rout_address else '/blogs_list' %}
     {% set rout_dict={'/blogs_list':1,'/blogs_essay':1,'/blogs_label':1,'/blogs_setting':1,'/blogs_article':1,rout:1} %}
     <div class="frame_main_nav">
-        <a class="{{'active' if request.path == '/index'}}" href="/index">插件库</a>
+        <a class="{{'active' if rout_dict[request.path]}}" href="/blogs_list">我的博客</a>
+        <a class="" href="/blogs_list">新随笔</a>
+        <a class="" href="/blogs_list">分类管理</a>
+        <a class="" href="/blogs_list">个人设置</a>
+        <a class="" href="/index">插件库</a>
         <a class="">资料阁</a>
-        <a class="{{'active' if rout_dict[request.path]}}" href="/blogs_list">博客苑</a>
     </div>
     <div class="frame_content">
         {% block content %}

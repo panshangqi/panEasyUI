@@ -1,75 +1,92 @@
 #blogs_html_list{
     padding: 20px;
     padding-bottom: 100px;
-    .blogs_item{
+    .blogs_box{
         width:100%;
-        height:150px;
-        margin-top: 20px;
-        border-bottom: 1px solid #c9c9c9;
-        .item_header{
-            width:100%;
-            height:26px;
-            line-height: 26px;
-            font-size: 12px;
-            .item_type{
-                width:40px;
-                height:22px;
-                line-height: 22px;
-                display: inline-block;
-                text-align: center;
-                background-color: @theme_color;
-                color:#fff;
-                border-radius: 4px;
-            }
-            .item_title{
-                font-size: 16px;
-                margin-left: 12px;
-            }
-            a{
-                color:#333;
-                text-decoration: none;
-                &:hover{
-                    color:@theme_color;
-                }
-            }
-        }
-        .item_summary{
-            width:96%;
-            height:80px;
-            color:#888;
-            line-height: 25px;
-            font-size: 14px;
-            margin-top: 15px;
-            margin-left: 20px;
+        height:800px;
+        .blogs_nav_box{
+            float: right;
+            width:250px;
+            min-height: 500px;
             overflow: hidden;
+            background-color: #e0e0e0;
         }
-        .item_foot{
-            color:#666;
-            text-align: right;
-            font-size: 13px;
-            padding-right: 15px;
-            span{
-                margin-left: 12px;
-            }
-            .label_name{
-                display: inline-block;
-                background-color: #bbb;
-                color:#fff;
-                padding: 1px 10px 1px 10px;
-                border-radius: 4px;
-            }
-            .modify_blog_btn{
-                cursor:pointer;
-                color:@theme_color;
-                &:hover{
-                    text-decoration: underline;
+        .blogs_list_box{
+            margin-right: 50px;
+            min-height:500px;
+            overflow: hidden;
+            background-color:#fffff8;
+            .blogs_item{
+                width:100%;
+                height:150px;
+                margin-top: 20px;
+                border-bottom: 1px solid #c9c9c9;
+                .item_header{
+                    width:100%;
+                    height:26px;
+                    line-height: 26px;
+                    font-size: 12px;
+                    .item_type{
+                        width:40px;
+                        height:22px;
+                        line-height: 22px;
+                        display: inline-block;
+                        text-align: center;
+                        background-color: @theme_color;
+                        color:#fff;
+                        border-radius: 4px;
+                    }
+                    .item_title{
+                        font-size: 16px;
+                        margin-left: 12px;
+                    }
+                    a{
+                        color:#333;
+                        text-decoration: none;
+                        &:hover{
+                            color:@theme_color;
+                        }
+                    }
                 }
-            }
-            .delete_blog_btn{
-                cursor:pointer;
-                color:#E3170D;
-                &:hover{
-                    text-decoration: underline;
+                .item_summary{
+                    width:96%;
+                    height:80px;
+                    color:#888;
+                    line-height: 25px;
+                    font-size: 14px;
+                    margin-top: 15px;
+                    margin-left: 20px;
+                    overflow: hidden;
+                }
+                .item_foot{
+                    color:#666;
+                    text-align: right;
+                    font-size: 13px;
+                    padding-right: 15px;
+                    span{
+                        margin-left: 12px;
+                    }
+                    .label_name{
+                        display: inline-block;
+                        background-color: #bbb;
+                        color:#fff;
+                        padding: 1px 10px 1px 10px;
+                        border-radius: 4px;
+                    }
+                    .modify_blog_btn{
+                        cursor:pointer;
+                        color:@theme_color;
+                        &:hover{
+                            text-decoration: underline;
+                        }
+                    }
+                    .delete_blog_btn{
+                        cursor:pointer;
+                        color:#E3170D;
+                        &:hover{
+                            text-decoration: underline;
+                        }
+                    }
                 }
             }
         }
