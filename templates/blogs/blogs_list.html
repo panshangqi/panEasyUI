@@ -6,9 +6,11 @@
 
 {% block content %}
 <div id="blogs_html_list">
+
     <div class="blogs_box">
 
         <div class="blogs_list_box">
+            <div class="book_header"></div>
             {% for item in blogs_list %}
             <div class="blogs_item" blog_id="{{item.blog_id}}">
                 <div class="item_header">
@@ -33,12 +35,12 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
-        <div class="blogs_nav_box">
-
+            <div class="book_footer"></div>
         </div>
     </div>
+    <div class="blogs_nav_box">
 
+    </div>
 
 
 
