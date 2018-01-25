@@ -1,9 +1,10 @@
-@theme_color: #8DB02E;
-@theme_color_deep: #7b9f1a;
+@theme_color: #8c5334;
+@theme_color_deep: #7a462a;
 html,body{
     margin: 0;
     padding: 0;
     background-image: url("../img/background_007.jpg");
+    background-size: 100%;
 }
 input{
     outline:none;
@@ -29,7 +30,7 @@ button{
     outline:0;
     &:hover{
         cursor: pointer;
-        background-color: fadeout(@theme_color,15%);
+        background-color: @theme_color_deep;
     }
 }
 textarea{
@@ -47,17 +48,58 @@ textarea{
     -webkit-transition: @property @time; /* Safari 和 Chrome */
     -o-transition: @property @time; /* Opera */
 }
+.placeholderColor(@color){
+    input::-webkit-input-placeholder { /* WebKit browsers */
+        color: @color;
+    }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: @color;
+    }
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: @color;
+    }
+    input:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: @color;
+    }
+}
 #frame_html{
     .frame_header{
         width:100%;
-        height:50px;
-        text-align: right;
+        height:80px;
+        text-align: left;
         overflow: hidden;
+        position: relative;
         img.logo_img{
             position: absolute;
             width:40px;
             left:30px;
             top:5px;
+        }
+        input.search{
+            position: absolute;
+            width:250px;
+            height:30px;
+            top:30px;
+            right:100px;
+            border-radius:30px;
+            background-color: fadeout(@theme_color_deep,70%);
+            border: 0;
+            z-index: 10;
+            padding: 1px 8px 1px 45px;
+            font-size: 14px;
+            color:@theme_color_deep;
+        }
+        .placeholderColor(@theme_color);
+        .search_image{
+            position: absolute;
+            top:34px;
+            right:306px;
+            width:30px;
+            height:30px;
+            background-image: url(../img/search.png);
+            background-size: 20px;
+            background-repeat: no-repeat;
+            z-index: 11;
         }
         ul{
             margin: 15px 50px;
@@ -67,7 +109,7 @@ textarea{
                 margin-left: 20px;
                 a{
                     vertical-align: top;
-                    color:#d2d2d2;
+                    color:#8c5334;
                     font-size: 12px;
                     &:hover{
                         color:#f5f5f5;
@@ -75,12 +117,14 @@ textarea{
                 }
                 .user_name{
                     font-size: 14px;
-                    color:#fff;
+                    color:#8c5334;
                     font-family: Consolas;
                     img{
-                        width:14px;
+                        width:40px;
+                        height:40px;
                         vertical-align: top;
                         margin-top: 1px;
+                        border-radius: 20px;
                     }
                     span{
                         margin-left: 6px;
@@ -93,7 +137,7 @@ textarea{
     }
     .frame_main_nav{
         height:35px;
-        border-bottom: 2px solid rgba(20,20,20,0.8);
+        border-bottom: 2px solid fadeout(@theme_color_deep,0%);
         padding-left: 20px;
         font-size: 0px;
         a{
@@ -106,25 +150,25 @@ textarea{
             text-align: center;
             color: #fff;
             font-size: 14px;
-            background-color: rgba(20,20,20,0.5);
+            margin-left: 1px;
+            background-color: fadeout(@theme_color_deep,30%);
             cursor: pointer;
-            border-left: 1px solid #333;
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
             &:hover{
-                background-color: rgba(20,20,20,0.6);
+                background-color: fadeout(@theme_color_deep,0%);
             }
         }
         a:first-child{
             border-left: 0;
         }
         .active{
-            background-color: fadeout(#222,20%);
+            background-color: fadeout(@theme_color_deep,0%);
             color: #fff;
         }
     }
     .frame_content{
-        min-height: 800px;
+    
     }
 }
 

@@ -987,7 +987,7 @@ var panEditFrameObj=function(ele,data,fn){
     settings.width = settings.width < 800 ? 800:settings.width;
     settings.height = settings.height < 400 ? 400:settings.height;
     $element.css({
-        'width':settings.width+'px',
+        'width':'100%',
         'height':settings.height+'px'
     })
     var $iframe = $element.find('iframe');

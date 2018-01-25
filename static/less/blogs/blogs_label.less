@@ -39,12 +39,19 @@
                     }
                 }
                 .edit_label{
-                    .label_img;
-                    background-position: 18px 0;
+                    color:@theme_color;
+                    cursor: pointer;
+                    &:hover{
+                        color:@theme_color_deep;
+                        text-decoration: underline;
+                    }
                 }
                 .delete_label{
-                    .label_img;
-                    background-position: 0 0;
+                    color:#e3170d;
+                    cursor: pointer;
+                    &:hover{
+                        text-decoration: underline;
+                    }
                 }
             }
         }

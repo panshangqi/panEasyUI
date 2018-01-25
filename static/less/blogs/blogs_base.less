@@ -1,9 +1,43 @@
 #blogs_base_html{
-    .left_nav{
-        display: inline-block;
-        width:200px;
-        height:1000px;
-        vertical-align: top;
+    position: relative;
+    .main_content{
+        width:100%;
+        .main_content_st{
+            margin-right: 300px;
+            padding: 25px;
+            .book_header{
+                width:100%;
+                height:35px;
+                background-image: url(../img/book_header_001.png);
+                background-size: 25px;
+                .backgroundApacity(90,0.9);
+            }
+            .book_content{
+                width:100%;
+                min-height:800px;
+                background-color: fadeout(#fffff8,10%);
+            }
+            .book_footer{
+                width:100%;
+                height:35px;
+                background-image: url(../img/book_header_001.png);
+                background-position: 0 -38px;
+                background-size: 25px;
+                .backgroundApacity(90,0.9);
+            }
+        }
+        
+    }
+    .side_nav{
+        position: absolute;
+        right:0;
+        top:0;
+        width:300px;
+        padding-top: 25px;
+        padding-right: 30px;
+        box-sizing: border-box;
+        min-height:500px;
+        z-index:10;
         .title{
             width:100%;
             height:30px;
@@ -61,57 +95,5 @@
             }
         }
     }
-    .right_content{
-        display: inline-block;
-        width:980px;
-        margin-left: 5px;
-        vertical-align: top;
-        .main_nav{
-            width:100%;
-            height:35px;
-            ul{
-                display: inline-block;
-                margin: 0;
-                padding: 0;
-                margin-left: -1px;
-                li{
-                    display: block;
-                    float:left;
-                    width:110px;
-                    height:34px;
-                    margin-right: 5px;
-                    a{
-                        display: block;
-                        width:110px;
-                        height:34px;
-                        text-decoration: none;
-                        color:#fff;
-                        border-left: 1px solid @theme_color;
-                        border-right: 1px solid @theme_color;
-                        border-top: 1px solid @theme_color;
-                        text-align: center;
-                        line-height: 34px;
-                        font-size: 15px;
-                        background-color: @theme_color;
-                        &:hover{
-                            color:#fff;
-                            background-color: @theme_color_deep;
-                        }
-                    }
-                }
-                .li_active{
-                    background-color: #fff;
-                    color: @theme_color;
-                    &:hover{
-                        background-color: #fff;
-                        color: @theme_color;
-                    }
-                }
-            }
-        }
-        .main_content{
-            background-color: #fff;
-            min-height:800px;
-        }
-    }
+    
 }

@@ -1,47 +1,39 @@
-{% extends "base.html" %}
-{% block title %}我的博客{% endblock %}
-{% block style %}
+{% extends "blogs/blogs_base.html" %}
+{% block blogs_title %}我的博客{% endblock %}
+{% block blogs_style %}
 
 {% endblock %}
 
-{% block content %}
+{% block blogs_content %}
 <div id="blogs_html_list">
 
-    <div class="blogs_box">
+    <div class="blogs_list_box">
 
-        <div class="blogs_list_box">
-            <div class="book_header"></div>
-            {% for item in blogs_list %}
-            <div class="blogs_item" blog_id="{{item.blog_id}}">
-                <div class="item_header">
-                    <a href="/blogs_article?blog_id={{item.blog_id}}">
-                        <label class="item_type">{{item.type}}</label><label class="item_title">{{item.title}}</label>
-                    </a>
-                </div>
-                <div class="item_summary">&#12288;&#12288;{{item.summary}}</div>
-                <div class="item_foot">
-
-                    {% for label in label_list %}
-                    {% if label.label_id == item.label_id %}
-                    <span class="label_name">{{label.label_name}}</span>
-                    {% endif %}
-                    {% endfor %}
-                    <span>{{timestamp_format(item.create_time,false)}}</span>
-                    <span>阅读({{item.click_rate}})</span>
-                    {% if current_user.user_id %}
-                    <span class="modify_blog_btn">编辑</span>
-                    <span class="delete_blog_btn">删除</span>
-                    {% endif %}
-                </div>
+        {% for item in blogs_list %}
+        <div class="blogs_item" blog_id="{{item.blog_id}}">
+            <div class="item_header">
+                <a href="/blogs_article?blog_id={{item.blog_id}}">
+                    <label class="item_type">{{item.type}}</label><label class="item_title">{{item.title}}</label>
+                </a>
             </div>
-            {% endfor %}
-            <div class="book_footer"></div>
+            <div class="item_summary">&#12288;&#12288;{{item.summary}}</div>
+            <div class="item_foot">
+
+                {% for label in label_list %}
+                {% if label.label_id == item.label_id %}
+                <span class="label_name">{{label.label_name}}</span>
+                {% endif %}
+                {% endfor %}
+                <span>{{timestamp_format(item.create_time,false)}}</span>
+                <span>阅读({{item.click_rate}})</span>
+                {% if current_user.user_id %}
+                <span class="modify_blog_btn">编辑</span>
+                <span class="delete_blog_btn">删除</span>
+                {% endif %}
+            </div>
         </div>
+        {% endfor %}
     </div>
-    <div class="blogs_nav_box">
-
-    </div>
-
 
 
     <div class="pan-blogs-dialog" id="delete_dialog">
@@ -58,7 +50,7 @@
 </div>
 {% endblock %}
 
-{% block script %}
+{% block blogs_script %}
 <script>
     var blogs_list = {{json_encode(blogs_list)}};
     var deleteDialog = $('#delete_dialog').panBlogsDialog({'width':320,'height':190},function(){});

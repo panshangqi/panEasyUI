@@ -10,23 +10,23 @@
 <body>
 <div id="frame_html">
     <div class="frame_header">
-        <img src="{{static_url}}/img/favicon.ico" class="logo_img">
         <ul>
             {% if current_user.user_id %}
-            <li><span class="user_name"><img src="{{static_url}}/img/account_login.png"/><span>{{current_user.username}}</span></span></li>
+            <li><span class="user_name"><img src="{{current_user.head_img_url}}"/><span>{{current_user.username}}</span></span></li>
             <li><a id="nav_logout" href="/logout">注销</a></li>
             {% else %}
             <li><a id="nav_login" href="/login">登录</a></li>
             {% endif %}
         </ul>
+        <input type="text" class="search" placeholder="支持博客关键字搜索"><div class="search_image"></div>
     </div>
     {% set rout = '/blogs/'+current_user.rout_address if current_user.rout_address else '/blogs_list' %}
     {% set rout_dict={'/blogs_list':1,'/blogs_essay':1,'/blogs_label':1,'/blogs_setting':1,'/blogs_article':1,rout:1} %}
     <div class="frame_main_nav">
-        <a class="{{'active' if rout_dict[request.path]}}" href="/blogs_list">我的博客</a>
-        <a class="" href="/blogs_list">新随笔</a>
-        <a class="" href="/blogs_list">分类管理</a>
-        <a class="" href="/blogs_list">个人设置</a>
+        <a class="{{'active' if request.path == '/blogs_list'}}" href="/blogs_list">我的博客</a>
+        <a class="{{'active' if request.path == '/blogs_essay'}}" href="/blogs_essay">新随笔</a>
+        <a class="{{'active' if request.path == '/blogs_label'}}" href="/blogs_label">分类管理</a>
+        <a class="{{'active' if request.path == '/blogs_setting'}}" href="/blogs_setting">个人设置</a>
         <a class="" href="/index">插件库</a>
         <a class="">资料阁</a>
     </div>
