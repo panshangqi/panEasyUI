@@ -67,13 +67,27 @@ textarea{
         width:100%;
         height:80px;
         text-align: left;
-        overflow: hidden;
         position: relative;
-        img.logo_img{
+        .logo_img{
             position: absolute;
-            width:40px;
-            left:30px;
-            top:5px;
+            width:180px;
+            height:50px;
+            left:3px;
+            top:11px;
+            background-image: url(../img/site_logo_001.png);
+            background-size: 180px;
+            background-repeat: no-repeat;
+        }
+        .motto_img{
+            position: absolute;
+            width:450px;
+            height:40px;
+            right:280px;
+            top:30px;
+            background-image: url(../img/motto_001.png);
+            background-size: 450px;
+            background-repeat: no-repeat;
+            z-index: 101;
         }
         input.search{
             position: absolute;
@@ -102,7 +116,7 @@ textarea{
             z-index: 11;
         }
         ul{
-            margin: 15px 50px;
+            margin-left: 200px;
             list-style: none;
             li{
                 display: inline;

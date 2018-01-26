@@ -101,21 +101,28 @@
             tr{
                 height: 30px;
                 td{
-                    cursor: pointer;
-                    .check_box{
+                    .check_label{
                         display: inline-block;
-                        vertical-align: top;
-                        width:12px;
-                        height:12px;
-                        border: 1px solid @theme_color;
-                        background-size: 12px;
-                        margin-top: 2px;
-                    }
-                    .check_name{
-                        margin-left: 7px;
-                        display: inline-block;
-                        vertical-align: top;
-                        font-size: 13px;
+                        cursor: pointer;
+                        .check_box{
+                            display: inline-block;
+                            vertical-align: top;
+                            width:12px;
+                            height:12px;
+                            border: 1px solid @theme_color;
+                            background-size: 12px;
+                            margin-top: 2px;
+                        }
+                        .check_name{
+                            margin-left: 7px;
+                            display: inline-block;
+                            vertical-align: top;
+                            font-size: 13px;
+                        }
+                        .check_select{
+                            background-image:url(/static/img/check_yes.png);
+                            background-color: fadeout(@theme_color,10%);
+                        }
                     }
                 }
             }

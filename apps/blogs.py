@@ -76,31 +76,6 @@ class BlogsMethod(object):
         except:
             blogs_list=[]
         return blogs_list
-    @staticmethod
-    def get_user_info(url,user_id):
-        user_info={}
-        conn = sqlite3.connect("database/blogs_info.db")
-        cursor = conn.cursor()
-        cursor.execute('select user_id,username,email,create_time,head_img,rout_address from user_info where user_id = :user_id;',{'user_id':user_id})
-        res = cursor.fetchall()
-        for row in res:
-            user_info['user_id'] = row[0]
-            user_info['username'] = row[1]
-            user_info['email'] = row[2]
-            user_info['create_time'] = row[3]
-            user_info['head_img'] = row[4];
-            if row[4]:
-                user_info['head_img_url'] = url + '/static/files/'+ user_info['head_img'];
-            else:
-                user_info['head_img_url'] = None
-            user_info['rout_address'] = row[5];
-
-
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return user_info
-
 
 class BlogsListHandler(BaseHandler):
     @tornado.web.authenticated
@@ -131,6 +106,7 @@ class BlogsArticleHandler(BaseHandler):
     def get(self):
         blog_id = self.get_argument('blog_id')
         user_id = self.get_current_user()
+        label_list = BlogsMethod.getLabellist(user_id)
         article_info={}
         result={}
         try:
@@ -151,7 +127,7 @@ class BlogsArticleHandler(BaseHandler):
             result['status']=1
         except:
             result['status']=0
-        self.render_html("blogs/blogs_article.html",article_info=article_info)
+        self.render_html("blogs/blogs_article.html",article_info=article_info,label_list=label_list)
 
 class BlogsEssayHandler(BaseHandler):
     @tornado.web.authenticated

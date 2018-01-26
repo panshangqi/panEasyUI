@@ -26,7 +26,7 @@
         <table id="label_table">
         {% for label in label_list %}
             {% if (loop.index-1)%5==0 %} {% if loop.index > 1 %}</tr>{% endif %}<tr>{% endif %}
-            <td tid="{{label.label_id}}"><div class="check_box"></div><div class="check_name">{{label.label_name}}</div></td>
+            <td tid="{{label.label_id}}"><label class="check_label"><span class="check_box"></span><span class="check_name">{{label.label_name}}</span></label></td>
         {% endfor %}
         </tr>
         </table>
@@ -86,11 +86,10 @@
         })
     })
 
-    $('#label_table').on('click','td',function () {
-        var label_id = $(this).attr('tid');
-        $('#label_table td .check_box').css('background-image','');
-        $(this).find('.check_box').css('background-image','url(/static/img/check_yes.png)');
-        console.log(label_id);
+    $('#label_table').on('click','.check_label',function () {
+        var label_id = $(this).parents('td').attr('tid');
+        $('#label_table td .check_box').removeClass('check_select');
+        $(this).find('.check_box').addClass('check_select');
         labelId = label_id;
     })
 

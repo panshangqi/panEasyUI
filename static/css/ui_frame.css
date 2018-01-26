@@ -39,14 +39,28 @@ textarea {
   width: 100%;
   height: 80px;
   text-align: left;
-  overflow: hidden;
   position: relative;
 }
-#frame_html .frame_header img.logo_img {
+#frame_html .frame_header .logo_img {
   position: absolute;
-  width: 40px;
-  left: 30px;
-  top: 5px;
+  width: 180px;
+  height: 50px;
+  left: 3px;
+  top: 11px;
+  background-image: url(../img/site_logo_001.png);
+  background-size: 180px;
+  background-repeat: no-repeat;
+}
+#frame_html .frame_header .motto_img {
+  position: absolute;
+  width: 450px;
+  height: 40px;
+  right: 280px;
+  top: 30px;
+  background-image: url(../img/motto_001.png);
+  background-size: 450px;
+  background-repeat: no-repeat;
+  z-index: 101;
 }
 #frame_html .frame_header input.search {
   position: absolute;
@@ -90,7 +104,7 @@ textarea {
   z-index: 11;
 }
 #frame_html .frame_header ul {
-  margin: 15px 50px;
+  margin-left: 200px;
   list-style: none;
 }
 #frame_html .frame_header ul li {
@@ -539,7 +553,7 @@ textarea {
   width: 100%;
 }
 #blogs_base_html .main_content .main_content_st {
-  margin-right: 300px;
+  margin-right: 260px;
   padding: 25px;
 }
 #blogs_base_html .main_content .main_content_st .book_header {
@@ -572,7 +586,7 @@ textarea {
   position: absolute;
   right: 0;
   top: 0;
-  width: 300px;
+  width: 260px;
   padding-top: 25px;
   padding-right: 30px;
   box-sizing: border-box;
@@ -731,10 +745,9 @@ textarea {
 }
 #blogs_article_html {
   width: 100%;
-  min-height: 800px;
   background-color: #ffffff;
-  margin-top: 50px auto;
-  padding: 40px;
+  box-sizing: border-box;
+  padding: 25px;
 }
 #blogs_article_html .article_title {
   font-size: 25px;
@@ -841,10 +854,11 @@ textarea {
 .essay_html .label_box table tr {
   height: 30px;
 }
-.essay_html .label_box table tr td {
+.essay_html .label_box table tr td .check_label {
+  display: inline-block;
   cursor: pointer;
 }
-.essay_html .label_box table tr td .check_box {
+.essay_html .label_box table tr td .check_label .check_box {
   display: inline-block;
   vertical-align: top;
   width: 12px;
@@ -853,11 +867,15 @@ textarea {
   background-size: 12px;
   margin-top: 2px;
 }
-.essay_html .label_box table tr td .check_name {
+.essay_html .label_box table tr td .check_label .check_name {
   margin-left: 7px;
   display: inline-block;
   vertical-align: top;
   font-size: 13px;
+}
+.essay_html .label_box table tr td .check_label .check_select {
+  background-image: url(/static/img/check_yes.png);
+  background-color: rgba(140, 83, 52, 0.9);
 }
 .essay_html .submit_btn {
   margin-top: 20px;

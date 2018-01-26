@@ -12,7 +12,7 @@
 
         <div class="main_content_st">
             <div class="book_header"></div>
-            <div class="book_content">
+            <div class="book_content" id="book_content">
                 {% block blogs_content %}
                 {% endblock %}
             </div>
@@ -40,6 +40,7 @@
 {% endblock %}
 {% block script %}
 <script>
+
     var label_list = {{json_encode(label_list)}}
     if(current_user.rout_address)
         $('#head_img').css('background-image','url('+current_user.head_img_url+')');
