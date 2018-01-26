@@ -29,7 +29,7 @@
             <div class="label_nav" id="label_nav">
                 <ul>
                     {% for label in label_list %}
-                    <li>{{label.label_name}}</li>
+                    <li><a href="/blogs_list?label_id={{label.label_id}}">{{label.label_name}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -44,6 +44,8 @@
     var label_list = {{json_encode(label_list)}}
     if(current_user.rout_address)
         $('#head_img').css('background-image','url('+current_user.head_img_url+')');
+
+
 </script>
 {% block blogs_script %}{% endblock %}
 {% endblock %}

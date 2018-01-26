@@ -52,12 +52,15 @@ class BlogsMethod(object):
             label_list.append(item)
         return label_list
     @staticmethod
-    def get_blogs_list(user_id):
+    def get_blogs_list(user_id,label_id='all'):
         blogs_list=[]
         try:
             conn = sqlite3.connect('database/blogs_info.db')
             cursor = conn.cursor()
-            cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id order by create_time desc;',{'user_id':user_id})
+            if label_id == 'all':
+                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id order by create_time desc;',{'user_id':user_id})
+            else:
+                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id and label_id=:label_id order by create_time desc;',{'user_id':user_id,'label_id':label_id})
             res = cursor.fetchall()
             for row in res:
                 blogs_item={}
@@ -81,7 +84,9 @@ class BlogsListHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         user_id = self.get_current_user()
-        blogs_list = BlogsMethod.get_blogs_list(user_id)
+        label_id = self.get_argument('label_id','all')
+        print label_id
+        blogs_list = BlogsMethod.get_blogs_list(user_id,label_id)
         label_list = BlogsMethod.getLabellist(user_id)
         self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
 
@@ -311,3 +316,11 @@ class BlogsUploadHeadHandler(BaseHandler):
         conn.commit()
         cursor.close()
         conn.close()
+
+class BlogsGetListFromLabel(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        label_id = self.get_argument('label_id')
+        user_id = self.get_current_user()
+        blogs_list = get_blogs_list(user_id,label_id)
+        self.write(blogs_list)

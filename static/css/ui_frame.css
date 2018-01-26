@@ -601,12 +601,12 @@ textarea {
   color: #fff;
   font-size: 14px;
   padding-left: 15px;
-  background-color: #8c5334;
+  background-color: rgba(140, 83, 52, 0.8);
 }
 #blogs_base_html .side_nav .user_info {
   width: 100%;
   height: 270px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 #blogs_base_html .side_nav .user_info .head_img {
   width: 140px;
@@ -619,7 +619,6 @@ textarea {
   width: 100%;
   margin-top: 8px;
   min-height: 400px;
-  background-color: #fff;
 }
 #blogs_base_html .side_nav .classify .label_nav ul {
   padding: 0;
@@ -628,22 +627,28 @@ textarea {
 }
 #blogs_base_html .side_nav .classify .label_nav ul li {
   margin: 0;
-  box-sizing: border-box;
   list-style-type: none;
   display: inline-block;
   width: 100%;
   height: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+#blogs_base_html .side_nav .classify .label_nav ul li a {
+  display: inline-block;
+  width: 100%;
+  height: 50px;
   line-height: 50px;
-  padding-left: 20px;
   color: #555;
   font-size: 13px;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #ddd;
   cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+  padding-left: 20px;
 }
-#blogs_base_html .side_nav .classify .label_nav ul li:hover {
+#blogs_base_html .side_nav .classify .label_nav ul li a:hover {
   color: #fff;
-  background-color: rgba(140, 83, 52, 0.8);
+  background-color: rgba(140, 83, 52, 0.5);
   transition: background-color 0.9s;
   -moz-transition: background-color 0.9s;
   /* Firefox 4 */
@@ -874,8 +879,8 @@ textarea {
   font-size: 13px;
 }
 .essay_html .label_box table tr td .check_label .check_select {
-  background-image: url(/static/img/check_yes.png);
-  background-color: rgba(140, 83, 52, 0.9);
+  background-image: url(../img/check_yes.png);
+  background-color: rgba(140, 83, 52, 0.8);
 }
 .essay_html .submit_btn {
   margin-top: 20px;
@@ -901,10 +906,10 @@ textarea {
   font-size: 13px;
   color: #444;
   margin-top: 20px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(140, 83, 52, 0.12);
 }
 #blogs_label_html .label_table thead tr {
-  background-color: #f0f0f0;
+  background-color: rgba(140, 83, 52, 0.3);
   height: 40px;
 }
 #blogs_label_html .label_table tbody tr {
