@@ -62,7 +62,7 @@
         var blog_type = $('#blog_type .select_text').html();
         var articleTitle = $('#arcticle_title').val();
         var article = panEditObj.getFrameBodyHtml();
-        console.log(article);
+        //console.log(article);
         if(articleTitle.length == 0){
             alert('请填写文章标题');
             return;
@@ -78,6 +78,7 @@
             'article':article,
             'action':'create'
         };
+
         $.window.http.post('/blogs_essay',data,function(result){
             if(result.status==1){
                 window.location.href='/blogs_list';
