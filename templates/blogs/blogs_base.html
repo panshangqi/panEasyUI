@@ -29,7 +29,7 @@
             <div class="label_nav" id="label_nav">
                 <ul>
                     {% for label in label_list %}
-                    <li><a href="/blogs_list?label_id={{label.label_id}}">{{label.label_name}}</a></li>
+                    <li><a href="/blogs_list?label_id={{label.label_id}}">{{label.label_name}} ({{label.total_article}})</a></li>
                     {% endfor %}
                 </ul>
             </div>

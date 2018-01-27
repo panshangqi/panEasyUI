@@ -49,19 +49,34 @@ class BlogsMethod(object):
             item['click_rate'] = row[2]
             item['create_time'] = row[3]
             item['modify_time'] = row[4]
+            cursor.execute('select blog_id,title from blogs_info where label_id=:label_id;',{'label_id':row[0]})
+            ret = cursor.fetchall()
+            item['total_article'] = len(ret)
             label_list.append(item)
         return label_list
     @staticmethod
-    def get_blogs_list(user_id,label_id='all'):
+    def get_blogs_list(user_id,label_id='all',page_size='7',page_num='1'):
         blogs_list=[]
+        page_total = 0
+        offset = (int(page_num)-1)*int(page_size);
+        recnum = int(page_size);
         try:
             conn = sqlite3.connect('database/blogs_info.db')
             cursor = conn.cursor()
+            res = []
+            total = []
             if label_id == 'all':
-                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id order by create_time desc;',{'user_id':user_id})
+                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id order by create_time desc limit :offset,:recnum;',{'user_id':user_id,'offset':offset,'recnum':recnum})
+                res = cursor.fetchall()
+                cursor.execute('select blog_id from blogs_info where user_id=:user_id',{'user_id':user_id})
+                page_total = len(cursor.fetchall())
+
             else:
-                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id and label_id=:label_id order by create_time desc;',{'user_id':user_id,'label_id':label_id})
-            res = cursor.fetchall()
+                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id and label_id=:label_id order by create_time desc limit :offset,:recnum;',{'user_id':user_id,'label_id':label_id,'offset':offset,'recnum':recnum})
+                res = cursor.fetchall()
+                cursor.execute('select blog_id from blogs_info where user_id=:user_id and label_id=:label_id',{'user_id':user_id,'label_id':label_id})
+                page_total = len(cursor.fetchall())
+
             for row in res:
                 blogs_item={}
                 blogs_item['blog_id'] = row[0]
@@ -78,17 +93,19 @@ class BlogsMethod(object):
             conn.close()
         except:
             blogs_list=[]
-        return blogs_list
+        return blogs_list,page_total
 
 class BlogsListHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         user_id = self.get_current_user()
         label_id = self.get_argument('label_id','all')
-        print label_id
-        blogs_list = BlogsMethod.get_blogs_list(user_id,label_id)
+        page_size = self.get_argument('page_size','7')
+        page_num = self.get_argument('page_num','1')
+        blogs_list,page_total = BlogsMethod.get_blogs_list(user_id,label_id,page_size,page_num)
+        print page_total
         label_list = BlogsMethod.getLabellist(user_id)
-        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
+        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list,label_id=label_id,page_total=page_total,page_size=int(page_size),page_num=int(page_num))
 
 class BlogsHandler(BaseHandler):
     def get(self,rout_address):
@@ -153,7 +170,7 @@ class BlogsEssayHandler(BaseHandler):
             try:
                 conn = sqlite3.connect('database/blogs_info.db')
                 cursor = conn.cursor()
-                parser = SummaryHTMLParser(150)
+                parser = SummaryHTMLParser(300)
                 parser.feed(article)
                 blog_summary = parser.get_summary(u'...' ,u'')
                 sql_param = "insert into blogs_info(blog_id,title,type,summary,article,create_time,modify_time,user_id,label_id) values('%s','%s','%s','%s','%s',%d,%d,'%s','%s');" % (getGuid(),title,type,blog_summary,article,time.time(),time.time(),user_id,label_id)
@@ -317,10 +334,4 @@ class BlogsUploadHeadHandler(BaseHandler):
         cursor.close()
         conn.close()
 
-class BlogsGetListFromLabel(BaseHandler):
-    @tornado.web.authenticated
-    def get(self):
-        label_id = self.get_argument('label_id')
-        user_id = self.get_current_user()
-        blogs_list = get_blogs_list(user_id,label_id)
-        self.write(blogs_list)
+
