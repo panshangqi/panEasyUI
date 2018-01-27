@@ -55,6 +55,26 @@ class BlogsMethod(object):
             label_list.append(item)
         return label_list
     @staticmethod
+    def get_blog_one(user_id,blog_id):
+        article_info={}
+        conn = sqlite3.connect('database/blogs_info.db')
+        cursor = conn.cursor()
+        cursor.execute('select blog_id,title,article,create_time,type,click_rate,label_id from blogs_info where user_id=:user_id and blog_id=:blog_id',{'user_id':user_id,'blog_id':blog_id})
+        res = cursor.fetchall()
+        for row in res:
+            article_info['blog_id'] = row[0]
+            article_info['title'] = row[1]
+            article_info['article'] = row[2]
+            article_info['create_time'] = row[3]
+            article_info['type'] = row[4]
+            article_info['click_rate'] = row[5]
+            article_info['label_id'] = row[6]
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return article_info
+
+    @staticmethod
     def get_blogs_list(user_id,label_id='all',page_size='7',page_num='1'):
         blogs_list=[]
         page_total = 0
@@ -129,34 +149,17 @@ class BlogsArticleHandler(BaseHandler):
         blog_id = self.get_argument('blog_id')
         user_id = self.get_current_user()
         label_list = BlogsMethod.getLabellist(user_id)
-        article_info={}
-        result={}
-        try:
-            conn = sqlite3.connect('database/blogs_info.db')
-            cursor = conn.cursor()
-            cursor.execute('select blog_id,title,article,create_time,type,click_rate from blogs_info where user_id=:user_id and blog_id=:blog_id',{'user_id':user_id,'blog_id':blog_id})
-            res = cursor.fetchall()
-            for row in res:
-                article_info['blog_id'] = row[0]
-                article_info['title'] = row[1]
-                article_info['article'] = row[2]
-                article_info['create_time'] = row[3]
-                article_info['type'] = row[4]
-                article_info['click_rate'] = row[5]
-            conn.commit()
-            cursor.close()
-            conn.close()
-            result['status']=1
-        except:
-            result['status']=0
+        article_info = BlogsMethod.get_blog_one(user_id,blog_id)
         self.render_html("blogs/blogs_article.html",article_info=article_info,label_list=label_list)
 
 class BlogsEssayHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         user_id = self.get_current_user()
+        blog_id = self.get_argument('blog_id','None')
+        article_info = BlogsMethod.get_blog_one(user_id,blog_id)
         label_list = BlogsMethod.getLabellist(user_id)
-        self.render_html("blogs/blogs_essay.html",label_list=label_list)
+        self.render_html("blogs/blogs_essay.html",label_list=label_list,article_info=article_info)
 
     def post(self):
         action = self.get_argument('action')

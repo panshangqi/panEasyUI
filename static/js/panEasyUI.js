@@ -1106,6 +1106,10 @@ var panEditFrameObj=function(ele,data,fn){
     self.getFrameBodyHtml = function () {
         return $(ifdom.body).html();
     }
+    self.setFrameBodyHtml = function(mhtml){
+        $(ifdom.body).html(mhtml);
+        $(ifdom.body).append('<br/>');
+    }
     Events();
     function Events() {
 

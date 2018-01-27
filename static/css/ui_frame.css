@@ -658,7 +658,7 @@ textarea {
   /* Opera */
 }
 #blogs_html_list {
-  padding-bottom: 100px;
+  padding-bottom: 80px;
 }
 #blogs_html_list .blogs_list_box .blogs_item {
   width: 100%;
@@ -709,7 +709,8 @@ textarea {
   font-size: 13px;
   padding-right: 15px;
 }
-#blogs_html_list .blogs_list_box .blogs_item .item_foot span {
+#blogs_html_list .blogs_list_box .blogs_item .item_foot span,
+#blogs_html_list .blogs_list_box .blogs_item .item_foot a {
   margin-left: 12px;
 }
 #blogs_html_list .blogs_list_box .blogs_item .item_foot .label_name {
@@ -735,7 +736,9 @@ textarea {
 }
 #blogs_html_list .pages_list {
   text-align: center;
-  margin-top: 40px;
+  height: 80px;
+  padding-top: 40px;
+  box-sizing: border-box;
 }
 #blogs_html_list #delete_dialog #dialog_content .dialog_tip {
   width: 100%;

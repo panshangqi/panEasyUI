@@ -25,7 +25,7 @@
                 <span>{{timestamp_format(item.create_time,false)}}</span>
                 <span>阅读({{item.click_rate}})</span>
                 {% if current_user.user_id %}
-                <span class="modify_blog_btn">编辑</span>
+                <a class="modify_blog_btn" href="/blogs_essay?blog_id={{item.blog_id}}">编辑</a>
                 <span class="delete_blog_btn">删除</span>
                 {% endif %}
             </div>
