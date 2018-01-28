@@ -100,21 +100,21 @@
             mlabel_id += label_id;
         }
         if(msg=='首页'){
-            window.location.href = '/blogs_list?page_size='+page_size + '&page_num=1'+mlabel_id;
+            window.location.href = '/blogs_list?page_num=1'+mlabel_id;
         }
         else if(msg=='尾页'){
-            window.location.href = '/blogs_list?page_size='+page_size + '&page_num='+PAGE_NUM+mlabel_id;
+            window.location.href = '/blogs_list?page_num='+PAGE_NUM+mlabel_id;
         }
         else if(msg=='上一页'){
             var m_page_num = page_num-1 < 1 ? 1 : page_num-1;
-            window.location.href = '/blogs_list?page_size='+page_size + '&page_num='+m_page_num+mlabel_id;
+            window.location.href = '/blogs_list?page_num='+m_page_num+mlabel_id;
         }
         else if(msg=='下一页'){
             var m_page_num = page_num+1 > PAGE_NUM ? PAGE_NUM : page_num+1;
-            window.location.href = '/blogs_list?page_size='+page_size + '&page_num='+m_page_num+mlabel_id;
+            window.location.href = '/blogs_list?page_num='+m_page_num+mlabel_id;
         }else{
             var m_page_num = parseInt(msg);
-            window.location.href = '/blogs_list?page_size='+page_size + '&page_num='+m_page_num+mlabel_id;
+            window.location.href = '/blogs_list?page_num='+m_page_num+mlabel_id;
         }
     });
 

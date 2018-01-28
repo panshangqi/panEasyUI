@@ -163,13 +163,13 @@ class BlogsEssayHandler(BaseHandler):
 
     def post(self):
         action = self.get_argument('action')
+        user_id = self.get_current_user()
         result={}
         if action == 'create':
             title = self.get_argument('title')
             type = self.get_argument('type')
             label_id = self.get_argument('label_id')
             article = self.get_argument('article')
-            user_id = self.get_current_user()
             try:
                 conn = sqlite3.connect('database/blogs_info.db')
                 cursor = conn.cursor()
@@ -185,9 +185,31 @@ class BlogsEssayHandler(BaseHandler):
             except:
                 result['status']=0
             self.write(result)
+        elif action == 'modify':
+            title = self.get_argument('title')
+            type = self.get_argument('type')
+            label_id = self.get_argument('label_id')
+            article = self.get_argument('article')
+            blog_id = self.get_argument('blog_id')
+            try:
+                conn = sqlite3.connect('database/blogs_info.db')
+                cursor = conn.cursor()
+                parser = SummaryHTMLParser(300)
+                parser.feed(article)
+                blog_summary = parser.get_summary(u'...' ,u'')
+
+                sql_param = "update blogs_info set title='%s',type='%s',summary='%s',article='%s',modify_time=%d,label_id='%s' where blog_id='%s' and user_id='%s';" % (title,type,blog_summary,article,time.time(),label_id,blog_id,user_id);
+                cursor.execute(sql_param)
+                conn.commit()
+                cursor.close()
+                conn.close()
+                result['status']=1
+            except:
+                result['status']=0
+            self.write(result)
+
         elif action == 'delete':
             blog_id = self.get_argument('blog_id')
-            user_id = self.get_current_user()
             try:
                 conn = sqlite3.connect('database/blogs_info.db')
                 cursor = conn.cursor()
