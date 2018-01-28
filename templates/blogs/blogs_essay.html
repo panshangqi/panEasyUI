@@ -32,7 +32,8 @@
         </table>
     </div>
     <div>
-        <button class="submit_btn" id="submit_btn">提交</button>
+        <button class="submit_btn" id="submit_btn">提交发布</button>
+        <button class="submit_btn" id="save_btn" style="margin-left: 10px">保存至草稿</button>
     </div>
 </div>
 
@@ -96,7 +97,6 @@
                 'type':blog_type,
                 'label_id':labelId,
                 'article':article,
-                'blog_id':article_info.blog_id,
                 'action':ACTION
             };
 
@@ -113,11 +113,12 @@
                 'type':blog_type,
                 'label_id':labelId,
                 'article':article,
+                'blog_id':article_info.blog_id,
                 'action':ACTION
             };
             $.window.http.post('/blogs_essay',data,function(result){
                 if(result.status==1){
-                    //window.location.href='/blogs_list';
+                    window.location.href='/blogs_list';
                 }
                 console.log(result);
             })

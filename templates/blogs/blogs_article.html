@@ -4,7 +4,12 @@
 {% endblock %}
 {% block blogs_content %}
 <div id="blogs_article_html">
-    <div class="article_title">{{article_info.title}}</div>
+    <div class="article_header">
+        <div class="article_title">{{article_info.title}}</div>
+        <a href="/blogs_essay?blog_id={{article_info.blog_id}}" class="edit_a">编辑</a>
+    </div>
+
+
     <div class="article_content">{{article_info.article}}</div>
 </div>
 
