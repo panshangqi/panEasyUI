@@ -1065,3 +1065,8 @@ textarea {
   font-size: 13px;
   margin-left: 15px;
 }
+.post_done_html .ok_box {
+  border: 1px solid #8c5334;
+  color: #8c5334;
+  font-size: 18px;
+}

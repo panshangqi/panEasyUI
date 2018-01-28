@@ -315,6 +315,13 @@ class BlogsSettingHandler(BaseHandler):
         label_list = BlogsMethod.getLabellist(user_id)
         self.render_html('blogs/blogs_setting.html',label_list=label_list)
 
+class BlogsPostdownHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        user_id = self.get_current_user()
+        label_list = BlogsMethod.getLabellist(user_id)
+        self.render_html('blogs/blogs_postdone.html',label_list=label_list)
+
 class BlogsUploadHeadHandler(BaseHandler):
     def post(self):
         result = {'status':1,'message':'文件上传成功'}
