@@ -1,4 +1,3 @@
-
 .essay_html{
     padding: 20px;
     .title{
@@ -79,7 +78,6 @@
             }
         }
     }
-
     .article{
         margin-top: 20px;
         height: 32px;
@@ -91,7 +89,6 @@
         height: 25px;
         color:#666;
         font-size: 14px;
-
     }
     .label_box{
         margin-top: 10px;
@@ -101,21 +98,28 @@
             tr{
                 height: 30px;
                 td{
-                    cursor: pointer;
-                    .check_box{
+                    .check_label{
                         display: inline-block;
-                        vertical-align: top;
-                        width:12px;
-                        height:12px;
-                        border: 1px solid @theme_color;
-                        background-size: 12px;
-                        margin-top: 2px;
-                    }
-                    .check_name{
-                        margin-left: 7px;
-                        display: inline-block;
-                        vertical-align: top;
-                        font-size: 13px;
+                        cursor: pointer;
+                        .check_box{
+                            display: inline-block;
+                            vertical-align: top;
+                            width:12px;
+                            height:12px;
+                            border: 1px solid @theme_color;
+                            background-size: 12px;
+                            margin-top: 2px;
+                        }
+                        .check_name{
+                            margin-left: 7px;
+                            display: inline-block;
+                            vertical-align: top;
+                            font-size: 13px;
+                        }
+                        .check_select{
+                            background-image:url(../img/check_yes.png);
+                            background-color: fadeout(@theme_color,20%);
+                        }
                     }
                 }
             }
@@ -124,7 +128,5 @@
     }
     .submit_btn{
         margin-top: 20px;
-        width:60px;
-        height:26px;
     }
 }

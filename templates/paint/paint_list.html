@@ -1,0 +1,94 @@
+{% extends "paint/paint_base.html" %}
+
+{% block paint_title %}{% endblock %}
+
+
+{% block paint_style %}{% endblock %}
+
+{% block content %}
+<div id="paint_list_html">
+    <button class="upload_button" id="upload_button"><img src="{{static_url}}/img/upload_btn.png">上传图片</button>
+    <div class="picture_wall" id="picture_wall">
+        {% for img in pic_list %}
+        <div class="picture_box">
+            <img src="{{img.image_url}}"/>
+            <div class="picture_shade"><div class="download"></div></div>
+        </div>
+        {% endfor %}
+    </div>
+    <form id="upload_image" style="display: none">
+        {{xsrf_form_html()}}
+        <input type="file" name="file" id="img_file">
+    </form>
+
+    {% autoescape true %}
+    {{settings.ui_modules.Hello}}
+    {% endautoescape %}
+</div>
+
+{% endblock %}
+
+{% block paint_script %}
+<script>
+    {% autoescape false %}
+        var pic_list = {{json_encode(pic_list)}};
+    {% endautoescape %}
+</script>
+<script>
+    //picture_wall
+    paint_init();
+    function paint_init(){
+        $('.picture_box').each(function(){
+            var boxW = $(this).width();
+            var boxH = $(this).height();
+            var imgW = $(this).find('img').width();
+            var imgH = $(this).find('img').height();
+            var dstW = boxW;
+            var dstH = imgH*dstW*1.0/imgW;
+            if(dstH>boxH) {
+                $(this).find('img').css({
+                    'height': 'auto',
+                    'width': boxW + 'px'
+                });
+            }
+            else{
+                var dstH = boxH;
+                var dstW = dstH*imgW*1.0/imgH;
+                $(this).find('img').css({
+                    'height':boxH+'px',
+                    'width':'auto'
+                });
+            }
+        });
+        $('.picture_box').on('mouseenter',function(){
+            $('.picture_shade').css('display','none');
+            var $shade = $(this).find('.picture_shade');
+            $shade.fadeIn(200);
+            console.log('xx');
+        })
+    }
+
+    $('#upload_button').click(function(){
+        $('#img_file').click();
+    })
+    //打开excel
+    $('#img_file').change(function(){
+        var file_size = $("#upload_image")[0].size;
+        var formData = new FormData($("#upload_image")[0]);
+        $('#img_file').val('');
+        $.window.http.post_file('/paint_upload',formData,function(data){
+            if(data.status == 1){
+                //window.location.href='/blogs_setting';
+                console.log('上传成功');
+            }
+            else{
+                $('#alert_dialog_content').html(data.message);
+                alertDialog.showDialog();
+            }
+        })
+    })
+    $('#password_btn').click(function(){
+        window.open('/check_identity?email='+current_user.email);
+    })
+</script>
+{% endblock %}

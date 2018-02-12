@@ -26,13 +26,14 @@
         <table id="label_table">
         {% for label in label_list %}
             {% if (loop.index-1)%5==0 %} {% if loop.index > 1 %}</tr>{% endif %}<tr>{% endif %}
-            <td tid="{{label.label_id}}"><div class="check_box"></div><div class="check_name">{{label.label_name}}</div></td>
+            <td id="{{label.label_id}}" id="{{label.label_id}}"><label class="check_label"><span class="check_box"></span><span class="check_name">{{label.label_name}}</span></label></td>
         {% endfor %}
         </tr>
         </table>
     </div>
     <div>
-        <button class="submit_btn" id="submit_btn">提交</button>
+        <button class="submit_btn" id="submit_btn">提交发布</button>
+        <button class="submit_btn" id="save_btn" style="margin-left: 10px">保存至草稿</button>
     </div>
 </div>
 
@@ -40,12 +41,29 @@
 {% block blogs_script %}
 <script>
     var label_list = {{json_encode(label_list)}};
-
+    var article_info = {{json_encode(article_info)}};
 </script>
 <script>
-
-    var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {});
     var labelId = '';
+    var ACTION = 'create';
+    var panEditObj = new panEditFrameObj($('#blogs_edit'),{'width':935, 'height':600},function () {});
+    function init(){
+        if(article_info.blog_id){
+            panEditObj.setFrameBodyHtml(article_info.article);
+            $('#arcticle_title').val(article_info.title);
+            for(var i in label_list){
+                if(article_info.label_id == label_list[i].label_id){
+                    $('#'+article_info.label_id).find('.check_box').addClass('check_select');
+                }
+            }
+            $('#blog_type .select_text').html(article_info.type);
+            labelId = article_info.label_id;
+            ACTION = 'modify';
+        }
+    }
+    init();
+
+
     $('#blog_type .selector').click(function () {
         $('#blog_type ul').css('display','block');
         document.onmouseup = onDocumentMouseDown;
@@ -62,7 +80,9 @@
         var blog_type = $('#blog_type .select_text').html();
         var articleTitle = $('#arcticle_title').val();
         var article = panEditObj.getFrameBodyHtml();
-        console.log(article);
+        var reg = new RegExp("'",'g');
+        article = article.replace(reg,"''");
+        //console.log(article);
         if(articleTitle.length == 0){
             alert('请填写文章标题');
             return;
@@ -71,26 +91,44 @@
             alert('请选择标签');
             return;
         }
-        var data={
-            'title':$('#arcticle_title').val(),
-            'type':blog_type,
-            'label_id':labelId,
-            'article':article,
-            'action':'create'
-        };
-        $.window.http.post('/blogs_essay',data,function(result){
-            if(result.status==1){
-                window.location.href='/blogs_list';
-            }
-            console.log(result);
-        })
+        if(ACTION == 'create'){
+            var data={
+                'title':$('#arcticle_title').val(),
+                'type':blog_type,
+                'label_id':labelId,
+                'article':article,
+                'action':ACTION
+            };
+
+            $.window.http.post('/blogs_essay',data,function(result){
+                if(result.status==1){
+                    window.location.href='/blogs_list';
+                }
+                console.log(result);
+            })
+        }
+        else if(ACTION == 'modify'){
+            var data={
+                'title':$('#arcticle_title').val(),
+                'type':blog_type,
+                'label_id':labelId,
+                'article':article,
+                'blog_id':article_info.blog_id,
+                'action':ACTION
+            };
+            $.window.http.post('/blogs_essay',data,function(result){
+                if(result.status==1){
+                    window.location.href='/blogs_list';
+                }
+                console.log(result);
+            })
+        }
     })
 
-    $('#label_table').on('click','td',function () {
-        var label_id = $(this).attr('tid');
-        $('#label_table td .check_box').css('background-image','');
-        $(this).find('.check_box').css('background-image','url(/static/img/check_yes.png)');
-        console.log(label_id);
+    $('#label_table').on('click','.check_label',function () {
+        var label_id = $(this).parents('td').attr('id');
+        $('#label_table td .check_box').removeClass('check_select');
+        $(this).find('.check_box').addClass('check_select');
         labelId = label_id;
     })
 

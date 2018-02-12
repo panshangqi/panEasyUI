@@ -7,7 +7,13 @@ from jinja2 import TemplateNotFound
 from ui_methods import *
 import traceback
 import sqlite3
+from apps import ui_modules
 
+def guess_autoescape(template_name):
+    if template_name is None or '.' not in template_name:
+        return False
+    ext = template_name.rsplit('.', 1)[1]
+    return ext in ('html', 'htm', 'xml')
 
 class BaseHandler(tornado.web.RequestHandler):
     def get(self):
@@ -69,7 +75,11 @@ class BaseHandler(tornado.web.RequestHandler):
             'xsrf_form_html':self.xsrf_form_html,
             'static_url_prefix':'/static'})
         template_dirs = [self.settings.get('template_path')]
-        env = Environment(loader=FileSystemLoader(template_dirs))
+        env = Environment(
+            autoescape=guess_autoescape,
+            loader=FileSystemLoader(template_dirs),
+            extensions=['jinja2.ext.autoescape']
+        )
         env.globals = ui_methods
         template = env.get_template(template_name)
         content = template.render(kwargs)

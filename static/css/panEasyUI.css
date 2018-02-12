@@ -1394,3 +1394,22 @@
   background-color: #fff;
   overflow: hidden;
 }
+.pan-pages {
+  min-height: 40px;
+}
+.pan-pages button {
+  display: inline-block;
+  vertical-algin: top;
+  width: auto;
+  padding: 2px 10px 2px 10px;
+  border: 1px solid #80bc71;
+  background-color: rgba(255, 255, 255, 0);
+  color: #fff;
+  margin-left: 5px;
+}
+.pan-pages span {
+  display: inline-block;
+  vertical-algin: top;
+  color: #fff;
+  margin-left: 5px;
+}

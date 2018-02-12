@@ -1,0 +1,21 @@
+{% extends "blogs/blogs_base.html" %}
+{% block blogs_title %}新随笔{% endblock %}
+{% block blogs_style %}
+{% endblock %}
+
+{% block blogs_content %}
+<div class="post_done_html">
+    <div class="ok_box">
+        保存成功
+    </div>
+</div>
+
+{% endblock %}
+{% block blogs_script %}
+<script>
+    var label_list = {{json_encode(label_list)}};
+</script>
+<script>
+
+</script>
+{% endblock %}

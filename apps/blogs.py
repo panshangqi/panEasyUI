@@ -49,16 +49,54 @@ class BlogsMethod(object):
             item['click_rate'] = row[2]
             item['create_time'] = row[3]
             item['modify_time'] = row[4]
+            cursor.execute('select blog_id,title from blogs_info where label_id=:label_id;',{'label_id':row[0]})
+            ret = cursor.fetchall()
+            item['total_article'] = len(ret)
             label_list.append(item)
         return label_list
     @staticmethod
-    def get_blogs_list(user_id):
+    def get_blog_one(user_id,blog_id):
+        article_info={}
+        conn = sqlite3.connect('database/blogs_info.db')
+        cursor = conn.cursor()
+        cursor.execute('select blog_id,title,article,create_time,type,click_rate,label_id from blogs_info where user_id=:user_id and blog_id=:blog_id',{'user_id':user_id,'blog_id':blog_id})
+        res = cursor.fetchall()
+        for row in res:
+            article_info['blog_id'] = row[0]
+            article_info['title'] = row[1]
+            article_info['article'] = row[2]
+            article_info['create_time'] = row[3]
+            article_info['type'] = row[4]
+            article_info['click_rate'] = row[5]
+            article_info['label_id'] = row[6]
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return article_info
+
+    @staticmethod
+    def get_blogs_list(user_id,label_id='all',page_size='7',page_num='1'):
         blogs_list=[]
+        page_total = 0
+        offset = (int(page_num)-1)*int(page_size);
+        recnum = int(page_size);
         try:
             conn = sqlite3.connect('database/blogs_info.db')
             cursor = conn.cursor()
-            cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id order by create_time desc;',{'user_id':user_id})
-            res = cursor.fetchall()
+            res = []
+            total = []
+            if label_id == 'all':
+                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id order by create_time desc limit :offset,:recnum;',{'user_id':user_id,'offset':offset,'recnum':recnum})
+                res = cursor.fetchall()
+                cursor.execute('select blog_id from blogs_info where user_id=:user_id',{'user_id':user_id})
+                page_total = len(cursor.fetchall())
+
+            else:
+                cursor.execute('select blog_id,title,summary,create_time,modify_time,label_id,type,click_rate from blogs_info where user_id=:user_id and label_id=:label_id order by create_time desc limit :offset,:recnum;',{'user_id':user_id,'label_id':label_id,'offset':offset,'recnum':recnum})
+                res = cursor.fetchall()
+                cursor.execute('select blog_id from blogs_info where user_id=:user_id and label_id=:label_id',{'user_id':user_id,'label_id':label_id})
+                page_total = len(cursor.fetchall())
+
             for row in res:
                 blogs_item={}
                 blogs_item['blog_id'] = row[0]
@@ -75,40 +113,19 @@ class BlogsMethod(object):
             conn.close()
         except:
             blogs_list=[]
-        return blogs_list
-    @staticmethod
-    def get_user_info(url,user_id):
-        user_info={}
-        conn = sqlite3.connect("database/blogs_info.db")
-        cursor = conn.cursor()
-        cursor.execute('select user_id,username,email,create_time,head_img,rout_address from user_info where user_id = :user_id;',{'user_id':user_id})
-        res = cursor.fetchall()
-        for row in res:
-            user_info['user_id'] = row[0]
-            user_info['username'] = row[1]
-            user_info['email'] = row[2]
-            user_info['create_time'] = row[3]
-            user_info['head_img'] = row[4];
-            if row[4]:
-                user_info['head_img_url'] = url + '/static/files/'+ user_info['head_img'];
-            else:
-                user_info['head_img_url'] = None
-            user_info['rout_address'] = row[5];
-
-
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return user_info
-
+        return blogs_list,page_total
 
 class BlogsListHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         user_id = self.get_current_user()
-        blogs_list = BlogsMethod.get_blogs_list(user_id)
+        label_id = self.get_argument('label_id','all')
+        page_size = self.get_argument('page_size','7')
+        page_num = self.get_argument('page_num','1')
+        blogs_list,page_total = BlogsMethod.get_blogs_list(user_id,label_id,page_size,page_num)
+        print page_total
         label_list = BlogsMethod.getLabellist(user_id)
-        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list)
+        self.render_html("blogs/blogs_list.html",blogs_list=blogs_list,label_list=label_list,label_id=label_id,page_total=page_total,page_size=int(page_size),page_num=int(page_num))
 
 class BlogsHandler(BaseHandler):
     def get(self,rout_address):
@@ -131,52 +148,36 @@ class BlogsArticleHandler(BaseHandler):
     def get(self):
         blog_id = self.get_argument('blog_id')
         user_id = self.get_current_user()
-        article_info={}
-        result={}
-        try:
-            conn = sqlite3.connect('database/blogs_info.db')
-            cursor = conn.cursor()
-            cursor.execute('select blog_id,title,article,create_time,type,click_rate from blogs_info where user_id=:user_id and blog_id=:blog_id',{'user_id':user_id,'blog_id':blog_id})
-            res = cursor.fetchall()
-            for row in res:
-                article_info['blog_id'] = row[0]
-                article_info['title'] = row[1]
-                article_info['article'] = row[2]
-                article_info['create_time'] = row[3]
-                article_info['type'] = row[4]
-                article_info['click_rate'] = row[5]
-            conn.commit()
-            cursor.close()
-            conn.close()
-            result['status']=1
-        except:
-            result['status']=0
-        self.render_html("blogs/blogs_article.html",article_info=article_info)
+        label_list = BlogsMethod.getLabellist(user_id)
+        article_info = BlogsMethod.get_blog_one(user_id,blog_id)
+        self.render_html("blogs/blogs_article.html",article_info=article_info,label_list=label_list)
 
 class BlogsEssayHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         user_id = self.get_current_user()
+        blog_id = self.get_argument('blog_id','None')
+        article_info = BlogsMethod.get_blog_one(user_id,blog_id)
         label_list = BlogsMethod.getLabellist(user_id)
-        self.render_html("blogs/blogs_essay.html",label_list=label_list)
+        self.render_html("blogs/blogs_essay.html",label_list=label_list,article_info=article_info)
 
     def post(self):
         action = self.get_argument('action')
+        user_id = self.get_current_user()
         result={}
         if action == 'create':
             title = self.get_argument('title')
             type = self.get_argument('type')
             label_id = self.get_argument('label_id')
             article = self.get_argument('article')
-            user_id = self.get_current_user()
             try:
                 conn = sqlite3.connect('database/blogs_info.db')
                 cursor = conn.cursor()
-                parser = SummaryHTMLParser(150)
+                parser = SummaryHTMLParser(300)
                 parser.feed(article)
                 blog_summary = parser.get_summary(u'...' ,u'')
-                sql_param = (getGuid(),title,type,blog_summary,article,time.time(),time.time(),user_id,label_id)
-                cursor.execute('insert into blogs_info(blog_id,title,type,summary,article,create_time,modify_time,user_id,label_id) values(?,?,?,?,?,?,?,?,?);',sql_param)
+                sql_param = "insert into blogs_info(blog_id,title,type,summary,article,create_time,modify_time,user_id,label_id) values('%s','%s','%s','%s','%s',%d,%d,'%s','%s');" % (getGuid(),title,type,blog_summary,article,time.time(),time.time(),user_id,label_id)
+                cursor.execute(sql_param)
                 conn.commit()
                 cursor.close()
                 conn.close()
@@ -184,9 +185,31 @@ class BlogsEssayHandler(BaseHandler):
             except:
                 result['status']=0
             self.write(result)
+        elif action == 'modify':
+            title = self.get_argument('title')
+            type = self.get_argument('type')
+            label_id = self.get_argument('label_id')
+            article = self.get_argument('article')
+            blog_id = self.get_argument('blog_id')
+            try:
+                conn = sqlite3.connect('database/blogs_info.db')
+                cursor = conn.cursor()
+                parser = SummaryHTMLParser(300)
+                parser.feed(article)
+                blog_summary = parser.get_summary(u'...' ,u'')
+
+                sql_param = "update blogs_info set title='%s',type='%s',summary='%s',article='%s',modify_time=%d,label_id='%s' where blog_id='%s' and user_id='%s';" % (title,type,blog_summary,article,time.time(),label_id,blog_id,user_id);
+                cursor.execute(sql_param)
+                conn.commit()
+                cursor.close()
+                conn.close()
+                result['status']=1
+            except:
+                result['status']=0
+            self.write(result)
+
         elif action == 'delete':
             blog_id = self.get_argument('blog_id')
-            user_id = self.get_current_user()
             try:
                 conn = sqlite3.connect('database/blogs_info.db')
                 cursor = conn.cursor()
@@ -292,6 +315,13 @@ class BlogsSettingHandler(BaseHandler):
         label_list = BlogsMethod.getLabellist(user_id)
         self.render_html('blogs/blogs_setting.html',label_list=label_list)
 
+class BlogsPostdownHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        user_id = self.get_current_user()
+        label_list = BlogsMethod.getLabellist(user_id)
+        self.render_html('blogs/blogs_postdone.html',label_list=label_list)
+
 class BlogsUploadHeadHandler(BaseHandler):
     def post(self):
         result = {'status':1,'message':'文件上传成功'}
@@ -335,3 +365,5 @@ class BlogsUploadHeadHandler(BaseHandler):
         conn.commit()
         cursor.close()
         conn.close()
+
+

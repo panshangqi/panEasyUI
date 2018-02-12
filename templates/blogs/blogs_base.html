@@ -12,7 +12,7 @@
 
         <div class="main_content_st">
             <div class="book_header"></div>
-            <div class="book_content">
+            <div class="book_content" id="book_content">
                 {% block blogs_content %}
                 {% endblock %}
             </div>
@@ -29,7 +29,7 @@
             <div class="label_nav" id="label_nav">
                 <ul>
                     {% for label in label_list %}
-                    <li>{{label.label_name}}</li>
+                    <li><a href="/blogs_list?label_id={{label.label_id}}">{{label.label_name}} ({{label.total_article}})</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -40,9 +40,12 @@
 {% endblock %}
 {% block script %}
 <script>
+
     var label_list = {{json_encode(label_list)}}
     if(current_user.rout_address)
         $('#head_img').css('background-image','url('+current_user.head_img_url+')');
+
+
 </script>
 {% block blogs_script %}{% endblock %}
 {% endblock %}

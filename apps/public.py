@@ -38,8 +38,8 @@ def sendEmail(toEmail,e_title,e_content):
     msg_to=toEmail            #收件人邮箱
     subject=e_title           #主题
     content=e_content      #正文
-    msg = MIMEText(content,'html','utf-8')
-    msg['Subject'] = Header(subject, 'utf-8').encode()
+    msg = MIMEText(content)
+    msg['Subject'] = subject
     msg['From'] = msg_from
     msg['To'] = msg_to
     try:
@@ -49,6 +49,7 @@ def sendEmail(toEmail,e_title,e_content):
         print '发送成功'
         return True
     except:
+        print '发送失败'
         return False
     finally:
         s.quit()

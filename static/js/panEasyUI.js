@@ -1106,6 +1106,10 @@ var panEditFrameObj=function(ele,data,fn){
     self.getFrameBodyHtml = function () {
         return $(ifdom.body).html();
     }
+    self.setFrameBodyHtml = function(mhtml){
+        $(ifdom.body).html(mhtml);
+        $(ifdom.body).append('<br/>');
+    }
     Events();
     function Events() {
 
@@ -1396,3 +1400,106 @@ $.fn.extend({
         return new panRandomCodeObj(this,options,fn);
     }
 })
+
+var panPages = function(ele,options,fn){
+    var $ele = ele;
+    var defaults = {
+        'cur_page':18,
+        'total_page':20,
+        'background_color':'#ff00ff',
+        'color':'#fff',
+        'border_color':'#ff00ff',
+        'point_color':'#333'
+    }
+    var settings = $.extend({},defaults,options);
+    $ele.append('<button class="first_page">首页</button>');
+
+    $ele.append('<button class="pre_page">上一页</button>');
+
+    var mini = 1;
+    var maxi = settings.total_page;
+    if(settings.cur_page - 4 >= 1 && settings.cur_page + 4 <= settings.total_page){
+        mini = settings.cur_page - 4;
+        maxi = settings.cur_page + 4;
+    }
+    else if(settings.cur_page - 4 >= 1 && settings.cur_page + 4 > settings.total_page){
+        maxi = settings.total_page;
+        mini = settings.total_page - 7;
+    }
+    else if(settings.cur_page - 4 < 1 && settings.cur_page + 4 <= settings.total_page){
+        mini = 1;
+        maxi = 8;
+    }
+    else{
+        mini = 1;
+        maxi = settings.total_page;
+    }
+    mini = mini < 1 ? 1 : mini;
+    maxi = maxi > settings.total_page ? settings.total_page : maxi;
+
+
+    for(var i=1;i<=settings.total_page;i++){
+        $ele.append('<button class="'+i+'">'+i+'</button>');
+        if(i==1){
+            if(mini>2){
+                $ele.append('<span class="pre_point">...</span>');
+            }
+        }
+        if(i==settings.total_page-1){
+            if(maxi<settings.total_page-1){
+                $ele.append('<span class="next_point">...</span>');
+            }
+        }
+        if(settings.cur_page == i){
+            selectedStatus($ele.find('.'+i));
+        }else{
+            noSelectedStatus($ele.find('.'+i));
+        }
+        if(i<mini || i > maxi){
+            $ele.find('.'+i).css('display','none');
+        }
+        if(i==1 || i==settings.total_page){
+            $ele.find('.'+i).css('display','inline-block');
+        }
+    }
+    $ele.append('<button class="next_page">下一页</button>');
+    $ele.append('<button class="last_page">尾页</button>');
+
+    noSelectedStatus($ele.find('.first_page'));
+    noSelectedStatus($ele.find('.pre_page'));
+    noSelectedStatus($ele.find('.next_page'));
+    noSelectedStatus($ele.find('.last_page'));
+    $ele.find('span').css({
+        'color':settings.point_color
+    });
+
+    $ele.on('mouseleave','button',function(){
+        if($(this).attr('class') == settings.cur_page.toString())
+            return;
+        noSelectedStatus($(this));
+    })
+
+    $ele.on('mouseenter','button',function(){
+        selectedStatus($(this));
+    })
+    $ele.on('click','button',function(){
+        if(typeof fn === 'function'){
+            fn($(this).html());
+        }
+    })
+
+    function noSelectedStatus(eid){
+        eid.css({
+            'background-color':settings.background_color,
+            'color':settings.color,
+            'border-color':settings.border_color
+        });
+    }
+    function selectedStatus(eid){
+        eid.css({
+            'background-color':settings.color,
+            'color':'#fff',
+            'border-color':settings.border_color
+        })
+    }
+}

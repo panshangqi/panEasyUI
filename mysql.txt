@@ -77,6 +77,15 @@ click_rate int default 0,
 create_time timestamp not null,
 modify_time timestamp not null);
 
+//原画信息
+create table image_info(
+user_id varchar(280) not null,
+image_id varchar(280) not null,
+name varchar(280),
+size int not null,
+create_time timestamp not null
+);
+
 //查询字段名
 pragma table_info(user_info);
 

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>jQuery WebGL Ripples</title>
+
+<style>
+
+* { margin: 0; padding: 0; }
+
+html {
+
+	height: 100%;
+
+}
+
+body {
+
+	color: #fff;
+
+	font-size: 16px;
+
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+	background-image: url(./img/bg2.jpg);
+
+	background-size: cover;
+
+	background-position: 50% 0;
+
+	height: 100%;
+
+	text-align: center;
+
+}
+
+
+
+body:before {
+
+	content: '';
+
+	display: inline-block;
+
+	vertical-align: middle;
+
+	height: 100%;
+
+}
+
+
+
+main {
+
+	display: inline-block;
+
+	vertical-align: middle;
+
+	
+
+	padding:  150px;
+
+	max-width: 400px;
+
+	text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+
+	box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+
+}
+
+
+
+h1 {
+
+	font-size: 32px;
+
+}
+
+h2 {
+
+	font-size: 18px;
+
+	margin-top: 6px;
+
+}
+
+p {
+
+	text-align: left;
+
+	margin-top: 20px;
+
+}
+
+a {
+
+	color: #ff6800;
+
+}
+
+pre {
+
+	text-align: left;
+
+	margin-top: 20px;
+
+}
+
+
+
+.error {
+
+	display: none;
+
+	position: fixed;
+
+	bottom: 0;
+
+	left: 0;
+
+	background: #000;
+
+	color: #f00;
+
+	padding: 5px;
+
+	max-width: 50%;
+
+}
+
+
+
+.disable {
+
+	position: fixed;
+
+	bottom: 0;
+
+	right: 0;
+
+	max-width: 50%;
+
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<main>
+
+	<header>
+
+		<h1>jQuery Ripples</h1>
+
+		<h2>A simple WebGL-based ripple effect.</h2>
+
+	</header>
+
+	<p>Background images are often boring. Use this effect to make your static CSS background images more interactive!</p>
+
+	<p>It's as easy as:</p>
+
+	
+
+	<pre><code>
+
+$(<span style="color:#ec7600">'body'</span>).ripples(<span style="font-weight:bold">{</span>
+
+	resolution: <span style="color:#ffcd22">512</span>,
+
+	dropRadius: <span style="color:#ffcd22">20</span>,
+
+	perturbance: <span style="color:#ffcd22">0.04</span>,
+
+<span style="font-weight:bold">}</span>);
+
+	</code></pre>
+
+	
+
+	
+
+</main>
+
+
+
+<button class="disable" style="display: none">Click here if your PC can't handle this effect very well</button>
+
+
+
+<div class="error"></div>
+
+
+
+<script src="http://www.jq22.com/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="js/jquery.ripples.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+	try {
+
+		$('body').ripples({
+
+			resolution: 512,
+
+			dropRadius: 20, //px
+
+			perturbance: 0.04,
+
+		});
+
+		$('main').ripples({
+
+			resolution: 128,
+
+			dropRadius: 10, //px
+
+			perturbance: 0.04,
+
+		});
+
+	}
+
+	catch (e) {
+
+		$('.error').show().text(e);
+
+	}
+
+	
+
+	$('.disable').show().on('click', function() {
+
+		$('body, main').ripples('destroy');
+
+		$(this).hide();
+
+	});
+
+});
+
+</script>
+
+</body>
+
+</html>

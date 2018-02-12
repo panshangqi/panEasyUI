@@ -1,0 +1,63 @@
+#paint_list_html{
+    width:95%;
+    min-height: 700px;
+    margin: 20px auto;
+    text-align: left;
+    .upload_button{
+        img{
+            vertical-align: top;
+            width:19px;
+            margin-top: 1px;
+            margin-right: 3px;
+            height:15px;
+        }
+    }
+    .picture_wall{
+        text-align: left;
+        margin-top: 10px;
+        .picture_box{
+            position: relative;
+            display: inline-block;
+            width:280px;
+            height:190px;
+            margin-right: 8px;
+            margin-top: 8px;
+            border: 7px solid fadeout(#fff,60%);
+            overflow: hidden;
+            box-sizing: border-box;
+            cursor: pointer;
+            img{
+                width:250px;
+            }
+            .picture_shade{
+                position: absolute;
+                bottom:0px;
+                width:100%;
+                height:30px;
+                background-image: url(../img/picture_shade.png);
+                background-repeat: no-repeat;
+                background-size:100%;
+                z-index: 20;
+                display: none;
+                .download{
+                    position: absolute;
+                    width:18px;
+                    height:18px;
+                    right:10px;
+                    top:6px;
+                    background-image: url(../img/download_btn.png);
+                    background-repeat: no-repeat;
+                    background-size: 18px;
+                    z-index: 21;
+                    &:hover{
+                        background-image: url(../img/download_btn_hover.png);
+                    }
+                    &:active{
+                        background-image: url(../img/download_btn_active.png);
+                    }
+                }
+            }
+        }
+
+    }
+}

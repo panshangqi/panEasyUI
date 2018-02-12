@@ -7,8 +7,7 @@
 {% block blogs_content %}
 <div id="blogs_html_list">
 
-    <div class="blogs_list_box">
-
+    <div class="blogs_list_box" id="blogs_list_box">
         {% for item in blogs_list %}
         <div class="blogs_item" blog_id="{{item.blog_id}}">
             <div class="item_header">
@@ -18,7 +17,6 @@
             </div>
             <div class="item_summary">&#12288;&#12288;{{item.summary}}</div>
             <div class="item_foot">
-
                 {% for label in label_list %}
                 {% if label.label_id == item.label_id %}
                 <span class="label_name">{{label.label_name}}</span>
@@ -27,15 +25,16 @@
                 <span>{{timestamp_format(item.create_time,false)}}</span>
                 <span>阅读({{item.click_rate}})</span>
                 {% if current_user.user_id %}
-                <span class="modify_blog_btn">编辑</span>
+                <a class="modify_blog_btn" href="/blogs_essay?blog_id={{item.blog_id}}">编辑</a>
                 <span class="delete_blog_btn">删除</span>
                 {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
-
-
+    <div class="pages_list">
+        <div class="pan-pages" id="blogs_pages"></div>
+    </div>
     <div class="pan-blogs-dialog" id="delete_dialog">
         <div class="pan-blogs-dialog-content">
             <div id="dialog_content">
@@ -53,6 +52,14 @@
 {% block blogs_script %}
 <script>
     var blogs_list = {{json_encode(blogs_list)}};
+    var page_num = {{json_encode(page_num)}};
+    var page_size = {{json_encode(page_size)}};
+    var page_total = {{json_encode(page_total)}};
+    var label_id = {{json_encode(label_id)}};
+    PAGE_NUM = Math.ceil(page_total*1.0/page_size);
+</script>
+<script>
+
     var deleteDialog = $('#delete_dialog').panBlogsDialog({'width':320,'height':190},function(){});
     var selected_blog_id = null;
     $('.delete_blog_btn').click(function(){
@@ -66,7 +73,7 @@
         }
         $.window.http.post('/blogs_essay',{'action':'delete','blog_id':selected_blog_id},function(data){
             if(data.status==1){
-                window.location.href='/blogs_list';
+                window.location.href = window.location;
             }
             console.log(data);
         })
@@ -74,6 +81,38 @@
     $('#dialog_content .cancel_btn').click(function (){
         deleteDialog.hideDialog();
     })
+
+    var pages = new panPages($('#blogs_pages'),{
+        'background_color':'#ffffff00',
+        'color':'#8c5334',
+        'border_color':'#8c5334',
+        'cur_page':page_num,
+        'total_page':PAGE_NUM
+    },function(msg){
+        var mlabel_id = '&label_id=';
+        if(label_id == 'all'){
+            mlabel_id = '';
+        }else{
+            mlabel_id += label_id;
+        }
+        if(msg=='首页'){
+            window.location.href = '/blogs_list?page_num=1'+mlabel_id;
+        }
+        else if(msg=='尾页'){
+            window.location.href = '/blogs_list?page_num='+PAGE_NUM+mlabel_id;
+        }
+        else if(msg=='上一页'){
+            var m_page_num = page_num-1 < 1 ? 1 : page_num-1;
+            window.location.href = '/blogs_list?page_num='+m_page_num+mlabel_id;
+        }
+        else if(msg=='下一页'){
+            var m_page_num = page_num+1 > PAGE_NUM ? PAGE_NUM : page_num+1;
+            window.location.href = '/blogs_list?page_num='+m_page_num+mlabel_id;
+        }else{
+            var m_page_num = parseInt(msg);
+            window.location.href = '/blogs_list?page_num='+m_page_num+mlabel_id;
+        }
+    });
 
 </script>
 {% endblock %}

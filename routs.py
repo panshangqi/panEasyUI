@@ -8,6 +8,7 @@ from apps.components import *
 from apps.plugs import *
 from apps.blogs import *
 from apps.account import *
+from apps.paint import *
 url = [(r"/index",IndexHandler),
 
 (r"/home",HomeHandler),
@@ -31,7 +32,11 @@ url = [(r"/index",IndexHandler),
 (r"/blogs_sqlite",BlogsSqliteHandler),
 (r"/blogs_label",BlogsLabelHandler),
 (r"/blogs_setting",BlogsSettingHandler),
+(r"/blogs_postdone",BlogsPostdownHandler),
 (r"/blogs_upload_head",BlogsUploadHeadHandler),
+
+(r"/paint_list",PaintListHandler),
+(r"/paint_upload",UploadImageHandler),
 (r"/.*",BaseHandler)
 
       ]

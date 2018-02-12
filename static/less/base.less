@@ -19,15 +19,13 @@ input{
     }
 }
 button{
-    width:80px;
+    padding: 0 15px 0 15px;
     height:30px;
     vertical-align: top;
     border: 1px solid @theme_color;
     background-color: @theme_color;
     color:#fff;
     font-size: 13px;
-    outline: none;
-    outline:0;
     &:hover{
         cursor: pointer;
         background-color: @theme_color_deep;
@@ -67,13 +65,27 @@ textarea{
         width:100%;
         height:80px;
         text-align: left;
-        overflow: hidden;
         position: relative;
-        img.logo_img{
+        .logo_img{
             position: absolute;
-            width:40px;
-            left:30px;
-            top:5px;
+            width:180px;
+            height:50px;
+            left:3px;
+            top:11px;
+            background-image: url(../img/site_logo_001.png);
+            background-size: 180px;
+            background-repeat: no-repeat;
+        }
+        .motto_img{
+            position: absolute;
+            width:450px;
+            height:40px;
+            right:280px;
+            top:30px;
+            background-image: url(../img/motto_001.png);
+            background-size: 450px;
+            background-repeat: no-repeat;
+            z-index: 101;
         }
         input.search{
             position: absolute;
@@ -92,17 +104,17 @@ textarea{
         .placeholderColor(@theme_color);
         .search_image{
             position: absolute;
-            top:34px;
-            right:306px;
-            width:30px;
-            height:30px;
+            top:36px;
+            right:312px;
+            width:25px;
+            height:25px;
             background-image: url(../img/search.png);
-            background-size: 20px;
+            background-size: 18px;
             background-repeat: no-repeat;
             z-index: 11;
         }
         ul{
-            margin: 15px 50px;
+            margin-left: 200px;
             list-style: none;
             li{
                 display: inline;

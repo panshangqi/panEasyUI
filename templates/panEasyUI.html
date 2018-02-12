@@ -87,7 +87,8 @@
 
     </div>
 </div>
-
+<!--分页-->
+<div class="pan-pages" id="test_pages"></div>
 {% endblock %}
 {% block script %}
 
@@ -149,6 +150,11 @@
 
     $('#dialog_btn').click(function () {
         testBlogsDialog.showDialog();
+    })
+
+
+    var pages = new panPages($('#test_pages'),{},function(){
+
     })
 </script>
 {% endblock %}
