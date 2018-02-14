@@ -51,11 +51,13 @@
 
 {% block blogs_script %}
 <script>
+    {% autoescape false %}
     var blogs_list = {{json_encode(blogs_list)}};
     var page_num = {{json_encode(page_num)}};
     var page_size = {{json_encode(page_size)}};
     var page_total = {{json_encode(page_total)}};
     var label_id = {{json_encode(label_id)}};
+    {% endautoescape %}
     PAGE_NUM = Math.ceil(page_total*1.0/page_size);
 </script>
 <script>

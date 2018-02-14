@@ -40,8 +40,9 @@
 {% endblock %}
 {% block script %}
 <script>
-
+    {% autoescape false %}
     var label_list = {{json_encode(label_list)}}
+    {% endautoescape %}
     if(current_user.rout_address)
         $('#head_img').css('background-image','url('+current_user.head_img_url+')');
 
