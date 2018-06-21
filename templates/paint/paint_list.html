@@ -21,9 +21,10 @@
         <input type="file" name="file" id="img_file">
     </form>
 
-    {% autoescape true %}
-    {{settings.ui_modules.Hello}}
-    {% endautoescape %}
+    {% autoescape False %}
+    {% module HelloModule() %}
+
+
 </div>
 
 {% endblock %}

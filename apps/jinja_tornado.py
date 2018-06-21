@@ -73,6 +73,7 @@ class BaseHandler(tornado.web.RequestHandler):
             'current_user':current_user,
             'xsrf_token':self.xsrf_token,
             'xsrf_form_html':self.xsrf_form_html,
+            'ui_modules':{'HelloModule':ui_modules.HelloModule},
             'static_url_prefix':'/static'})
         template_dirs = [self.settings.get('template_path')]
         env = Environment(

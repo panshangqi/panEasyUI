@@ -92,6 +92,16 @@ def pan():
         return False
     finally:
         print 'finally'
-if __name__ == '__main__':
 
-    sendEmail()
+class FooChild(object):
+    def __init__(self,setings):
+        print 'father'
+        super(FooChild,self).__init__()
+        print ('Child')
+
+
+if __name__ == '__main__':
+    setting = {'debug':'true'}
+    fooChild = FooChild(setting)
+
+

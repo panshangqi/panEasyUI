@@ -13,14 +13,13 @@ from jinja2 import Environment, FileSystemLoader, TemplateNotFound,ChoiceLoader
 
 import time
 from routs import url
-from apps.ui_modules import *
+from apps import ui_modules
 
 settings = {
 	'debug':True,
     'cookie_secret': 'bZJc2sWbQLKos6GkHnxVB9oXwQt8S0R0kRvJ5J89E=',
     'xsrf_cookies': True,
     'login_url':'/login',
-    'ui_modules':{'Hello':HelloModule},
     'template_path':os.path.join(os.path.dirname(__file__),'templates'),
     'static_path':os.path.join(os.path.dirname(__file__),'static')
 }
